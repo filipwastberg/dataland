@@ -1,0 +1,116 @@
+---
+title: Nå SCB:s api från R
+author: Filip Wästberg
+date: '2017-10-02'
+slug: nå-scb-s-api-från-r
+categories:
+  - Offentlig statistik
+  - SCB
+tags:
+  - pxweb
+banner: "css/images/scb.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Nå SCB:s databas från R
+Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet `pxweb`.
+
+## SCB:s API
+Att ta fram tabeller SCB:s statistikdatabas http://www.statistikdatabasen.scb.se/ är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.
+
+Tack och lov finns det ett ganska enkelt sätt att komma åt SCB:s databas-API från R. Det är <a href="https://github.com/MansMeg/">Måns Magnusson</a>, doktorand i Statistik vid Linköpings universitet och något av en R-guru (!?!?) i Sverige som tillsammans med <a href="https://github.com/LCHansson/">Love Hansson</a> och <a href="https://github.com/antagomir">Leo Lahti</a> byggt R-paketet pxweb som samlar API:er, d.v.s. direkt kontakt med databaser, för en rad olika officiella statistikdatabaser, däribland SCB. Woho! Aldrig mer stökiga tabeller från SCB!
+
+*En liten brasklapp: Måns har meddelat att han håller på att skriva om paketet så det här inlägget kan mycket väl bli obsolet.*
+
+## Och vidare!
+Vi börjar med att ladda paketen vi kommer att behöva.
+```{r, message = FALSE, warning = FALSE}
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(pxweb)
+library(plotly)
+library(scales)
+```
+
+## pxweb
+Funktionen ´interactive_pxweb()´ är en interaktiv funktion som kommunicerar med den databas du vill hämta data från. Funktionen skiljer sig lite från SCB:s statistikdatabas men man känner igen sig. 
+
+En ganska avgörande skillnad är att man i SCB:s databasverktyg kan låta bli att välja ganska många nedbrytningar. Bland annat kan man i databasverktyget för folkmängd låta bli att dela upp befolkning i civilstånd. I pxweb-paketet måste du i regel alltid välja dessa (i databasverktyget frivilliga) undergrupper. Men det är enkelt hanterat i R (men en mardröm i exempelvis Excel).
+
+```{r, echo = TRUE, eval = FALSE}
+ data <- interactive_pxweb()
+```
+
+Funktionen `interactive_pxweb()`skriver även koden för den data du valt, i det här fallet blev koden:
+```{r, echo = TRUE}
+data <- get_pxweb_data(url = 
+                        "http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101A/BefolkningNy",
+                 dims = list(Region = c('00'),
+                             Civilstand = c('*'),
+                             Alder = c('tot'),
+                             Kon = c('*'),
+                             ContentsCode = c('BE0101N1'),
+                             Tid = c('1968', '1969', '1970', '1971', '1972',
+                                     '1973', '1974', '1975', '1976', '1977',
+                                     '1978', '1979', '1980', '1981', '1982',
+                                     '1983', '1984', '1985', '1986', '1987',
+                                     '1988', '1989', '1990', '1991', '1992',
+                                     '1993', '1994', '1995', '1996', '1997',
+                                     '1998', '1999', '2000', '2001', '2002',
+                                     '2003', '2004', '2005', '2006', '2007',
+                                     '2008', '2009', '2010', '2011', '2012',
+                                     '2013', '2014', '2015', '2016')),
+                 clean = TRUE)
+```
+
+Jag har valt hela riket, alla civilståndstyper, inga åldersnedbrytningar och data från 1968-2016. 
+
+Ett problem nu är att jag data med 392 observationer på 5 variabler. Egentligen vill jag bara ha tre variabler: en variabel för år, en för kön och en för folkmängd. 
+
+```{r, echo = TRUE}
+head(data)
+```
+För att manipulera data använder jag det populära paketet `dplyr`.
+
+Med funktionen `group_by` kan jag summera antalet invånare över kön och år.
+
+```{r, echo = TRUE}
+data <- data %>%
+  group_by(kön, år) %>%
+  summarise(antal_invånare = sum(values))
+```
+
+På så sätt blir jag av med civilstånd. 
+
+Ett till problem är att variablen år inte är defnierad som ett datum så jag använder `as.Date()` för att ange format. I det här fallet är den i årtal, "%Y".
+
+```{r, echo = TRUE}
+data$år <- as.Date(data$år, format = "%Y")
+```
+
+Nu kan vi visualisera med det populäraste paketet för datavisualseringar i R ggplot2.
+
+```{r, warning=FALSE}
+folkmangd <- ggplot(data) +
+  geom_line(aes(x = år,
+                y = antal_invånare,
+                group = kön, color = kön)) +
+  scale_x_date() +
+  scale_y_continuous(labels = format_format(big.mark = " ",
+                                            decimal.mark = ",",
+                                            scientific = FALSE),
+                     limits = c(0,5020000)) +
+  labs(title = "Folkökning 1968-2016",
+       x = "År", y = "Antal invånare", color = "Kön") +
+  scale_color_discrete(labels = c("Kvinnor", "Män"))
+```
+
+Med paketet `plotly` och funktionen `ggplotly()` kan vi enkelt göra en ggplot till en interaktiv graf. Det är inte svårare än att vi använder funktionen på vår ggplot och vips så är den interaktiv.
+
+```{r, echo = TRUE}
+ggplotly(folkmangd)
+```
