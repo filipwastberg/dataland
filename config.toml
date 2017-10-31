@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "http://dataland.rbind.io/"
 languageCode = "swe"
 title = "Data land"
 # Enable comments by entering your Disqus shortname
