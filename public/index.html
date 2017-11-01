@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="swe">
 <head>
     <title>Data land</title>
     <meta name="generator" content="Hugo 0.27.1" />
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:updated_time" content="2017-10-02T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2017-10-15T00:00:00&#43;00:00"/>
 
 
 
@@ -106,7 +106,7 @@
         </nav>
         <div id="search-form-wrap">
           <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
-              <input type="search" name="q" class="search-form-input" placeholder="Search">
+              <input type="search" name="q" class="search-form-input" placeholder="Sök">
               <button type="submit" class="search-form-submit">
               </button>
               <input type="hidden" name="sitesearch" value="/" />
@@ -175,15 +175,15 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        2
-        <span>Posts</span>
+        3
+        <span>Inlägg</span>
       </div>
       <div class="article-info-block">
         
-          1
+          2
         
         <span>
-            Tags
+            Taggar
         </span>
       </div>
     </div>
@@ -262,6 +262,160 @@
 <article class="article article-type-post" itemscope="" itemprop="blogPost">
     <div class="article-inner">
         
+        <a href="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/" itemprop="url">
+            <img src="/css/images/kent.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/">
+    <h1 class="article-title" itemprop="name">
+        Vilken är kents mest deprimerande låt?
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2017-10-15 00:00:00 &#43;0000 UTC" itemprop="datePublished">2017-10-15</time>
+            &middot;
+            4469
+            Ord
+            &middot;
+            21
+            Minuter
+        </div>
+        
+        
+            
+            
+            <div class="article-category">
+                <i class="fa fa-folder"></i>
+                
+                
+                <a class="article-category-link" href="/categories/textanalys">textanalys</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="/categories/musik">musik</a>
+                
+                
+            </div>
+            
+        
+
+        
+            
+            
+            <div class="article-category">
+                <i class="fa fa-tags"></i>
+                
+                
+                <a class="article-category-link" href="/tags/"></a>
+                
+                
+            </div>
+            
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: kent.
+Sååå! Vilken är egentligen kents mest deprimerande låt?
+Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att väga samman allt det här till ett depp-index.
+            </p>
+            <p class="article-more-link">
+                <a href="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/">
+                    Läs mer
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/" data-id="af7587996cb88bf964be23d102820c48" class="article-share-link">
+        <i class="fa fa-share"></i>
+        Dela
+    </a>
+    
+    <a href="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/#disqus_thread" class="article-comment-link">
+        Kommentarer
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
         <a href="/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/" itemprop="url">
             <img src="/css/images/scb.png" class="article-banner">
         
@@ -281,10 +435,10 @@
             <time datetime="2017-10-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2017-10-02</time>
             &middot;
             1696
-            words
+            Ord
             &middot;
             8
-            minute read
+            Minuter
         </div>
         
         
@@ -328,18 +482,18 @@
             </p>
             <p class="article-more-link">
                 <a href="/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/">
-                    Read more
+                    Läs mer
                 </a>
             </p>
         </div>
         <footer class="article-footer">
     <a data-url="/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/" data-id="aea27864770c0797837b7f3354624c17" class="article-share-link">
         <i class="fa fa-share"></i>
-        Share
+        Dela
     </a>
     
     <a href="/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/#disqus_thread" class="article-comment-link">
-        Comments
+        Kommentarer
     </a>
     
 
@@ -431,10 +585,10 @@
             <time datetime="2017-10-01 21:49:20 &#43;0200 CEST" itemprop="datePublished">2017-10-01</time>
             &middot;
             153
-            words
+            Ord
             &middot;
             1
-            minute read
+            Minuter
         </div>
         
         
@@ -450,18 +604,18 @@ Sen har jag någon slags missionerande idé där jag vill få fler att använda 
             </p>
             <p class="article-more-link">
                 <a href="/2017/10/01/om-bloggen/">
-                    Read more
+                    Läs mer
                 </a>
             </p>
         </div>
         <footer class="article-footer">
     <a data-url="/2017/10/01/om-bloggen/" data-id="7b5009c52e7a9a5159b64169e0ddd8bd" class="article-share-link">
         <i class="fa fa-share"></i>
-        Share
+        Dela
     </a>
     
     <a href="/2017/10/01/om-bloggen/#disqus_thread" class="article-comment-link">
-        Comments
+        Kommentarer
     </a>
     
 
@@ -547,10 +701,36 @@ Sen har jag någon slags missionerande idé där jag vill få fler att använda 
     
 <div class="widget-wrap">
     <h3 class="widget-title">
-        Recents
+        Tidigare inlägg
     </h3>
     <div class="widget">
         <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/" class="thumbnail">
+                    
+                        <span style="background-image:url(/css/images/kent.jpg)" alt="Data land" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    
+                    <p class="item-category">
+                        
+                        <a class="article-category-link" href="/categories/textanalys">
+                        textanalys
+                        </a>
+                    </p>
+                    
+                    
+                    <p class="item-title"><a href="/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/" class="title">Vilken är kents mest deprimerande låt?</a></p>
+                    <p class="item-date">
+                        <time datetime="2017-10-15 00:00:00 &#43;0000 UTC" itemprop="datePublished">2017-10-15</time>
+                    </p>
+                </div>
+            </li>
             
             <li>
                 <div class="item-thumbnail">
@@ -623,6 +803,16 @@ Sen har jag någon slags missionerande idé där jag vill få fler att använda 
   </div>
 </footer>
 
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108426846-1', 'auto');
+ga('send', 'pageview');
+</script>
 
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
 <script src="/js/script.js"></script>

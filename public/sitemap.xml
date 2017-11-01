@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/</loc>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/</loc>
     <lastmod>2017-10-02T00:00:00+00:00</lastmod>
   </url>
@@ -13,13 +18,25 @@
   </url>
   
   <url>
+    <loc>/tags/</loc>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2017-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/musik/</loc>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -31,7 +48,7 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2017-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -49,7 +66,13 @@
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2017-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/textanalys/</loc>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

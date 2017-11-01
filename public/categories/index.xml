@@ -5,11 +5,20 @@
     <link>/categories/</link>
     <description>Recent content in Categories on Data land</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>swe</language>
     <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Musik</title>
+      <link>/categories/musik/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/musik/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Offentlig Statistik</title>
@@ -26,6 +35,15 @@
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>/categories/scb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Textanalys</title>
+      <link>/categories/textanalys/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/textanalys/</guid>
       <description></description>
     </item>
     
