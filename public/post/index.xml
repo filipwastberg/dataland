@@ -13,13 +13,13 @@
     
     
     <item>
-      <title>Vilken är kents mest deprimerande låt?</title>
-      <link>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/</link>
+      <title>Vilken är Kents mest deprimerande låt?</title>
+      <link>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
       <pubDate>Sun, 15 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-l%C3%A5t/</guid>
-      <description>Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: kent.
-Sååå! Vilken är egentligen kents mest deprimerande låt?
+      <guid>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
+      <description>Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent.
+Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att väga samman allt det här till ett depp-index.</description>
     </item>
     

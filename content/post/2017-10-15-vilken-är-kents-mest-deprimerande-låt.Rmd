@@ -1,8 +1,8 @@
 ---
-title: "Vilken är kents mest deprimerande låt?"
+title: "Vilken är Kents mest deprimerande låt?"
 author: "Filip Wästberg"
 date: '2017-10-15'
-slug: vilken-är-kents-mest-deprimerande-låt
+slug: vilken-är-kents-mest-deprimerande-lat
 tags:
 - 
 categories:
@@ -14,9 +14,9 @@ banner: "css/images/kent.jpg"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<a href="http://www.rcharlie.com/post/fitter-happier/">Charlie Thompson</a> är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: kent. 
+<a href="http://www.rcharlie.com/post/fitter-happier/">Charlie Thompson</a> är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent. 
 
-Sååå! Vilken är egentligen kents mest deprimerande låt?
+Sååå! Vilken är egentligen Kents mest deprimerande låt?
 
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att väga samman allt det här till ett *depp-index*.
 
@@ -33,7 +33,7 @@ Sys.setenv(SPOTIFY_CLIENT_SECRET = [YOUR_CLIENT_SECRET])
 ```
 
 # Ladda ner data från Spotfiy
-Paketet <a href="https://github.com/charlie86/spotifyr">spotfiyr</a> av Radiohead-analytikern Charlie Thompson gör det möjligt att ladda ner Spotifys data. Paketet funkade dock inte riktigt som jag tänkt mig utan jag var tvungen att modifiera en funktion för att kunna ladda ner data. Mer specifikt så tog originalfunktionen alltid den översta artisten i artistlistan. I det här fallet fick jag data för nån Kent Jones(!?) istället för kent. Min funktionen filtrerar helt enkelt bort alla som inte är svenska kent.
+Paketet <a href="https://github.com/charlie86/spotifyr">spotfiyr</a> av Radiohead-analytikern Charlie Thompson gör det möjligt att ladda ner Spotifys data. Paketet funkade dock inte riktigt som jag tänkt mig utan jag var tvungen att modifiera en funktion för att kunna ladda ner data. Mer specifikt så tog originalfunktionen alltid den översta artisten i artistlistan. I det här fallet fick jag data för nån Kent Jones(!?) istället för Kent. Min funktionen filtrerar helt enkelt bort alla som inte är svenska Kent.
 
 ```{r, eval=FALSE}
 library(spotifyr)
@@ -66,7 +66,7 @@ library(dplyr)
 kent_df <- read.table("/Users/filipwastberg/Github/dataland/kent_df.txt")
 kent_df$track_name <- as.character(kent_df$track_name)
 ```
-Tada! Nu har jag 131 låtar av kent uppdelat på album, valence m.m.
+Tada! Nu har jag 131 låtar av Kent uppdelat på album, valence m.m.
 
 ```{r}
 kent_df %>%
@@ -74,7 +74,7 @@ kent_df %>%
   head()
 ```
 
-Ett problem som dyker upp är att kent i slutet av 90-talet gjorde en satsning utanför Sverige och släppte skivorna Isola och Hagnesta Hill på engelska. Av någon anledning får man av Spotfiy endast de engelska versionerna av de här albumen. Det här innebär tyvärr också att bland annat låten *Ett tidsfördriv att dö för* inte inkluderas i analysen. Den låten tror jag dessutom hade hamnat högt upp i vårt depp-index.
+Ett problem som dyker upp är att Kent i slutet av 90-talet gjorde en satsning utanför Sverige och släppte skivorna Isola och Hagnesta Hill på engelska. Av någon anledning får man av Spotfiy endast de engelska versionerna av de här albumen. Det här innebär tyvärr också att bland annat låten *Ett tidsfördriv att dö för* inte inkluderas i analysen. Den låten tror jag dessutom hade hamnat högt upp i vårt depp-index.
 
 ```{r}
 kent_df %>%
@@ -103,12 +103,12 @@ kent_df$track_name[kent_df$track_name == "Protection"] <- "beskyddaren"
 kent_df$track_name[kent_df$track_name == "Whistle song"] <- "visslaren"
 ```
 
-# Ladda ner kents texter
-Genius är en hemsida som samlar låttexter. Har jag förstått det rätt är det lite som ett Wikipedia för låttexter. Varför Genius och inte kents officiella hemsida? Helt enkelt för att Genius har en API-lösning för smidig nedladdning av texter.
+# Ladda ner Kents texter
+Genius är en hemsida som samlar låttexter. Har jag förstått det rätt är det lite som ett Wikipedia för låttexter. Varför Genius och inte Kents officiella hemsida? Helt enkelt för att Genius har en API-lösning för smidig nedladdning av texter.
 
 För att komma åt Genius API behöver man precis som för Spotify skaffa ett konto och en token hos deras developer-sida, det gör man <a href="https://genius.com/api-clients">här</a>.
 
-Likt Spotify finns det på Genius en del andra band som har Kent i artistnamnet. En sökning på "kent" generar därför fler resultat än vi vill ha. Därför behöver vi kents Genius artist-ID. Radioehad-Charlie har redan skrivit en funktion för att söka mot Genius API, det enda vi behöver göra är att filtrera så att vi endast får texter från det svenska bandet kent.
+Likt Spotify finns det på Genius en del andra band som har Kent i artistnamnet. En sökning på "kent" generar därför fler resultat än vi vill ha. Därför behöver vi Kents Genius artist-ID. Radioehad-Charlie har redan skrivit en funktion för att söka mot Genius API, det enda vi behöver göra är att filtrera så att vi endast får texter från det svenska bandet Kent.
 
 ```{r eval=FALSE}
 library(dplyr)
@@ -139,7 +139,7 @@ genius_artists <- genius_get_artists('kent') %>%
 ```
 
 ## Hitta URL:er till låtarna
-När vi nu har kents artist_id kan vi loopa igenom alla kents låtar på Genius och ladda ner alla URL:s till låtarna. I bakgrunden använder vi paketet `httr`
+När vi nu har Kents artist_id kan vi loopa igenom alla Kents låtar på Genius och ladda ner alla URL:s till låtarna. I bakgrunden använder vi paketet `httr`
 
 ```{r message=FALSE, eval=FALSE}
 library(httr)
@@ -223,7 +223,7 @@ track_df <- read.table("/Users/filipwastberg/Github/dataland/track_df.txt")
 
 ```
 
-Nu har vi alla låtar med Spotifys variabler och texter från Genius. Ett problem (till) som nu uppenbarar sig är att några av texterna som finns på Genius är på engelska trots att de bara finns på svenska. De är alltså översatta av medlemmar på Genius (gissningsvis) åt kent-fans som inte kan svenska. Kul för fansen, men störigt för oss. Det här problemet finns dock bara på skivan *Jag är inte rädd för mörkret*. Lösningen på det här blev att ladda ner texterna från Kents hemsida. Den har inte samma smidiga API som Genius men för de här låtarna funkade det bra.
+Nu har vi alla låtar med Spotifys variabler och texter från Genius. Ett problem (till) som nu uppenbarar sig är att några av texterna som finns på Genius är på engelska trots att de bara finns på svenska. De är alltså översatta av medlemmar på Genius (gissningsvis) åt Kent-fans som inte kan svenska. Kul för fansen, men störigt för oss. Det här problemet finns dock bara på skivan *Jag är inte rädd för mörkret*. Lösningen på det här blev att ladda ner texterna från Kents hemsida. Den har inte samma smidiga API som Genius men för de här låtarna funkade det bra.
 
 Jag använde återigen `rvest` och byggde en funktion för att ladda ner texterna. 
 
@@ -276,7 +276,7 @@ track_df %>%
   head(10)
 ```
 
-Nummer ett är *18:29-4* som är ett introspår på skivan *Röd*. På låten sjunger inte Jocke Berg utan någon slags pensionärskör. Givet att låten med mening (tror jag) sjungs ganska falskt och har en ljudbild som skiljer sig från resten av skivan vet jag inte riktigt hur Spotify analyserar spåret. En låt som jag tror många kent-fans skulle placera högt upp i ett depp-index är nummer två *Stoppa mig juni (Lilla ego)*, mitt 14 åriga jag approves. Även *Gravitation* och *LSD, någon?* känns ganska givna. Men *Den osynliga mannen*?
+Nummer ett är *18:29-4* som är ett introspår på skivan *Röd*. På låten sjunger inte Jocke Berg utan någon slags pensionärskör. Givet att låten med mening (tror jag) sjungs ganska falskt och har en ljudbild som skiljer sig från resten av skivan vet jag inte riktigt hur Spotify analyserar spåret. En låt som jag tror många Kent-fans skulle placera högt upp i ett depp-index är nummer två *Stoppa mig juni (Lilla ego)*, mitt 14 åriga jag approves. Även *Gravitation* och *LSD, någon?* känns ganska givna. Men *Den osynliga mannen*?
 
 För att vässa den här listan lite behöver vi nog analysera texterna. 
 
@@ -324,7 +324,7 @@ sent_df_neg <- sent_df %>%
 
 I fallet Radiohead tyckte Charlie Thompson att det var nödvändigt att ha med en variabel för text-densitet. D.v.s. antalet ord i låten dividerat med längden på låten. Text-densiteten var tänkt att vara en indikation på hur viktig texten var för låten.
 
-Jag håller inte riktigt med om det. Många av kents starkaste låtar har långa instrumentella delar, exempelvis *Ensammast i Sverige*. Därför använde jag endast Spotifys `valence` och `andel deppiga ord` i min modell och beräknade om det till ett index mellan 1-100.
+Jag håller inte riktigt med om det. Många av Kents starkaste låtar har långa instrumentella delar, exempelvis *Ensammast i Sverige*. Därför använde jag endast Spotifys `valence` och `andel deppiga ord` i min modell och beräknade om det till ett index mellan 1-100.
 
 $$DeppIndex=\frac{(1-valence) + procentDepp}{2}$$
 
