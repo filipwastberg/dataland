@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Sååå! Vilken är egentligen Kents mest deprimerande låt?
 
-Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att väga samman allt det här till ett *depp-index*.
+Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett *depp-index*.
 
 Spotfiy delar upp sin musik i en rad olika variabler, bl.a.  valence, som är ett psykologiskt begrepp för att bland annat mäta hur positiv en låt är. Valence tar dock (vad jag vet) inte hänsyn till texterna och alla vi som älskar deppig musik vet att texten är central. Därför kommer jag (precis som Charlie) även att analysera texterna.
 
