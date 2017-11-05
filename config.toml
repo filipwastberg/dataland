@@ -20,7 +20,7 @@ favicon = "css/images/logo2.png"
 [params]
     # Tell me who you are
     author = "Data land"
-    bio = "En blogg om data-analys i R."
+    bio = "En blogg om dataanalys i R."
     location = "Sweden"
     site_description = "En blogg om data-analys i R."
     copyright  = "Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice)."
