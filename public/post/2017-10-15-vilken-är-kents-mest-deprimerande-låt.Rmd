@@ -1,7 +1,7 @@
 ---
 title: "Vilken är Kents mest deprimerande låt?"
 author: "Filip Wästberg"
-date: '2017-10-15'
+date: '2017-11-07'
 slug: vilken-är-kents-mest-deprimerande-lat
 tags:
 - 

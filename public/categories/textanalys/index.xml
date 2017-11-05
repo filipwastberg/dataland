@@ -7,17 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
     <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
-    <lastBuildDate>Sun, 15 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 07 Nov 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/textanalys/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Vilken är Kents mest deprimerande låt?</title>
-      <link>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
-      <pubDate>Sun, 15 Oct 2017 00:00:00 +0000</pubDate>
+      <link>/2017/11/07/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
+      <pubDate>Tue, 07 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/10/15/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
+      <guid>/2017/11/07/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
       <description>Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent.
 Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
