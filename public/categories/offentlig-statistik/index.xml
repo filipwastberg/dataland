@@ -7,18 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
     <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
-    <lastBuildDate>Sun, 05 Nov 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Nov 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/offentlig-statistik/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Svenska kartor i R</title>
-      <link>/2017/11/05/svenska-kartor-i-r/</link>
-      <pubDate>Sun, 05 Nov 2017 00:00:00 +0000</pubDate>
+      <title>Kommunerna där kvinnor styr</title>
+      <link>/2017/11/15/har-styr-kvinnorna/</link>
+      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/11/05/svenska-kartor-i-r/</guid>
-      <description></description>
+      <guid>/2017/11/15/har-styr-kvinnorna/</guid>
+      <description>Sen jag var en kiddo har jag varit besatt av kartor. Historiska kartor, moderna kartor eller påhittade kartor, spelar ingen roll. Därför är det extra kul att på ett enkelt sätt kunna göra kartor i R. Så här tänkte jag visa hur man enkelt kan göra kartor på kommunnivå över Sverige.
+För att göra något intressant tänkte jag undersöka andelen kvinnor på förtroendevalda ordförandeposter i svenskar kommuner, exempelvis ordförande i kommunstyrelsen.</description>
     </item>
     
     <item>
