@@ -1,0 +1,160 @@
+---
+title: Analyzing the Billboard Year-End Hot 100 singles of 2017
+author: Filip Wästberg
+date: '2017-12-29'
+slug: analyzing-the-billboard-year-end-hot-100-singles-of-2017
+categories:
+  - Music
+  - Spotify
+tags: []
+---
+
+The year of 2017 is coming to its end. And not to long ago Billboard released their Year-End Top 100 singles of 2017. I was introduced to the analysis of popmusic by Kaylin Walker who [did a very interesting analysis](http://kaylinwalker.com/50-years-of-pop-music/) primarily on the lyrics of all the billboard hits from 1965-2015. So I thought it woudl be interesting to analyze this years top hits. 
+
+However, I will not focus on the lyrics. Instead I will use the package `spotifyr` by  [Charlie Thompson](www.rcharlie.com) to analyze the hits based on the data avaible on them from the streaming service Spotify.
+
+Spotify have a number of variables with interesting data about songs available on their service, such as valence (a song’s positiveness), liveness, danceability, loudness, key, tempo, energy and so on.
+
+## Scraping the songs
+Thanks to Kaylin I pretty much have the code for scraping the songs ready.
+```{r}
+library(RCurl)
+library(XML)
+library(stringr)
+library(tibble)
+allthesongs <- tibble() 
+for (i in 2017) { 
+     # create the URL for each year
+     URL <- paste(
+       "http://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_",
+        i, sep = "")
+     # parse the HTML
+     results <- htmlTreeParse(getURL(URL, followlocation = TRUE), useInternal = TRUE)
+     billboard_text <- xpathSApply(results, "//table[@class='wikitable sortable']//tr", xmlValue)
+     split_billboard_text <- str_split_fixed(billboard_text, "\n", 3) 
+     billboard <- as.data.frame(cbind(split_billboard_text[2:101, ], rep(i, 100)), stringsAsFactors = FALSE)
+     # row bind this year's data to all the data
+     allthesongs <- rbind(allthesongs, billboard) 
+     
+}
+# Get yourself some colnames
+colnames(allthesongs) <- c("rank", "track_name", "artist_name", "year")
+```
+
+Taking a look at the data we realize it needs some cleaning.
+
+```{r}
+library(dplyr)
+songs <- allthesongs %>%
+  mutate(track_name = str_replace(track_name, '\\"', ""),
+         track_name = str_replace(track_name, '\\"', ""),
+         track_name = str_replace(track_name, "\\(", ""),
+         track_name = str_replace(track_name, "\\)", ""),
+         artist_name = str_replace(artist_name, '\\"', ""),
+         artist_name = str_replace(artist_name, '\\"', ""),
+         artist_name = str_replace(artist_name, "\\(", ""),
+         artist_name = str_replace(artist_name, "\\)", ""),
+         rank = as.numeric(rank))
+```
+
+# Get Spotify Data
+The `spotifyr` package has a number of great functions for retrieving Spotify data but it does not have a function for getting data for a specific song. So I hade to write a new functions for this. It should be noted though that the code of the function is based on the code in the `spotifyr` package. Further more this function seems very slow to me and any suggestions on how to increase the speed of it is welcome. 
+
+```{r}
+get_track <- function(track_name, access_token = get_spotify_access_token()) {
+  
+  # Search Spotify API for track name
+  res <- GET('https://api.spotify.com/v1/search',
+             query = list(q = track_name, type = 'track', access_token = access_token)) %>%
+    content
+  
+  if(length(res$tracks$items) == 0){
+    return(NA)
+  } else {
+    res <- res %>% .$tracks %>% .$items
+    # Clean response and combine all returned tracks into a dataframe
+    tracks <- map_df(seq_len(length(res)), function(x) {
+      list(
+        track_name = res[[x]]$name,
+        track_uri = gsub('spotify:track:', '', res[[x]]$uri), # remove meta info from the uri string
+        track_img = ifelse(length(res[[x]]$images) > 0, res[[x]]$images[[1]]$url, NA) # we'll grab this just for fun
+      )
+    }) %>% filter(!duplicated(tolower(track_name)))
+    
+    return(tracks[1,2]$track_uri)
+    
+  }
+}
+```
+
+This function is basically the same as going into your Spotify app, search for a song and right click on it and select "Share -> Copy Spotify URI". So, in order for it to work I need to have a search term. One thing that I noticed was that there sometimes is a discrepancy between songs on the scraped songs from Wikipedia and Spotify when it comes to the word "featuring". Sometimes it's featuring on Wikipedia and feat on Spotfiy. So for that sake I created a new variable with the Spotify search without "featuring".
+
+```{r}
+songs <- songs %>%
+  mutate(spotify_search = paste(artist_name, track_name))
+```
+
+In order to put my the `get_track()`-function into use I simply map the function over the `spotify_search()`, since 
+
+```{r}
+library(purrr)
+library(spotifyr)
+library(httr)
+#Sys.setenv(SPOTIFY_CLIENT_ID = "xxxxxxxxxxxxxxx")
+#Sys.setenv(SPOTIFY_CLIENT_SECRET = "xxxxxxxxxxxxxxx")
+
+track_uri <- map_chr(songs$spotify_search, get_track)
+
+songs$track_uri <- track_uri
+```
+
+Now that I have the URI:s in a data frame I simply use the function `get_track_audio_features()` from the `spotifyr` package on the data.
+```{r}
+data_w_features <- songs %>%
+  get_track_audio_features() %>%
+  bind_cols(songs)
+```
+
+Alright! So first things first. Who's in the top ten?
+
+```{r, message=FALSE}
+library(knitr)
+
+data_w_features %>%
+  filter(rank %in% c(1:10)) %>%
+  select(rank, track_name, artist_name) %>%
+  arrange(rank) %>%
+  kable()
+```
+
+It seems like the Chainsmokers had a good year but who had the most hits? Here I count the "main artists", not the ones that are featured.
+
+```{r}
+library(tidytext)
+library(ngram)
+data(stop_words)
+
+data_w_features %>%
+  select(rank, artist_name) %>%
+  rowwise() %>%
+  mutate(artist_name_trimmed = 
+           ifelse(
+             wordcount(artist_name) > 1,
+             word(artist_name, 1, 2),
+         artist_name)) %>%
+  count(artist_name_trimmed, sort = TRUE) %>%
+  head(20)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

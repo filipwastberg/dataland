@@ -1,0 +1,336 @@
+---
+title: Billboard hits over time
+author: Filip Wästberg
+date: '2017-12-10'
+slug: billboard-hits-over-time
+categories:
+  - Music
+tags: []
+---
+
+Last year I read [this](http://kaylinwalker.com/50-years-of-pop-music/) post by Kaylin Walker who had scraped and analyzed the lyrics of all the year end billboard-hits from 1965-2015.
+
+It was a great post on how the lyrics of pop music have changed over time. The aim of this post is to take the analysis further and analyze how the pop *music* has changed.
+
+Thanks to the development done by [Charlie Thompson](www.rcharlie.com) on the package [`spotifyr`](https://www.rdocumentation.org/packages/spotifyr/versions/1.0.0) I have been able to get Spotify data for almost all the songs in Kaylin's original analysis (completed with songs for 2016 and 2017). 
+
+# Get Spotify data
+Spotify does not keep track on all the year end billboard hits for us. So, as often is the case in the world of data science, we will have to do the dirty work ourselves.
+
+These are the packages I will use.
+```{r setup}
+library(RCurl)
+library(XML)
+library(stringr)
+library(tidyverse)
+library(spotifyr)
+library(lubridate)
+library(scales)
+library(forcats)
+```
+
+Let's start with scraping all the Billboard Year-End Hot 100 singles 1965-2017 from Wikipedia in the same way that Kaylin did.
+```{r, eval=FALSE}
+allthesongs <- data.frame() 
+for (i in 1965:2017) { 
+     # create the URL for each year
+     URL <- paste(
+       "http://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_",
+       i, sep = "")
+     # parse the HTML
+     results <- htmlTreeParse(getURL(URL, followlocation = TRUE), useInternal = TRUE)
+     billboard_text <- xpathSApply(results,
+                                   "//table[@class='wikitable sortable']//tr", xmlValue)
+     split_billboard_text <- str_split_fixed(billboard_text, "\n", 3) 
+     billboard <- as.data.frame(cbind(split_billboard_text[2:101, ], rep(i, 100)),
+                                stringsAsFactors = FALSE)
+     # row bind this year's data to all the data
+     allthesongs <- rbind(allthesongs, billboard) 
+     
+}
+colnames(allthesongs) <- c("rank", "track_name", "artist_name", "year")
+
+songs <- allthesongs %>%
+  mutate(track_name = str_replace(track_name, '\\"', ""),
+         track_name = str_replace(track_name, '\\"', ""),
+         track_name = str_replace(track_name, "\\(", ""),
+         track_name = str_replace(track_name, "\\)", ""),
+         artist_name = str_replace(artist_name, '\\"', ""),
+         artist_name = str_replace(artist_name, '\\"', ""),
+         artist_name = str_replace(artist_name, "\\(", ""),
+         artist_name = str_replace(artist_name, "\\)", ""))
+
+songs$year <- paste0(data$year, "-12-31")
+songs$year <- lubridate::year(data$year)
+```
+
+Alrighty! We have the songs. The idea is to take the artist and track names that we have scraped from Wikipedia and search for the songs on Spotify's API. This is pretty much the same as if you would open your Spotify App, search for a song, right click on it and select "Share -> Copy Spotify URI". To do this manually would be if not impossible then utterly boring. 
+
+The Spotify API has many endpoints, most are covered in `spotifyr` but not `search track`.
+
+So I need to create a function for this (all cred to Charlie Thompson though, this function is pretty much a modification of functions from the `spotifyr` package).
+
+```{r}
+get_track <- function(artist_search, track_search, access_token = get_spotify_access_token()) {
+  string_search <- paste(artist_search, track_search)
+  # Search Spotify API for track name
+  res <- GET('https://api.spotify.com/v1/search',
+             query = list(q = string_search,
+                          type = 'track', access_token = access_token)) %>%
+    content
+  
+  if(length(res$tracks$items) == 0){
+    return(data.frame(track_name = c(NA), track_uri = c(NA)))
+  } else {
+    res <- res %>% .$tracks %>% .$items
+    
+    tracks <- map_df(seq_len(length(res)), function(x) {
+      list(
+        track_name = res[[x]]$name,
+        track_uri = gsub('spotify:track:', '', res[[x]]$uri),
+        track_img = ifelse(length(res[[x]]$images) > 0,
+                           res[[x]]$images[[1]]$url, NA)
+      )
+    }) 
+    
+  }
+  return(data.frame(tracks[1,1:2]))
+}
+```
+
+This function search for the artist and song on Spotify and return the first match in the search query.
+
+Many songs in the data have a featuring artist. The featured artist resides in the artist name in the data. On Spotify however, the featuring artist can be either in the song name or artist name. This is, I guess, up to the artists when they name their songs on Spotiy. But for the function to properly work I will only search for tha main artist. I use `separate()` from the `tidyr` package in order to split the artist name into a main artist and featuring artist.
+
+```{r}
+data_sep <- songs %>%
+  separate(artist_name, c("main_artist", "featured_artist"), sep = "featuring")
+```
+```{r, echo=FALSE}
+library(readr)
+data_w_uri <- read_csv("/Users/filipwastberg/Github/Hits over time/data_with_uri.csv")
+```
+
+So, let's put this function to use for these 5300 songs. Thanks to the `purrr` package I can easily iterate over the artist and track name.
+```{r, eval=FALSE}
+#Sys.setenv(SPOTIFY_CLIENT_ID = "xxxxxxxxxxxxxxx")
+#Sys.setenv(SPOTIFY_CLIENT_SECRET = "xxxxxxxxxxxxxxx")
+
+data_w_uri <- map2_df(data_sep$main_artist, data_sep$track_name, get_track) %>%
+  bind_cols(data_sep)
+```
+
+Unfortunately 59 songs were missed out. This is mainly because they are not available in the Spotify catalouge. However I am sure you could optimize the `get_track()` to get a few more songs.
+```{r}
+dplyr::count(data_w_uri, is.na(track_uri))
+```
+
+One thing that I noticed was that some of the songs returned did not have the same name as the search. Mostly this occurs if the song is on an album that has the same name as the song. This is because a search on Spotify is really broad. It is mainly designed for humans to use, not computers. Thus a search for "The Beatles Help!" can return the first track of the album Help! not the song itself. 
+
+If anyone has an idea on how to optimize this search I would appreciate it.
+
+How extentesive is this problem? Well, lets see how many of the Spotify track names that were wrong.
+
+To investigate this I first do some text cleaning, then I split the track names into lists and search for any match between the track name in our data and the track name returned from Spotify. 
+```{r}
+data_match <- data_w_uri %>%
+  mutate(track_name = str_replace_all(track_name, 
+                                      c("[[:punct:]]" = "",
+                                        "[^[:alnum:] ]" = "", 
+                                        '\\"' = "",
+                                        '\\"' = "",
+                                        "\\(" = "",
+                                        "\\)" = "")),
+         track_name1 = str_replace_all(track_name1, 
+                                      c("[[:punct:]]" = "",
+                                        "[^[:alnum:] ]" = "", 
+                                        '\\"' = "",
+                                        '\\"' = "",
+                                        "\\(" = "",
+                                        "\\)" = "")),
+    track_name_split = str_split(tolower(track_name), " "),
+         track_name_split1 = str_split(tolower(track_name1), " ")) %>%
+  rowwise() %>%
+  mutate(track_match = any(track_name_split %in% track_name_split1))
+
+data_match %>%
+  filter(!isTRUE(track_match)) %>%
+  count(sort = TRUE)
+```
+
+So there's 131 songs with the wrong name (and thus wrong URI). 
+
+How are these distributed?
+
+```{r}
+data_match %>%
+  filter(!isTRUE(track_match)) %>%
+  group_by(year) %>%
+  count() %>%
+  ggplot(aes(x = year, y = n, group = 1)) +
+  geom_line(stat = "identity") +
+  theme_minimal()
+```
+
+Since they are pretty evenely distributed over time we'll just exclude these songs for now. 
+
+Next I use `get_track_audio_features_ed()` to get the data from Spotify and then bind it together.
+```{r, eval=FALSE}
+library(spotifyr)
+data_w_features <- data_match %>%
+  filter(isTRUE(track_match)) %>%
+  get_track_audio_features_ed() %>%
+  bind_cols(data_match)
+
+# And some minor fixes
+data_w_features <- data_w_features %>%
+  mutate(year = ifelse(is.na(year), year(as.Date("2000-12-31")), year),
+         mode = as.factor(mode),
+         key = as.factor(key),
+         key_mode = as.factor(key_mode))
+```
+```{r, echo=FALSE}
+data_w_features <- read_csv("/Users/filipwastberg/Github/Hits over time/data_with_features.csv")
+data_w_features$year <- year(as.Date(paste0(data_w_features$year, "-12-31")))
+data_w_features <- data_w_features %>%
+  mutate(year = ifelse(is.na(year), year(as.Date("2000-12-31")), year),
+         mode = as.factor(mode),
+         key = as.factor(key),
+         key_mode = as.factor(key_mode))
+```
+
+So there we go, Spotify data of over 50 years of pop history.
+
+## Let's start analyzing!
+
+Since 1965 there has been a consistent increase of songs in minor. 
+```{r}
+data_w_features %>%
+  ggplot(aes(x = year)) +
+  geom_line(stat = "count", aes(colour = mode)) +
+  theme_minimal() +
+  labs(title = "Mode over time",
+       subtitle = "The mode of Billboard Year-End Hot 100 singles",
+       caption = "\nBy @filipwastberg, Source: Wikipedia and Spotify",
+       x = "") +
+  scale_color_viridis_d()
+``` 
+
+Mode is an indication of a songs valence, that is how positive it is. However, Spotify have a specific variable to measure valence called ...drumroll... valence!
+
+How has valence in pop songs developed the last 50 years? There is a great variety in valence. However, pop songs in general seem to be more depressing these days, i.e. the valence of the songs is lower today than 1965.
+
+```{r}
+data_w_features %>%
+  ggplot(aes(x = year, y = valence)) +
+  geom_point(aes(color = mode)) +
+  theme_minimal() +
+  geom_smooth(se = FALSE, color = "#2d4762") +
+  scale_color_viridis_d() +
+  labs(title = "Valence over time",
+       subtitle = "Valence of Billboard Year-End Hot 100 singles",
+       caption = "\nBy @filipwastberg, Source: Wikipedia and Spotify",
+       x = "") +
+  guides(color = guide_legend(title = "Mode"))
+```
+
+According to this academic paper there is a correlation between valence and tempo. However, this does not seem to be the case according to this data. I would advise caution when intepreting this though. There are a number of songs that are classified as high tempo (around 200 bpm) but in reality they have a low tempo that has been doubled by the algoritm classifying them.
+
+```{r}
+data_w_features %>%
+  ggplot(aes(x = tempo, y = valence)) +
+  geom_point(aes(color = mode)) +
+  geom_smooth(method = "lm", se = FALSE, color = "#2d4762") +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(title = "Tempo ~ Valence",
+       subtitle = "Billboard Year-End Hot 100 singles",
+       caption = "\nBy @filipwastberg, Source: Wikipedia and Spotify",
+       x = "Tempo", y = "Valence") +
+  guides(color = guide_legend(title = "Mode"))
+```
+
+A further indication of this is the relationship between danceability and tempo which starts declining around 130 bpm.
+```{r}
+data_w_features %>%
+  ggplot(aes(x = tempo, y = danceability, color = as.numeric(rank))) +
+  geom_point() +
+  theme_minimal() +
+  geom_smooth(se = FALSE, color = "#2d4762") +
+  scale_color_viridis_c() +
+  labs(title = "Danceability over time",
+       subtitle = "Danceability of Billboard Year-End Hot 100 singles",
+       caption = "\nBy @filipwastberg, Source: Wikipedia and Spotify",
+       x = "") +
+  guides(color = guide_colorbar(title = "Rank"))
+```
+
+## The favorite key of pop makers
+The favorite key of pop makers is C major.
+```{r}
+library(gganimate)
+data_w_features %>%
+  ggplot(aes(x = fct_reorder(key_mode, key_mode, fun = length))) +
+  geom_bar(stat = "count", fill = "#2d4762") +
+  theme_minimal() +
+  coord_flip() +
+  labs(title = "Popmakers favorite keys",
+       subtitle = "Most popular keys in Billboard Year-End Hot 100 singles",
+       x = "",
+       y = "")
+```
+
+```{r}
+data_w_features %>%
+  filter(key_mode == "C major") %>%
+  ggplot(aes(x = year, color = key_mode)) +
+  geom_line(stat = "count") +
+  theme_minimal() +
+  labs(title = "Popmakers favorite keys",
+       subtitle = "Most popular keys in Billboard Year-End Hot 100 singles",
+       x = "",
+       y = "")
+```
+
+
+```{r}
+data_w_features %>%
+  mutate(key = fct_reorder(key,
+                           as.numeric(mode), fun = mean)) %>%
+  ggplot(aes(x = key, fill = mode)) +
+  geom_bar(position = "fill") +
+  theme_minimal() +
+  coord_flip() +
+  labs(title = "Minor vs major",
+       subtitle = "Distribution of mode in keys in Billboard Year-End Hot 100 singles",
+       x = "",
+       y = "") +
+  scale_fill_viridis_d() +
+  scale_y_continuous(labels = percent)
+```
+
+```{r}
+data_w_features %>%
+  mutate(rank_cat = case_when(
+    rank <= 25 ~ "0-25",
+    rank > 25 & rank <= 50 ~ "26-50",
+    rank > 50 & rank <= 75 ~ "51-75",
+    rank > 70 ~ "76-100"
+  )) %>%
+  ggplot(aes(x = fct_reorder(key_mode, key_mode, fun = length))) +
+  geom_bar(stat = "count", position = "fill", aes(fill = rank_cat)) +
+  theme_minimal() +
+  coord_flip() +
+  labs(title = "Popmakers favorite keys",
+       subtitle = "Most popular keys in Billboard Year-End Hot 100 singles",
+       x = "",
+       y = "") +
+  scale_fill_viridis_d() +
+  scale_y_continuous(labels = percent)
+```
+
+Minos vs major
+
+
+
+
