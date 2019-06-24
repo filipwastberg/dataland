@@ -30,10 +30,4 @@
     </item>
     
   </channel>
-</rss> pröva en liknande metod på Sveriges största depp-rockband: Kent.
-Sååå! Vilken är egentligen Kents mest deprimerande låt?
-Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
-    </item>
-    
-  </channel>
 </rss>
