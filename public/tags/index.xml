@@ -6,7 +6,6 @@
     <description>Recent content in Tags on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
-    <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
     <lastBuildDate>Tue, 07 Nov 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
@@ -22,12 +21,18 @@
     </item>
     
     <item>
-      <title>Pxweb</title>
+      <title>pxweb</title>
       <link>/tags/pxweb/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>/tags/pxweb/</guid>
       <description></description>
+    </item>
+    
+  </channel>
+</rss> pröva en liknande metod på Sveriges största depp-rockband: Kent.
+Sååå! Vilken är egentligen Kents mest deprimerande låt?
+Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
     </item>
     
   </channel>

@@ -6,7 +6,6 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
-    <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
     <lastBuildDate>Sun, 26 Nov 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
@@ -18,7 +17,7 @@
       <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/11/26/depp-index-p%C3%A5-stockholm-data-science-meetup/</guid>
-      <description> På torsdag 30/11 kommer jag att prata inför Stockholm Data Science Meetup om mitt depp-index över Kents deprimerande låtar.
+      <description>  På torsdag 30/11 kommer jag att prata inför Stockholm Data Science Meetup om mitt depp-index över Kents deprimerande låtar.
 Tanken är att jag ska visa hur det gick till och förhoppningsvis få lite input på hur analysen skulle kunna bli bättre.
 Tycker du att det är spännande med programmering och dataanalys är du hemskt välkommen att anmäla dig här
 /Filip

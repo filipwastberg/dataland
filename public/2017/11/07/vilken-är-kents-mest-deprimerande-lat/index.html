@@ -2,7 +2,7 @@
 <html lang="swe">
 <head>
     <title>Vilken är Kents mest deprimerande låt? &middot; </title>
-    <meta name="generator" content="Hugo 0.27.1" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="author" content="Data land">
@@ -26,21 +26,8 @@ Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/2017/11/07/vilken-%C3%A4r-kents-mest-deprimerande-lat/" />
-
-
-
 <meta property="article:published_time" content="2017-11-07T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2017-11-07T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
 
     
     
@@ -50,6 +37,7 @@ Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.">
 
 
+<meta itemprop="datePublished" content="2017-11-07T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-11-07T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="4476">
 
@@ -57,7 +45,8 @@ Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag
 
 <meta itemprop="keywords" content="," />
 
-    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Vilken är Kents mest deprimerande låt?"/>
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vilken är Kents mest deprimerande låt?"/>
 <meta name="twitter:description" content="Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent.
 Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index."/>
@@ -330,7 +319,8 @@ Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag
 </header>
 
         <div class="article-entry" itemprop="articleBody">
-            <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+            
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
 <script src="/rmarkdown-libs/plotly-binding/plotly.js"></script>
 <script src="/rmarkdown-libs/typedarray/typedarray.min.js"></script>
 <script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
@@ -822,7 +812,7 @@ p_depp &lt;- track_df_depp %&gt;%
 <section id="comments">
     <div id="disqus_thread">
         <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -1000,21 +990,24 @@ p_depp &lt;- track_df_depp %&gt;%
 <footer id="footer">
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017
+      &copy; 2019
       Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
     </div>
   </div>
 </footer>
 
 
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-108426846-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-108426846-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
 <script src="/fancybox/jquery.fancybox.pack.js"></script>

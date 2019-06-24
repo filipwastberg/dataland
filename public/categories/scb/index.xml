@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Scb on </title>
+    <title>SCB on </title>
     <link>/categories/scb/</link>
-    <description>Recent content in Scb on </description>
+    <description>Recent content in SCB on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
-    <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
     <lastBuildDate>Mon, 02 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/scb/index.xml" rel="self" type="application/rss+xml" />

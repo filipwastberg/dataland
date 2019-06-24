@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pxweb on </title>
+    <title>pxweb on </title>
     <link>/tags/pxweb/</link>
-    <description>Recent content in Pxweb on </description>
+    <description>Recent content in pxweb on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
-    <copyright>Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice).</copyright>
     <lastBuildDate>Mon, 02 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/pxweb/index.xml" rel="self" type="application/rss+xml" />
