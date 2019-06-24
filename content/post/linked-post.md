@@ -2,7 +2,6 @@
 title = "Om bloggen"
 date = "2017-10-01T21:49:20+02:00"
 menu = "main"
-banner = false
 +++
 
 Den här bloggen handlar om analys av data i programmeringsspråket R. Den ska fungera dels som inspiration men också som ett sätt för mig att testa nya analyser och dela med mig av dem. 
