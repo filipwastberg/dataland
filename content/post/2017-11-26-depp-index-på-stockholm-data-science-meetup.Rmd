@@ -6,7 +6,6 @@ slug: depp-index-på-stockholm-data-science-meetup
 categories:
   - musik
   - textanalys
-banner: "https://giphy.com/gifs/internet-jim-carrey-working-bAplZhiLAsNnG?utm_source=media-link&utm_medium=landing&utm_campaign=Media%20Links&utm_term="
 ---
 ## 
 På torsdag 30/11 kommer jag att prata inför Stockholm Data Science Meetup om mitt depp-index över Kents deprimerande låtar.
