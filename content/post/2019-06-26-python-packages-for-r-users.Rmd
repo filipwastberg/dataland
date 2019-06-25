@@ -43,7 +43,7 @@ use_github()
 
 This creates the following package structure and adds a repository on my Github.
 
-![](css/images/result.png)
+![](/static/post/2019-06-26-python-packages-for-r-users_files/result.png)
 
 Now, I use R for nalytics and statistics. I am interested in programming generally but it is not my biggest motivation for using R. I am not a software developer, I and don’t intend to become one. Therefore these packages helps me a lot because they allows me to create powerful and structurized statistical software without manually setting everything up myself.
 
