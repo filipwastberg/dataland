@@ -6,10 +6,31 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>swe</language>
-    <lastBuildDate>Sun, 26 Nov 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Creating Python modules like R packages</title>
+      <link>/2019/06/25/python-packages-for-r-users/</link>
+      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/25/python-packages-for-r-users/</guid>
+      <description>An R user created a package in Python - you will not believe what happened next I am a Data Scientist at a consulting firm in Sweden. I have a background in statistics and social science but have spent the last couple of years mainly trying to understand consumers and how they behave. I have worked with everything from making Powerpoint presentations to building recommender systems. In other words I am a pretty typical data scientist.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/2019/06/24/about/</link>
+      <pubDate>Mon, 24 Jun 2019 21:49:20 +0200</pubDate>
+      
+      <guid>/2019/06/24/about/</guid>
+      <description>I am a data scientist working at a analytics consultant firm Ferrologic in Sweden. This blog is about data science, mainly in R.
+I&amp;rsquo;ll do some posts in english and some in Swedish,
+If you want to contact me you can do so by Mail eller Twitter.
+This blog is created with the R package Blogdown</description>
+    </item>
     
     <item>
       <title>Depp-index på Stockholm Data Science Meetup</title>
@@ -53,16 +74,6 @@ Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag
       <guid>/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
       <description>Nå SCB:s databas från R Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet pxweb.
  SCB:s API Att ta fram tabeller SCB:s statistikdatabas http://www.statistikdatabasen.scb.se/ är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.</description>
-    </item>
-    
-    <item>
-      <title>Om bloggen</title>
-      <link>/2017/10/01/om-bloggen/</link>
-      <pubDate>Sun, 01 Oct 2017 21:49:20 +0200</pubDate>
-      
-      <guid>/2017/10/01/om-bloggen/</guid>
-      <description>Den här bloggen handlar om analys av data i programmeringsspråket R. Den ska fungera dels som inspiration men också som ett sätt för mig att testa nya analyser och dela med mig av dem.
-Sen har jag någon slags missionerande idé där jag vill få fler att använda R. Framför allt handlar det väl om att jag tror att SÅ många människor sitter i Excel och gör dataanalys. Det går alldeles utmärkt att göra det men jag tror att mångas vardag skulle bli enklare och framför allt mer effektiv om man använde sig av R.</description>
     </item>
     
   </channel>
