@@ -6,10 +6,20 @@
     <description>Recent content on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>eng</language>
-    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Sök hjälp! För R...</title>
+      <link>/2019/08/23/sok-hjalp-for-r/</link>
+      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/08/23/sok-hjalp-for-r/</guid>
+      <description>Att söka efter lösningar på R-problem Inte sällan stöter man på problem i R som man inte kan lösa genom att läsa sig till i dokumentation m.m. Det är vanligt och händer alla som lär sig R eller något annat verktyg för att göra dataanalys.
+Det vanligaste är att man tar det felmeddelande man får och lägger in det i Google. Då brukar man oftast hamna på någon av följande hemsidor:</description>
+    </item>
     
     <item>
       <title>Creating Python modules like R packages</title>
