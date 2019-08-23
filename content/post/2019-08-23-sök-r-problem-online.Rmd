@@ -1,5 +1,5 @@
 ---
-title: 'Sök hjälp!'
+title: 'Sök hjälp! För R...'
 author: "Filip Wästberg"
 date: "2019-08-23"
 slug: sok-hjalp-for-r
@@ -65,7 +65,7 @@ Hm, okej, så det vi vill göra (och det som är exemplet) är att ta bort blank
 Det blir vår första googling: 
 
 ```{r}
-knitr::include_graphics("static/img/google-whitespace.png")
+knitr::include_graphics("https://raw.githubusercontent.com/filipwastberg/dataland/master/static/img/google-whitespace.png")
 ```
 
 Vilket leder oss till den en fråga på StackOverflow. StackOverflow är en hemsida där programmerare kan ställa frågor som andra kan svara på.
