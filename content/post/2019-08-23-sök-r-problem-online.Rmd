@@ -1,0 +1,110 @@
+---
+title: 'Sök hjälp! För R...'
+author: "Filip Wästberg"
+date: "2019-08-23"
+slug: sok-hjalp-for-r
+categories:
+- r
+banner: "css/images/helpme.jpg"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Att söka efter lösningar på R-problem
+
+Inte sällan stöter man på problem i R som man inte kan lösa genom att läsa sig till i dokumentation m.m. Det är vanligt och händer alla som lär sig R eller något annat verktyg för att göra dataanalys. 
+
+Det vanligaste är att man tar det felmeddelande man får och lägger in det i Google. Då brukar man oftast hamna på någon av följande hemsidor:
+
+•	Stackoverflow.com
+•	RStudio.community.com
+•	statmethods.net
+
+Man brukar dessutom snabbt inse att man inte är den första som stöter på ett problem, men det kan ändå vara svårt att navigera bland olika potentiella lösningar. Så hur gör man då för att hitta bästa lösningen?
+
+Det finns så klart inget givet svar på den frågan men jag som har programmerat i R i några år brukar ha några förhållningsregler:
+
+-	Leta efter svar som är enkla: ingår det massa loopar eller ser koden komplicerad ut och det är enkelt problem du ska lösa så finns det sannolikt bättre svar
+-	Leta efter de senaste svaren: programmeringsspråk är i ständig utveckling och det kommer nya metoder som är bättre än de som fanns för 10 år sedan. Så är även fallet med R. R har framför allt de senaste 5-10 åren blivit otroligt mycket enklare att använda för nybörjare. Därför kan det vara en poäng att leta efter nyare svar. Det är särskilt viktigt på StackOverflow där gamla svar kan ha ett försprång tidsmässigt och därför ha fler röster. 
+
+## Ett konkret exempel
+
+Jag tänkte ta ett konkret exempel där jag har ett dataset som jag läst in i R där vi har en faktor-kolumn för belopp som innehåller belopp skrivet som en string, typ ”1 540”. För att kunna göra beräkningar på den behöver vi göra om den till en numerisk.
+
+```{r}
+data <- data.frame(belopp = factor(c("2  592", "1 500", "2  216", "2 124", "951", "430", "5 011")),
+                   letter = sample(letters, 7, replace = T))
+
+data
+```
+
+Så det första jag vill göra här är att göra om den till numerisk, jag tänker att funktionen `as.numeric()` enkelt kan göra det.
+
+```{r}
+library(dplyr)
+  
+data %>% 
+  mutate(belopp = as.numeric(belopp))
+```
+
+Men eftersom `belopp` är en faktor så tror den att vi försöka göra om kategorisk data till numerisk. Så den tar kategorinivåerna, vilket inte alls är vad vi vill.
+
+Så vi behöver först göra om den till `character` 
+
+```{r}
+data %>% 
+  mutate(belopp = as.numeric(as.character(belopp)))
+```
+
+Nu visar det sig att `as.numeric()` bara kan hantera tecken som är siffror, vi har ett mellanslag här som inte är en siffra, så därför ger den tillbaka `NA` med ett varningsmeddelande: `NAs introduced by coercion`.
+
+Hm, okej, så det vi vill göra (och det som är exemplet) är att ta bort blankstegen i strängarna.
+
+Det blir vår första googling: 
+
+```{r}
+knitr::include_graphics("https://raw.githubusercontent.com/filipwastberg/dataland/master/static/img/google-whitespace.png")
+```
+
+Vilket leder oss till den en fråga på StackOverflow. StackOverflow är en hemsida där programmerare kan ställa frågor som andra kan svara på.
+
+Frågan vi kommer till finns här: https://stackoverflow.com/questions/34591329/remove-white-space-from-a-data-frame-column-and-add-path
+
+På StackOverflow hamnar de frågor med flest *Votes* högst upp. I det svaret som har fått flest röster föreslår personen att vi ska använda funktionen `gsub()` som är en funktion som finns "inbyggd" i R. 
+
+```{r}
+data %>% 
+  mutate(belopp = as.numeric(as.character(gsub('\\s+', '', belopp))))
+```
+
+Vad för alternativ finns?
+
+Nu är det inget fel alls på det här svaret, det gör vad vi vill. Men om man i längden arbetar mycket med att manipulera text i data så brukar jag rekommendera paketet `stringr`.
+
+Vi hade kunnat göra samma sak som ovan med funktionen `str_replace()`.
+
+```{r}
+library(stringr)
+data %>% 
+  mutate(belopp = as.numeric(as.character(str_replace(belopp, '\\s+', ''))))
+```
+
+`stringr` är ett paket som är nytt relativt till `gsub()` och andra "inbyggda" funktioner i R och det är, enligt mig, enklare att använda. Därför föredrar jag det.
+
+Lycka till!
+
+/ Filip
+
+
+
+
+
+
+
+
+
+
+
+
