@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title></title>
+    <title>Dataland</title>
     <link>/</link>
-    <description>Recent content on </description>
+    <description>Recent content on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>eng</language>
+    <language>en-US</language>
     <lastBuildDate>Fri, 23 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
@@ -13,29 +13,29 @@
     
     <item>
       <title>Sök hjälp! För R...</title>
-      <link>/2019/08/23/sok-hjalp-for-r/</link>
+      <link>/post/sok-hjalp-for-r/</link>
       <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/08/23/sok-hjalp-for-r/</guid>
+      <guid>/post/sok-hjalp-for-r/</guid>
       <description>Att söka efter lösningar på R-problem Inte sällan stöter man på problem i R som man inte kan lösa genom att läsa sig till i dokumentation m.m. Det är vanligt och händer alla som lär sig R eller något annat verktyg för att göra dataanalys.
 Det vanligaste är att man tar det felmeddelande man får och lägger in det i Google. Då brukar man oftast hamna på någon av följande hemsidor:</description>
     </item>
     
     <item>
       <title>Creating Python modules like R packages</title>
-      <link>/2019/06/25/python-packages-for-r-users/</link>
+      <link>/post/python-packages-for-r-users/</link>
       <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/2019/06/25/python-packages-for-r-users/</guid>
+      <guid>/post/python-packages-for-r-users/</guid>
       <description>An R user created a package in Python - you will not believe what happened next I am a Data Scientist at a consulting firm in Sweden. I have a background in statistics and social science but have spent the last couple of years mainly trying to understand consumers and how they behave. I have worked with everything from making Powerpoint presentations to building recommender systems. In other words I am a pretty typical data scientist.</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>/2019/06/24/about/</link>
+      <link>/post/linked-post/</link>
       <pubDate>Mon, 24 Jun 2019 21:49:20 +0200</pubDate>
       
-      <guid>/2019/06/24/about/</guid>
+      <guid>/post/linked-post/</guid>
       <description>I am a data scientist working at a analytics consultant firm Ferrologic in Sweden. This blog is about data science, mainly in R.
 I&amp;rsquo;ll do some posts in english and some in Swedish,
 If you want to contact me you can do so by Mail eller Twitter.
@@ -44,10 +44,10 @@ This blog is created with the R package Blogdown</description>
     
     <item>
       <title>Depp-index på Stockholm Data Science Meetup</title>
-      <link>/2017/11/26/depp-index-p%C3%A5-stockholm-data-science-meetup/</link>
+      <link>/post/depp-index-p%C3%A5-stockholm-data-science-meetup/</link>
       <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/11/26/depp-index-p%C3%A5-stockholm-data-science-meetup/</guid>
+      <guid>/post/depp-index-p%C3%A5-stockholm-data-science-meetup/</guid>
       <description>  På torsdag 30/11 kommer jag att prata inför Stockholm Data Science Meetup om mitt depp-index över Kents deprimerande låtar.
 Tanken är att jag ska visa hur det gick till och förhoppningsvis få lite input på hur analysen skulle kunna bli bättre.
 Tycker du att det är spännande med programmering och dataanalys är du hemskt välkommen att anmäla dig här
@@ -57,20 +57,20 @@ Tycker du att det är spännande med programmering och dataanalys är du hemskt 
     
     <item>
       <title>Kommunerna där kvinnor styr</title>
-      <link>/2017/11/15/har-styr-kvinnorna/</link>
+      <link>/post/har-styr-kvinnorna/</link>
       <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/11/15/har-styr-kvinnorna/</guid>
+      <guid>/post/har-styr-kvinnorna/</guid>
       <description>Sen jag var en kiddo har jag varit besatt av kartor. Historiska kartor, moderna kartor eller påhittade kartor, spelar ingen roll. Därför är det extra kul att på ett enkelt sätt kunna göra kartor i R. Så här tänkte jag visa hur man enkelt kan göra kartor på kommunnivå över Sverige.
 För att göra något intressant tänkte jag undersöka andelen kvinnor på förtroendevalda ordförandeposter i svenskar kommuner, exempelvis ordförande i kommunstyrelsen.</description>
     </item>
     
     <item>
       <title>Vilken är Kents mest deprimerande låt?</title>
-      <link>/2017/11/07/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
+      <link>/post/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
       <pubDate>Tue, 07 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/11/07/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
+      <guid>/post/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
       <description>Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent.
 Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
@@ -78,12 +78,35 @@ Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag
     
     <item>
       <title>Nå SCB:s api från R</title>
-      <link>/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
+      <link>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/10/02/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
+      <guid>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
       <description>Nå SCB:s databas från R Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet pxweb.
  SCB:s API Att ta fram tabeller SCB:s statistikdatabas http://www.statistikdatabasen.scb.se/ är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.</description>
+    </item>
+    
+    <item>
+      <title>about</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>I am a data scientist working at the analytics consultant firm Ferrologic in Sweden. This blog is about data science, mainly in R.
+I’ll do some posts in english and some in Swedish,
+If you want to contact me you can do so by Mail eller Twitter.
+This blog is created with the R package Blogdown.</description>
+    </item>
+    
+    <item>
+      <title>resume</title>
+      <link>/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume/</guid>
+      <description>Who am I? My name is Filip Wästberg and I&amp;rsquo;m a creative and curious Data Scientist who likes to work with data and humans. Currently I work as a Data Science Consultant at Ferrologic Analytics.
+Skills and Tools  R, SQL, Python, Spark and some rusty SAS/SPSS GitHub, Linux, Markdown writing and speaking  Experience Data Scientist Consultant, Ferrologic 2018-present
+ Practical experience from building and implementing predictive models Strong skills in data manipulation and visualization Experience from working together with software engineers, data engineers and managers to implement data science products Host of the company&amp;rsquo;s Data Science Meetup in Stockholm Instructor of various R-related courses for clients  Research Executive, Demoskop 2016-2018</description>
     </item>
     
   </channel>
