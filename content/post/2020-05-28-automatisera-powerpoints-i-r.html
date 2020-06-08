@@ -1,0 +1,117 @@
+---
+title: Automatisera PowerPoints i R
+author: Filip Wästberg
+date: '2020-05-28'
+slug: automatisera-powerpoints-i-r
+categories:
+  - office
+tags:
+  - officer
+  - powerpoint
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+
+
+<p>Jag skulle påstå att PowerPoint tillsammans med Excel är det överlägset vanligaste sättet att rapportera analytiska resultat. I min roll som konsult har jag träffat många analytiker som önskar att de kunde lägga mindre tid på att ta fram PowerPoints och mer tid på faktisk analys.</p>
+<p>Med paketet officer kan du enkelt skapa PowerPoints från R och dessutom utnyttja din organisations mall.</p>
+<p>Först behöver vi lite data. Den tar vi ner från Tilastokeskus - Finlands statistikcentral med hjälp av paketet <code>pxweb</code>.</p>
+<pre class="r"><code>library(pxweb)</code></pre>
+<pre><code>## pxweb: R tools for PX-WEB API.
+## Copyright (C) 2014-2018 Mans Magnusson, Leo Lahti et al.
+## https://github.com/ropengov/pxweb</code></pre>
+<pre class="r"><code>pxweb_query_list &lt;- 
+  list(&quot;Sector&quot;=c(&quot;metsa&quot;),
+       &quot;Year(*preliminary)&quot;=c(&quot;1960&quot;,&quot;1961&quot;,&quot;1962&quot;,&quot;1963&quot;,&quot;1964&quot;,&quot;1965&quot;,&quot;1966&quot;,&quot;1967&quot;,&quot;1968&quot;,&quot;1969&quot;,&quot;1970&quot;,&quot;1971&quot;,&quot;1972&quot;,&quot;1973&quot;,&quot;1974&quot;,&quot;1975&quot;,&quot;1976&quot;,&quot;1977&quot;,&quot;1978&quot;,&quot;1979&quot;,&quot;1980&quot;,&quot;1981&quot;,&quot;1982&quot;,&quot;1983&quot;,&quot;1984&quot;,&quot;1985&quot;,&quot;1986&quot;,&quot;1987&quot;,&quot;1988&quot;,&quot;1989&quot;,&quot;1990&quot;,&quot;1991&quot;,&quot;1992&quot;,&quot;1993&quot;,&quot;1994&quot;,&quot;1995&quot;,&quot;1996&quot;,&quot;1997&quot;,&quot;1998&quot;,&quot;1999&quot;,&quot;2000&quot;,&quot;2001&quot;,&quot;2002&quot;,&quot;2003&quot;,&quot;2004&quot;,&quot;2005&quot;,&quot;2006&quot;,&quot;2007&quot;,&quot;2008&quot;,&quot;2009&quot;,&quot;2010&quot;,&quot;2011&quot;,&quot;2012&quot;,&quot;2013&quot;,&quot;2014&quot;,&quot;2015&quot;,&quot;2016&quot;,&quot;2017&quot;,&quot;2018&quot;,&quot;2019*&quot;),
+       &quot;Data&quot;=c(&quot;Osuus&quot;))
+
+# Download data 
+px_data &lt;- 
+    pxweb_get(url = &quot;http://pxnet2.stat.fi/PXWeb/api/v1/en/StatFin/ene/ehk/statfin_ehk_pxt_013_en.px&quot;,
+                                            query = pxweb_query_list)
+
+# Convert to data.frame 
+px_data &lt;- as.data.frame(px_data, column.name.type = &quot;text&quot;, variable.value.type = &quot;text&quot;)
+
+head(px_data)</code></pre>
+<pre><code>##            Sector Year(*preliminary)    Data Electricity consumption
+## 1 Forest Industry               1960 Share %                    47.3
+## 2 Forest Industry               1961 Share %                    50.7
+## 3 Forest Industry               1962 Share %                    49.8
+## 4 Forest Industry               1963 Share %                    48.7
+## 5 Forest Industry               1964 Share %                    48.3
+## 6 Forest Industry               1965 Share %                    47.7</code></pre>
+<p>Nästa steg är att städa data data lite och visualisera det.</p>
+<p>Här använder jag paketet <code>hrbrthemes</code> som har ett tema jag tycker om.</p>
+<pre class="r"><code># Cite the data as 
+library(tidyverse)
+library(hrbrthemes)
+forest_plot &lt;- px_data %&gt;% 
+    janitor::clean_names() %&gt;% 
+    mutate(year_preliminary = stringr::str_replace(year_preliminary, &quot;\\*&quot;, &quot;&quot;) %&gt;% as.numeric()) %&gt;% 
+    ggplot(aes(year_preliminary, electricity_consumption * 0.01)) +
+    geom_line(size = 2) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = c(0, 0.5)) +
+    theme_ipsum(base_size = 20,
+                                                    plot_title_size = 40,
+                                                    subtitle_size = 30,
+                                                    caption_size = 15,
+                                                    axis_title_size = 15) +
+    labs(
+        title = &quot;Forest Industry in Finland&quot;,
+        subtitle = &quot;Share of Electricity consumption&quot;,
+        x = &quot;Year&quot;,
+        y = &quot;Share of Electricity consumption&quot;,
+        caption = &quot;Source: Tilastokeskus/Statistikcentralen i Finland&quot;
+    ) +
+    theme(text = element_text(size = 50))
+
+forest_plot</code></pre>
+<p><img src="/post/2020-05-28-automatisera-powerpoints-i-r_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+Visualiseringen är lite stor, men den kommer att se bättre ut i en PowerPoint.</p>
+<p>Nu ska vi lägga in det här i en powerpoint. För att göra det använder jag paketet <code>officer</code>.</p>
+<p>I slutet av förra året gick det företag jag arbetar för <code>Ferrologic Analytics</code> samman med ett finskt bolag som heter <code>Solita</code>. Så jag tänkte att jag kunde använda deras PowerPoint-mall för att skapa PowerPointen.</p>
+<p>Först läser jag in PowerPoint-filen och undersöker dess <code>layouts</code>. Dessa motsvarar valen du kan göra när du klickar på <code>Ny slide</code> i PowerPoint.</p>
+<pre class="r"><code>library(officer)
+library(dplyr)
+solita_pres &lt;- read_pptx(&quot;solita-pres-mall.pptx&quot;)
+
+layout_summary(solita_pres) %&gt;% 
+  head()</code></pre>
+<pre><code>##             layout master
+## 1       Otsikkodia Solita
+## 2 Osan ylätunniste Solita
+## 3 Section Header 2 Solita
+## 4 Section Header 3 Solita
+## 5 Section Header 4 Solita
+## 6 Section Header 5 Solita</code></pre>
+<p>Som ni ser är layout-formatteringen på finska, men öppnar du PowerPoint-filen ser du att <em>Otsikkodia</em> står för Titel-slide.</p>
+<p>Varje layout har så kallade <em>placeholders</em> som är fördefinierade rutor gjorda för grafer, text, tabeller m.m.</p>
+<pre class="r"><code>layout_properties(solita_pres, &quot;Otsikkodia&quot;)</code></pre>
+<pre><code>##    master_name       name     type id   ph_label
+## 4       Solita Otsikkodia     body 10  Graphic 4
+## 7       Solita Otsikkodia     body  6  Graphic 8
+## 74      Solita Otsikkodia ctrTitle  2    Title 1
+## 75      Solita Otsikkodia subTitle  3 Subtitle 2
+##                                 ph      offx     offy        cx        cy
+## 4                             &lt;NA&gt; 0.6692913 1.929134 11.732283 5.0787402
+## 7                             &lt;NA&gt; 0.6692913 1.929134 11.732283 5.0787402
+## 74         &lt;p:ph type=&quot;ctrTitle&quot;/&gt; 0.8858257 2.283465 11.529104 3.7795276
+## 75 &lt;p:ph type=&quot;subTitle&quot; idx=&quot;1&quot;/&gt; 0.8858268 6.358268  9.421979 0.6299213</code></pre>
+<p>Genom att ta en graf och lägga den i en placeholder kommer R alltid att skala grafen korrekt och du behöver inte oroa dig över bredd, höjd eller upplösning.</p>
+<p>Vi börjar med att lägga till en titel-slide, notera här att vi använder <code>ph_location_type</code> för att identifiera vår placeholder type <code>ctrTitle</code>.</p>
+<pre class="r"><code>ppt_pres &lt;- solita_pres %&gt;% 
+    add_slide(layout = &quot;Otsikkodia&quot;, master = &quot;Solita&quot;) %&gt;% 
+    ph_with(value = &quot;Made In R&quot;, location = ph_location_type(type = &quot;ctrTitle&quot;))</code></pre>
+<p>För att lägga till vår graf använder vi oss av en annan layout men här använder <code>ph_location_fullsize</code> som helt enkelt tar grafen och gör så att den tar upp hela vår slide. Vi hade också kunnat specificera en <em>location</em> här.</p>
+<pre class="r"><code>ppt_pres &lt;- ppt_pres %&gt;% 
+  add_slide(layout = &quot;Otsikko ja sisältö&quot;, master = &quot;Solita&quot;) %&gt;% 
+    ph_with(value = forest_plot,
+                                    location = ph_location_fullsize())</code></pre>
+<p>Slutligen printar vi hela presentationen:</p>
+<pre class="r"><code>print(ppt_pres, &quot;solita-forest-pres.pptx&quot;)</code></pre>
+<p>Som kommer att se ut så här:</p>
+<p><img src="/post/2020-05-28-automatisera-powerpoints-i-r_files/solita-pres.png" /></p>

@@ -23,6 +23,17 @@ Med den interaktiva funktionen pxweb_interactive() kan vi prata med SCB:s (och f
     </item>
     
     <item>
+      <title>Automatisera PowerPoints i R</title>
+      <link>/post/automatisera-powerpoints-i-r/</link>
+      <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/automatisera-powerpoints-i-r/</guid>
+      <description>Jag skulle påstå att PowerPoint tillsammans med Excel är det överlägset vanligaste sättet att rapportera analytiska resultat. I min roll som konsult har jag träffat många analytiker som önskar att de kunde lägga mindre tid på att ta fram PowerPoints och mer tid på faktisk analys.
+Med paketet officer kan du enkelt skapa PowerPoints från R och dessutom utnyttja din organisations mall.
+Först behöver vi lite data. Den tar vi ner från Tilastokeskus - Finlands statistikcentral med hjälp av paketet pxweb.</description>
+    </item>
+    
+    <item>
       <title>Creating Python modules like R packages</title>
       <link>/post/python-packages-for-r-users/</link>
       <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
