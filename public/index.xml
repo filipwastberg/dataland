@@ -19,8 +19,7 @@
       <guid>/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/</guid>
       <description>Visste du att du kan hämta data direkt från SCB, Statistiska centralbyrån till R?
 Du behöver alltså inte gå in i statistikdatabasen och ta ut en ny Excel-tabell varje gång du ska uppdatera SCB-statistik utan kan istället låta paketet pxweb av Måns Magnusson ställa frågor mot SCB:s API och få koden för det. Perfekt om ens verksamhet använder offentlig statistik återkommande.
-Du
-Här ser du kod helt och hållet genererad från den interaktiva funktionen pxweb_interactive().</description>
+Med den interaktiva funktionen pxweb_interactive() kan vi prata med SCB:s (och flera andra nationella statistikcentraler) API.</description>
     </item>
     
     <item>

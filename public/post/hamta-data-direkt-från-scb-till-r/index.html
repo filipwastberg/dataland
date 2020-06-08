@@ -1126,9 +1126,57 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 
 
 <p>Visste du att du kan hämta data direkt från SCB, Statistiska centralbyrån till R?</p>
-<p>Du behöver alltså inte gå in i statistikdatabasen och ta ut en ny Excel-tabell varje gång du ska uppdatera SCB-statistik utan kan istället låta paketet pxweb av Måns Magnusson ställa frågor mot SCB:s API och få koden för det. Perfekt om ens verksamhet använder offentlig statistik återkommande.</p>
-<p>Du</p>
-<p>Här ser du kod helt och hållet genererad från den interaktiva funktionen pxweb_interactive().</p>
+<p>Du behöver alltså inte gå in i statistikdatabasen och ta ut en ny Excel-tabell varje gång du ska uppdatera SCB-statistik utan kan istället låta paketet <code>pxweb</code> av Måns Magnusson ställa frågor mot SCB:s API och få koden för det. Perfekt om ens verksamhet använder offentlig statistik återkommande.</p>
+<p>Med den interaktiva funktionen <code>pxweb_interactive()</code> kan vi prata med SCB:s (och flera andra nationella statistikcentraler) API.</p>
+<p>Jag brukar först använda <a href="https://www.statistikdatabasen.scb.se/pxweb/sv/ssd/">statistikdatabsen</a> för att hitta det jag söker och sedan navigera mig till det genom <code>pxweb</code>, som följer samma struktur som hemsidan.</p>
+<p>Du laddar ner paketet med <code>install.packages("pxweb")</code>.</p>
+<pre class="r"><code>library(pxweb)
+
+pxweb_interactive()</code></pre>
+<pre><code>## pxweb: R tools for PX-WEB API.
+## Copyright (C) 2014-2018 Mans Magnusson, Leo Lahti et al.
+## https://github.com/ropengov/pxweb</code></pre>
+<p>När du klickat dig fram till den statistik du är intresserad av får du koden för att ladda ner data programmatiskt.</p>
+<pre class="r"><code>pxweb_query_list &lt;- list(&quot;Kon&quot;=c(&quot;1&quot;, &quot;2&quot;), 
+                         &quot;ContentsCode&quot;=c(&quot;000000MD&quot;,&quot;000000ME&quot;),
+                         &quot;Tid&quot;=c(&quot;1968&quot;,&quot;1969&quot;,&quot;1970&quot;,&quot;1971&quot;,&quot;1972&quot;,
+                                 &quot;1973&quot;,&quot;1974&quot;,&quot;1975&quot;,&quot;1976&quot;,&quot;1977&quot;,&quot;1978&quot;,
+                                 &quot;1979&quot;,&quot;1980&quot;,&quot;1981&quot;,&quot;1982&quot;,&quot;1983&quot;,&quot;1984&quot;,
+                                 &quot;1985&quot;,&quot;1986&quot;,&quot;1987&quot;,&quot;1988&quot;,&quot;1989&quot;,&quot;1990&quot;,
+                                 &quot;1991&quot;,&quot;1992&quot;,&quot;1993&quot;,&quot;1994&quot;,&quot;1995&quot;,&quot;1996&quot;,
+                                 &quot;1997&quot;,&quot;1998&quot;,&quot;1999&quot;,&quot;2000&quot;,&quot;2001&quot;,&quot;2002&quot;,
+                                 &quot;2003&quot;,&quot;2004&quot;,&quot;2005&quot;,&quot;2006&quot;,&quot;2007&quot;,&quot;2008&quot;,
+                                 &quot;2009&quot;,&quot;2010&quot;,&quot;2011&quot;,&quot;2012&quot;,&quot;2013&quot;,&quot;2014&quot;,
+                                 &quot;2015&quot;,&quot;2016&quot;,&quot;2017&quot;,&quot;2018&quot;,&quot;2019&quot;))
+
+# Download data 
+px_data &lt;- 
+  pxweb_get(url = &quot;http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101B/BefolkMedianAlder&quot;,
+            query = pxweb_query_list)
+
+# Convert to data.frame 
+px_df &lt;- as.data.frame(px_data, column.name.type = &quot;text&quot;, variable.value.type = &quot;text&quot;)</code></pre>
+<p>Nu kan vi visualisera data, exportera den eller göra vad vi nu vill med den.</p>
+<pre class="r"><code>library(tidyverse)
+library(glue)
+library(scales)
+
+min_år &lt;- min(as.numeric(px_df$år))
+max_år &lt;- max(as.numeric(px_df$år))
+
+px_df %&gt;% 
+  mutate(år = as.numeric(år)) %&gt;% 
+  ggplot(aes(år, Medianålder, color = kön)) +
+  geom_line() +
+  labs(
+    title = &quot;Medianålder i Sverige&quot;,
+    subtitle = glue(&quot;Från {min_år}-{max_år}&quot;),
+    x = &quot;&quot;
+  ) +
+  scale_y_continuous(limits = c(0, 50), labels = number_format(suffix = &quot; år&quot;)) +
+  scale_x_continuous(breaks = pretty_breaks(10)) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2020-06-08-hamta-data-direkt-fr%C3%A5n-scb-till-r_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 
 
             </div>
