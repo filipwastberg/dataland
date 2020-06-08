@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Example blog">
+
+<base href="/">
+<title>
+
+
+     Dataland - Creating Python modules like R packages 
+
+</title>
+<link rel="canonical" href="/blog/python-packages-for-r-users/">
+
+
+<script type="text/javascript">
+    var baseURL = '\/';
+    var host = baseURL.substring(0, baseURL.length - 1).replace(/\//g, '');
+    if ((host === window.location.host) && (window.location.protocol !== 'https:')) {
+        window.location.protocol = 'https:';
+    }
+</script>
+
+
+
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/pygments.css">
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/img/favicon.ico"
+
+>
+
+
+
+
+
+
+</head>
+
+
+<body lang="en">
+
+
+
+<section class="header"> 
+
+    <div class="container">
+        <a href="/"><img class="logo" src="/css/images/h_logo_no_text1.png" /></a>
+        <div class="content">
+            <a href="/"><div class="name"><h1>Dataland</h1></div></a>
+            <nav>
+                <ul>
+                    <a href="/"><li>Blog</li></a>
+                    <a href="/about/"><li>About</li></a>
+                    <a href="/projects/"><li>Projects</li></a>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="filipwastberg" target="_blank">
+                <i class="icon ion-social-github"></i>
+            </a>
+        
+        
+        
+            <a href="filipwastberg" target="_blank">
+                <i class="icon ion-social-twitter"></i>
+            </a>
+        
+
+        
+            <a href="filipwastberg" target="_blank">
+                <i class="icon ion-social-linkedin"></i>
+            </a>
+        
+
+        
+            <a href="mailto:filip.wastberg@gmail.com">
+                <i class="icon ion-ios-email larger"></i>
+            </a>
+        
+
+        
+            <a href="/index.xml">
+                <i class="icon ion-social-rss larger"></i>
+            </a>
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Creating Python modules like R packages
+
+</div>
+
+                    <div class="initials"><a href="/"></a></div>
+                </div>
+                <div class="meta">
+                    <div class="date" title="Tue Jun 25 2019 00:00:00 UTC">Jun 25, 2019</div>
+                    <div class="reading-time"><div class="middot"></div>9 minutes read</div>
+                </div>
+            </div>
+            <div class="markdown">
+                
+
+
+<div id="an-r-user-created-a-package-in-python---you-will-not-believe-what-happened-next" class="section level2">
+<h2>An R user created a package in Python - you will not believe what happened next</h2>
+<p>I am a Data Scientist at a consulting firm in Sweden. I have a background in statistics and social science but have spent the last couple of years mainly trying to understand consumers and how they behave. I have worked with everything from making Powerpoint presentations to building recommender systems. In other words I am a pretty typical data scientist.</p>
+<p>I started using R a couple of years ago on my first job because they didn’t want to pay for a SPSS license and thought I could do most of my work in Excel. They were of course right but just like anyone fresh from university I wanted to do cool stuff and no one does cool stuff in Excel.</p>
+<p>My relationship with R was complicated at start. I learned all the basics through online courses but still struggled to do stuff that I could do in Excel with ease. However, after learning some powerful packages for manipulation data, mainly <code>dplyr</code> pand <code>data.table</code>, both superb packages, I started to get addicted.</p>
+<p>The more you program with R the more functions you write. At first I saved my functions in R-scripts in project folders. When I needed to reuse functions I copied them between projects. Howver, I quickly abandoned this workflow in favor of creating my own R packages. I think this represents how a lot of novice R programmers and analysts work, we learn new stuff when we need to.</p>
+<p>This last year I have created several of my own packages, some for personal and some for company internal usage. The trickiest part for me was to understand dependencies in packages, that is when my package use other packages, which they generally do. All in all it took some days to understand this (and a lot of tutorial reading), and there were times where I became very frustrated. But once I got it going it was relatively easy, and in the end it has saved me a lot of time comparing to my previous workflow.</p>
+<p>There are three packages in R that makes creating an R package easy:</p>
+<pre class="r"><code>library(devtools)
+library(roxygen2)
+library(usethis)</code></pre>
+<p>So for creating an R package and hosting it on Github I simply run:</p>
+<pre class="r"><code>create_package(&quot;~/Documents/ferrologic/example&quot;)
+use_git()
+use_github()</code></pre>
+<p>This creates the following package structure and adds a repository on my Github.</p>
+<p><img src="https://raw.githubusercontent.com/filipwastberg/dataland/master/static/img/result.png" /></p>
+<p>Now, I use R for nalytics and statistics. I am interested in programming generally but it is not my biggest motivation for using R. I am not a software developer, I and don’t intend to become one. Therefore these packages helps me a lot because they allows me to create powerful and structurized statistical software without manually setting everything up myself.</p>
+<p>Nevertheless, it should be pointed out that the above example is only the skeleton of a package. To fill it with functions, the right dependencies and so on, has a learning curve. Fortunately it has become less steep in recent years, but it still isn’t something you usually do in your first R-week.</p>
+</div>
+<div id="python" class="section level2">
+<h2>Python</h2>
+<p>I haven’t had the chance or need to learn Python. Again, I mainly learn things thoroughly when I need to. However, I have recently been involved in a project that uses Python for other stuff than Data Science but would like to use the data science packages available in Python. This is a common scenario and I might write the analytics code in R nonetheless, because working between Python and R has become much more easy. However, I saw this as a chance to learn a little bit about Python and especially how to build packages(<em>Semantics: In Python a package is called a module, when I say package I usually mean module</em>).</p>
+<p>The project I am involved in is working with District Heating and my first task was to build an API package in Python to get heat consumption data from an API to a pandas DataFrame.</p>
+<p>I have worked a lot with API’s in R, so I started by making the API-calls in R. After that I moved to Python. In Python I used the package <code>requests</code> and in R I used <code>httr</code> (which I can tell has been influenced by <code>requests</code>). I was struck by how similar the code was. Sure, there are some syntax differences but they where smaller than I anticipated.</p>
+<p>Then I created severel functions in R, such as <code>get_meter_readings()</code> and <code>get_weather_readings()</code> and saved them in a package and put on a Git-portal for others in the project to install.</p>
+<p>Now I wanted to do the same with Python:</p>
+<ul>
+<li>Create a package(module)</li>
+<li>Host it on a git portal</li>
+</ul>
+<p>So for a new user it should look like this:</p>
+<pre class="python"><code>pip install git+https://git.pynergy.git
+import pynergy as pyn
+
+df = pyn.get_meter_reading(token, limit, metering_station)</code></pre>
+</div>
+<div id="the-ide" class="section level2">
+<h2>The IDE</h2>
+<p>R users are spoiled with the RStudio IDE. It allows us to write Notebooks, scripts and creating packages all in the same IDE. There are a number of Python IDE’s but there is no clear winner. My data science colleagues who use Python usually do DS in a Jupyter Notebook. The notebook format is great for analysis, but suboptmial for building packages.</p>
+<p>One of my developer colleagues recommended (somewhat reluctantly because of his hate of Windows) Visual Studio Code and it’s Python extension.</p>
+<p>VS Code is not as good as RStudio. But it is a really great IDE.</p>
+</div>
+<div id="the-tutorials" class="section level2">
+<h2>The tutorials</h2>
+<p>I often start learning stuff through online tutorials. Usually I walk through the tutorial and then test the code on my own data.
+So I started by working through <a href="https://github.com/AguaClara/aide_tutorial-DEPRECATED/wiki/Tutorial:-Creating-a-New-Python-Package-Repository">this tutorial by Github</a> which I after a couple of hours realized was deprecated… It reminded me to always check the date of tutorials. In the field of open source data science things are evolving rapidly.</p>
+<p>I headed to the <a href="https://packaging.python.org/tutorials/installing-packages/">Python website</a> but this was a little much. It’s like if I would have started with <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html">R’s official extension-site</a> when building an R package. Both of these manuals are very well documented but are <em>not</em> written for beginners and <em>not</em> very helpful when you just want to try something.</p>
+<p>So instead I stumbled on the <a href="https://python-packaging.readthedocs.io/en/latest/minimal.html">Python Packaging website</a>.</p>
+<p>I began with <a href="https://python-packaging.readthedocs.io/en/latest/minimal.html">this simple tutorial</a>.</p>
+</div>
+<div id="python-packages" class="section level2">
+<h2>Python packages</h2>
+<p>On the Python Packaging website it is stated that the structure of a Python package should be:</p>
+<pre><code>packagename/
+    packagename/
+        __init__.py
+    setup.py</code></pre>
+<p>I had to create this structure by hand and I don’t know if there is any other way (do tell if there is).</p>
+<p><code>__init__.py</code> is where you import your fuction from a python script, similar to the <code>NAMESPACE</code> in R.</p>
+<p>To create the package you use <code>setup.py</code> where you use the package <code>setuptools</code> like this:</p>
+<pre class="python"><code>from setuptools import setup
+
+setup(name=&#39;pynergy&#39;,
+      version=&#39;0.1&#39;,
+      description=&#39;Easy access to Smart Energi API&#39;,
+      url=&#39;https://git.smartenergi.org/FilipWastberg/pynergy&#39;,
+      author=&#39;Filip Wastberg&#39;,
+      author_email=&#39;filip.wastberg@ferrologic.se&#39;,
+      license=&#39;MIT&#39;,
+      packages=[&#39;pynergy&#39;],
+      zip_safe=False)</code></pre>
+<p>After this I could run <code>pip install .</code> to install the package.</p>
+<p>However, because I rely on three other packages, <code>pandas</code>, <code>requests</code> and <code>json</code> I couldn’t run the function unless I had these loaded. Furthermore, I could not run the function at all, because of what I guess was dependency issues.</p>
+<pre class="python"><code>import pynergy
+import pandas as pd
+import json
+import requests
+
+pynergy.get_meter_readings(token, include_from, include_to, metering_point_id, limit)</code></pre>
+<p>Which yielded:</p>
+<pre><code>---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+ in 
+----&gt; 1 pynergy.get_meter_readings(token, include_from, include_to, metering_point_id, limit)
+
+~/Documents/ferrologic/pynergy/pynergy/__init__.py in get_meter_readings(token, include_from, include_to, metering_point_id, limit)
+     13        }
+     14 
+---&gt; 15     r = requests.get(url, headsers = headers, params = parameters, verify=False)
+     16 
+     17     data = json.loads(r.text)
+
+NameError: name &#39;requests&#39; is not defined</code></pre>
+<p>Before I moved on to resolving these depedency issues I used this piece of code to create a distribution package:</p>
+<pre class="bash"><code>$ python setup.py sdist</code></pre>
+<p>At this point I made my first commit and pushed it to my repository.</p>
+<p><code>__init__.py</code> looked like this:</p>
+<pre class="python"><code>from .get_functions import get_meter_readings</code></pre>
+<p>Now I wanted to try if I could install this package from my Git-repository:</p>
+<pre class="python"><code>pip install git+https://git.smartenergi.org/FilipWastberg/pynergy.git</code></pre>
+<p>This worked fine. Although the dependency issues (of course) remained.</p>
+</div>
+<div id="dependecies" class="section level2">
+<h2>Dependecies</h2>
+<p>To specify dependencies you have to specify them in two places:</p>
+<ul>
+<li>In the source-file</li>
+<li>In the setup</li>
+</ul>
+<p>So in the source-file, where I saved my function, <code>get_functions.py</code> I specified my dependencies like this:</p>
+<pre class="python"><code>from json import loads
+from pandas.io.json import json_normalize
+from requests import get
+from pandas import to_datetime
+from pandas import DataFrame
+
+def get_meter_readings(token, include_from, include_to, metering_point_id, limit):
+
+    df=&#39;code to retrieve data from API&#39;
+
+  return(df)</code></pre>
+<p>And in the setup-file I just specified them in <code>install_requires=[]</code>.</p>
+<pre class="python"><code>from setuptools import setup
+
+setup(name=&#39;pynergy&#39;,
+      version=&#39;0.1&#39;,
+      description=&#39;Easy access to Smart Energi API&#39;,
+      url=&#39;https://git.smartenergi.org/FilipWastberg/pynergy&#39;,
+      author=&#39;Filip Wastberg&#39;,
+      author_email=&#39;filip.wastberg@ferrologic.se&#39;,
+      license=&#39;MIT&#39;,
+      packages=[&#39;pynergy&#39;],
+      install_requires=[
+          &#39;pandas&#39;,
+          &#39;json&#39;,
+          &#39;requests&#39;,
+      ], 
+       zip_safe=False,)</code></pre>
+<p>In order to check that this had worked I ran:</p>
+<pre class="bash"><code>$ python setup.py develop</code></pre>
+<p>This yielded some permission issues that I until this day can’t figure out how to solve (working on Mac).</p>
+<pre><code>The following error occurred while trying to add or remove files in the
+installation directory:
+
+    [Errno 13] Permission denied: &#39;/Library/Python/2.7/site-packages/test-easy-install-49833.pth&#39;</code></pre>
+<p>However, I was able to resolve this by instead writing (don’t ask me about details here):</p>
+<pre class="bash"><code>$ python setup.py develop --user</code></pre>
+<p>Here I stumbled on my first difference between <code>Python 2</code> and <code>Python 3</code> .</p>
+<pre><code>Searching for json
+Reading https://pypi.python.org/simple/json/
+Couldn&#39;t find index page for &#39;json&#39; (maybe misspelled?)
+Scanning index of all packages (this may take a while)
+Reading https://pypi.python.org/simple/
+No local packages or download links found for json
+error: Could not find suitable distribution for Requirement.parse(&#39;json&#39;)</code></pre>
+<p>This is apparently because <code>json</code> is included in <code>Python 3</code>. So I had to remove <code>json</code>, because it is already loaded.</p>
+<p>When running the code again a series of installations started. This took around half an hour.</p>
+<p>When it was done I tried to install the package again from Git. This time I was able to succesfully install the package and run the function (yeeeey).</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>It’s easy for me to say that I prefer R for creating packages. I know the R eco system fairly well. However, and correct me if I’m wrong, I do think that it is more common to create your own packages to abstract code in R than it is in Python. But this is strictly based on my own observations of Python code. There are numerous helpful packages in R that makes making a package really easy and I struggled to find any equivilants in Python(if there are packages in Python similar to <code>usethis</code> and <code>roxygen2</code>, do tell). The alternative to creating packages is often to copy and paste code between different projects. The simplicity of creating R packages makes us use this strategy less, which I think is great for data science.</p>
+<p>With that said I think that the dependency handling in Python is somewhat more straigh forward than in R. One thing that I really like about Python is the ability to switch between environments. You can create a new environment that is “clean” and try out things. I also think that the structure of exporting and importing functions is easier when creating a Python package.</p>
+</div>
+
+                <br>
+                <p><a href="/">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "dataland-rbind-io-1" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+</body>
+</html>
+

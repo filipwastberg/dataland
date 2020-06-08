@@ -13,10 +13,10 @@
     
     <item>
       <title>Nå SCB:s api från R</title>
-      <link>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
+      <link>/blog/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
+      <guid>/blog/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
       <description>Nå SCB:s databas från R Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet pxweb.
  SCB:s API Att ta fram tabeller SCB:s statistikdatabas http://www.statistikdatabasen.scb.se/ är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.</description>
     </item>

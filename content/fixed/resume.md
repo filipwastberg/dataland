@@ -1,6 +1,5 @@
 ---
 title: "resume"
-author: "Filip Wästberg"
 ---
 
 ## Who am I?

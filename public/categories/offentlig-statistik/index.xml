@@ -13,20 +13,20 @@
     
     <item>
       <title>Kommunerna där kvinnor styr</title>
-      <link>/post/har-styr-kvinnorna/</link>
+      <link>/blog/har-styr-kvinnorna/</link>
       <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/har-styr-kvinnorna/</guid>
+      <guid>/blog/har-styr-kvinnorna/</guid>
       <description>Sen jag var en kiddo har jag varit besatt av kartor. Historiska kartor, moderna kartor eller påhittade kartor, spelar ingen roll. Därför är det extra kul att på ett enkelt sätt kunna göra kartor i R. Så här tänkte jag visa hur man enkelt kan göra kartor på kommunnivå över Sverige.
 För att göra något intressant tänkte jag undersöka andelen kvinnor på förtroendevalda ordförandeposter i svenskar kommuner, exempelvis ordförande i kommunstyrelsen.</description>
     </item>
     
     <item>
       <title>Nå SCB:s api från R</title>
-      <link>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
+      <link>/blog/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
       <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
+      <guid>/blog/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
       <description>Nå SCB:s databas från R Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet pxweb.
  SCB:s API Att ta fram tabeller SCB:s statistikdatabas http://www.statistikdatabasen.scb.se/ är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.</description>
     </item>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/</loc>
+    <lastmod>2019-08-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <lastmod>2019-08-23T00:00:00+00:00</lastmod>
   </url>
@@ -13,22 +18,17 @@
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2019-08-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/categories/r/</loc>
     <lastmod>2019-08-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/sok-hjalp-for-r/</loc>
+    <loc>/blog/sok-hjalp-for-r/</loc>
     <lastmod>2019-08-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/python-packages-for-r-users/</loc>
+    <loc>/blog/python-packages-for-r-users/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -43,12 +43,12 @@
   </url>
   
   <url>
-    <loc>/post/linked-post/</loc>
+    <loc>/blog/linked-post/</loc>
     <lastmod>2019-06-24T21:49:20+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/depp-index-p%C3%A5-stockholm-data-science-meetup/</loc>
+    <loc>/blog/depp-index-p%C3%A5-stockholm-data-science-meetup/</loc>
     <lastmod>2017-11-26T00:00:00+00:00</lastmod>
   </url>
   
@@ -63,7 +63,7 @@
   </url>
   
   <url>
-    <loc>/post/har-styr-kvinnorna/</loc>
+    <loc>/blog/har-styr-kvinnorna/</loc>
     <lastmod>2017-11-15T00:00:00+00:00</lastmod>
   </url>
   
@@ -78,12 +78,12 @@
   </url>
   
   <url>
-    <loc>/post/vilken-%C3%A4r-kents-mest-deprimerande-lat/</loc>
+    <loc>/blog/vilken-%C3%A4r-kents-mest-deprimerande-lat/</loc>
     <lastmod>2017-11-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/n%C3%A5-scb-s-api-fr%C3%A5n-r/</loc>
+    <loc>/blog/n%C3%A5-scb-s-api-fr%C3%A5n-r/</loc>
     <lastmod>2017-10-02T00:00:00+00:00</lastmod>
   </url>
   
@@ -98,11 +98,15 @@
   </url>
   
   <url>
-    <loc>/about/</loc>
+    <loc>/fixed/about/</loc>
   </url>
   
   <url>
-    <loc>/resume/</loc>
+    <loc>/fixed/</loc>
+  </url>
+  
+  <url>
+    <loc>/fixed/resume/</loc>
   </url>
   
 </urlset>

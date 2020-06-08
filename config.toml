@@ -12,8 +12,24 @@ disqusshortname = "dataland-rbind-io-1"
 pluralizelisttitles = false
 googleAnalytics = "UA-108426846-1"
 
+
 [permalinks]
-    blog = "blog/:slug/"
+    post = "/:year/:month/:day/:slug"
+    
+[[params.menu]]
+    before = true
+    label  = "Home"
+    link   = "/"
+
+[[params.menu]]
+    before = false
+    label  = "Tags"
+    link   = "tags/"
+
+[[params.menu]]
+    before = false
+    label  = "Categories"
+    link   = "categories/"
 
 [params]
     # Tell me who you are
