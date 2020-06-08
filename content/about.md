@@ -2,10 +2,10 @@
 title: "about"
 ---
 
-I am a data scientist working at the analytics consultant firm Ferrologic in Sweden. This blog is about data science, mainly in R.
+My name is Filip Wästberg and I'm a Data Science Consultant at Ferrologic Analytics, a Solita company, in Sweden. This is my personal blog about Data Science, R and everything around it.
 
-I’ll do some posts in english and some in Swedish,
+The posts you'll find here are both in English and in Swedish.
 
-If you want to contact me you can do so by Mail eller Twitter.
+Feel free to contact med by mail or LinkedIn.
 
-This blog is created with the R package Blogdown. 
+This blog was created with the R package Blogdown. 
