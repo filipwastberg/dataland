@@ -6,10 +6,22 @@
     <description>Recent content in Post on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hämta data direkt från SCB till R</title>
+      <link>/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/</link>
+      <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/</guid>
+      <description>Visste du att du kan hämta data direkt från SCB, Statistiska centralbyrån till R?
+Du behöver alltså inte gå in i statistikdatabasen och ta ut en ny Excel-tabell varje gång du ska uppdatera SCB-statistik utan kan istället låta paketet pxweb av Måns Magnusson ställa frågor mot SCB:s API och få koden för det. Perfekt om ens verksamhet använder offentlig statistik återkommande.
+Du
+Här ser du kod helt och hållet genererad från den interaktiva funktionen pxweb_interactive().</description>
+    </item>
     
     <item>
       <title>Creating Python modules like R packages</title>
