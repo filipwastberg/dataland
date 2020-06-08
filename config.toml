@@ -1,4 +1,5 @@
 baseurl = "http://dataland.rbind.io"
+theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
 contentdir = "content"
