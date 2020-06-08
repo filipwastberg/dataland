@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Data land</title>
+    <link>/post/posts/</link>
+    <description>Recent content in Posts on Data land</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Creating Python modules like R packages</title>
+      <link>/post/posts/python-packages-for-r-users/</link>
+      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/posts/python-packages-for-r-users/</guid>
+      <description>An R user created a package in Python - you will not believe what happened next I am a Data Scientist at a consulting firm in Sweden. I have a background in statistics and social science but have spent the last couple of years mainly trying to understand consumers and how they behave. I have worked with everything from making Powerpoint presentations to building recommender systems. In other words I am a pretty typical data scientist.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/post/posts/linked-post/</link>
+      <pubDate>Mon, 24 Jun 2019 21:49:20 +0200</pubDate>
+      
+      <guid>/post/posts/linked-post/</guid>
+      <description>I am a data scientist working at a analytics consultant firm Ferrologic in Sweden. This blog is about data science, mainly in R.
+I&amp;rsquo;ll do some posts in english and some in Swedish,
+If you want to contact me you can do so by Mail eller Twitter.
+This blog is created with the R package Blogdown</description>
+    </item>
+    
+    <item>
+      <title>Depp-index på Stockholm Data Science Meetup</title>
+      <link>/post/posts/depp-index-p%C3%A5-stockholm-data-science-meetup/</link>
+      <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/posts/depp-index-p%C3%A5-stockholm-data-science-meetup/</guid>
+      <description>  På torsdag 30/11 kommer jag att prata inför Stockholm Data Science Meetup om mitt depp-index över Kents deprimerande låtar.
+Tanken är att jag ska visa hur det gick till och förhoppningsvis få lite input på hur analysen skulle kunna bli bättre.
+Tycker du att det är spännande med programmering och dataanalys är du hemskt välkommen att anmäla dig här
+/Filip
+ </description>
+    </item>
+    
+    <item>
+      <title>Kommunerna där kvinnor styr</title>
+      <link>/post/posts/har-styr-kvinnorna/</link>
+      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/posts/har-styr-kvinnorna/</guid>
+      <description>Sen jag var en kiddo har jag varit besatt av kartor. Historiska kartor, moderna kartor eller påhittade kartor, spelar ingen roll. Därför är det extra kul att på ett enkelt sätt kunna göra kartor i R. Så här tänkte jag visa hur man enkelt kan göra kartor på kommunnivå över Sverige.
+För att göra något intressant tänkte jag undersöka andelen kvinnor på förtroendevalda ordförandeposter i svenskar kommuner, exempelvis ordförande i kommunstyrelsen.</description>
+    </item>
+    
+    <item>
+      <title>Vilken är Kents mest deprimerande låt?</title>
+      <link>/post/posts/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
+      <pubDate>Tue, 07 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/posts/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
+      <description>Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent.
+Sååå! Vilken är egentligen Kents mest deprimerande låt?
+Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
+    </item>
+    
+    <item>
+      <title>Nå SCB:s api från R</title>
+      <link>/post/posts/n%C3%A5-scb-s-api-fr%C3%A5n-r/</link>
+      <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/posts/n%C3%A5-scb-s-api-fr%C3%A5n-r/</guid>
+      <description>Nå SCB:s databas från R Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet pxweb.
+ SCB:s API Att ta fram tabeller SCB:s statistikdatabas http://www.statistikdatabasen.scb.se/ är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.</description>
+    </item>
+    
+  </channel>
+</rss>

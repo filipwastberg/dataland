@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on </title>
+    <title>Tags on Dataland</title>
     <link>/tags/</link>
-    <description>Recent content in Tags on </description>
+    <description>Recent content in Tags on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>eng</language>
+    <language>en-US</language>
     <lastBuildDate>Tue, 07 Nov 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title></title>
-      <link>/tags/</link>
-      <pubDate>Tue, 07 Nov 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>pxweb</title>
@@ -27,12 +18,6 @@
       
       <guid>/tags/pxweb/</guid>
       <description></description>
-    </item>
-    
-  </channel>
-</rss> pröva en liknande metod på Sveriges största depp-rockband: Kent.
-Sååå! Vilken är egentligen Kents mest deprimerande låt?
-Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
     </item>
     
   </channel>

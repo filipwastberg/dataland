@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="Example blog">
+
+
+    <meta property="twitter:site" content="@filipwastberg">
+
+<meta property="og:site_name" content="Data land" />
+<meta property="og:locale" content="en-US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/posts/n%C3%A5-scb-s-api-fr%C3%A5n-r/" />
+<meta property="og:title" content="Nå SCB:s api från R" />
+<meta property="twitter:title" content="Nå SCB:s api från R">
+
+    <meta property="og:image" content="/postimg/banner.png">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="/postimg/banner.png">
+
+<meta property="og:description" content="">
+<meta property="twitter:description" content="">
+
+<title>
+
+
+     Data land - Nå SCB:s api från R 
+
+</title>
+<link rel="canonical" href="/post/post/posts/n%C3%A5-scb-s-api-fr%C3%A5n-r/">
+
+
+<style media="screen">
+  @font-face {
+  font-family: 'Nexa Bold';
+  src: url('/postfonts/Nexa Bold.otf');
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, div.column {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+a,
+a:visited,
+a:focus,
+a:active {
+  text-decoration: none;
+}
+html {
+  height: 100%;
+  font-size: 16px;
+}
+body {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100%;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  color: #111111;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility !important;
+}
+.icon {
+  text-rendering: geometricPrecision !important;
+}
+section {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+div.column {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  width: 100%;
+}
+.container {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  width: 100%;
+}
+div.header .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+}
+div.header .content {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.header .container .logo {
+  
+  max-width: 100px;
+  
+  margin-left: -2em;
+}
+div.header .name {
+  padding-top: 20px;
+  font-size: 28px;
+  font-family: 'Nexa Bold', 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  
+  text-transform: uppercase;
+  
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+}
+div.header nav {
+  margin-bottom: 16px;
+}
+div.header nav ul {
+  list-style: none;
+  text-align: center;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: -ms-inline-flex;
+  display: inline-flex;
+}
+div.header nav ul li {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+div.header nav ul li:first-child {
+  margin-left: 0;
+}
+div.header nav ul li:last-child {
+  margin-right: 0;
+}
+div.header nav ul a {
+  color: #555555;
+  font-weight: 400;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  -webkit-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.header nav ul a:hover {
+  color: #111111;
+}
+div.footer .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  width: 100%;
+  text-align: center;
+}
+div.footer .container a {
+  font-size: 14px;
+  margin-left: 6px;
+  margin-right: 6px;
+  opacity: 0.6;
+  -webkit-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.footer .container a:first-child {
+  margin-left: 0;
+}
+div.footer .container a:last-child {
+  margin-right: 0;
+}
+div.footer .container a:hover {
+  opacity: 0.8;
+}
+div.footer .container a .icon {
+  width: 16px;
+  height: 16px;
+}
+div.footer .container .copyright {
+  flex-grow: 0.5;
+  text-align: start;
+}
+div.footer .container .icons {
+  flex-grow: 0.5;
+  text-align: end;
+}
+div.main .container {
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+}
+div.main .content {
+  color: #111111;
+  font-size: 16px;
+}
+div.main .content .title-container {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+div.main .content .posts {
+  
+  
+}
+div.main .content .page-heading {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  text-transform: uppercase;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+  margin-bottom: 16px;
+}
+div.main .content .front-matter .page-heading {
+  margin-bottom: 0;
+}
+div.main .content .front-matter .meta {
+  font-size: 14px;
+  color: #666666;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  margin-bottom: 32px;
+}
+div.main .content .front-matter .date,
+div.main .content .front-matter .author,
+div.main .content .front-matter .tags,
+div.main .content .front-matter .word-count,
+div.main .content .front-matter .middot:before {
+  display: none;
+}
+div.main .content .front-matter .middot:before {
+  font-size: 6px;
+  margin: 0 6px;
+  vertical-align: middle;
+  content: "•";
+}
+div.main .content .front-matter .tags ul {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.main .content .front-matter .tags ul li {
+  -webkit-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: opacity 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+div.main .content .front-matter .tags ul li:hover {
+  opacity: 0.7;
+}
+div.main .content .front-matter .tags ul li a {
+  color: #666666;
+}
+
+div.main .container.f04 {
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+}
+div.main .container.f04 .content {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+div.main .container.f04 .content .num {
+  margin: 30px 0px 30px 0;
+  font-weight: 400;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 50px;
+}
+div.main .container.f04 .content .detail {
+  margin-bottom: 40px;
+}
+div.main .container .content .groupby {
+  margin-top: 1em;
+  padding-left: 0.5em;
+}
+div.main .container .content .post-item {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  display: list-item;
+  list-style: disc inside;
+}
+div.main .container .content .post-item .meta {
+  font-size: 14px;
+  color: #666666;
+  display: none;
+  min-width: 100px;
+}
+div.main .container .content .see-more {
+  font-style: italic;
+  float: right;
+  font-size: 0.9em;
+  margin-top: 2em;
+  color: #313537;
+}
+div.main .container .content .see-more:hover {
+  color: #666;
+}
+section {
+  padding: 0 16px;
+}
+div.column {
+  padding: 0 16px;
+}
+div.header {
+  padding-top: 10px;
+}
+div.header-home {
+  padding-top: 36px;
+}
+div.main {
+  padding-top: 32px;
+}
+div.main .container .content .post-item .meta {
+    display: block;
+}
+div.main .container .content .post-item {
+    display: flex;
+    list-style: none;
+}
+a {
+  color: #428bca;
+  -webkit-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -moz-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -ms-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+  -o-transition: color 0.1s cubic-bezier(0.47, 0, 0.75, 0.72);
+}
+a:hover {
+  color: #2a6496;
+}
+img {
+  max-width: 100%;
+}
+div.main .content {
+    width: 100%;
+}
+div.main .content .markdown {
+  font-size: 1.1em;
+  line-height: 1.75em;
+  color: #313537;
+  font-family: serif;
+  font-weight: 300;
+}
+div.main .content .markdown h1,
+div.main .content .markdown h2,
+div.main .content .markdown h3,
+div.main .content .markdown h4,
+div.main .content .markdown h5,
+div.main .content .markdown h6 {
+  font-size: 22px;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  letter-spacing: -0.005rem;
+  font-weight: 700;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: #333333;
+  text-transform: none;
+  margin-top: 1.75rem;
+}
+div.main .content .markdown h1 {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+}
+div.main .content .markdown h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+div.main .content .markdown h3 {
+  font-size: 1em;
+  margin-bottom: 1rem;
+}
+div.main .content .markdown h4,
+div.main .content .markdown h5,
+div.main .content .markdown h6 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  letter-spacing: none;
+}
+div.main .content .markdown code,
+div.main .content .markdown pre {
+  font-family: 'Menlo', monospace;
+  font-size: 0.98rem;
+  background-color: #f7f7f7;
+}
+div.main .content .markdown code {
+  /* enclosed by single backtick (`) */
+  padding: .15em .5em;
+  border-radius: 2px;
+}
+div.main .content .markdown pre {
+  /* Hugo specific: consider using the 'highlight' shortcode */
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  line-height: 1.5em;
+  white-space: pre;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+div.main .content .markdown pre code {
+  /* enclosed by 4 backticks (````) */
+  padding: 0;
+  font-size: 0.9rem;
+}
+div.main .content .markdown a code {
+  color: #428bca !important;
+}
+div.main .content .markdown a code:hover {
+  text-decoration: underline;
+}
+div.main .content .markdown p {
+  
+  text-align: justify;
+  
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+div.main .content .markdown ul,
+div.main .content .markdown ol,
+div.main .content .markdown dl {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+div.main .content .markdown dt {
+  font-weight: bold;
+}
+div.main .content .markdown dd {
+  margin-bottom: .5rem;
+}
+div.main .content .markdown ul {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-bottom: 1.25rem;
+}
+div.main .content .markdown ol {
+  list-style-type: decimal;
+  margin-bottom: 1.25rem;
+}
+div.main .content .markdown li {
+  margin-left: 2em;
+}
+div.main .content .markdown em {
+  font-style: italic;
+}
+div.main .content .markdown strong {
+  font-weight: 700;
+}
+div.main .content .markdown hr {
+  position: relative;
+  margin: 1.75rem 0;
+  border: 0;
+  border-top: 1px solid #808080;
+  border-top: 1px solid #999999;
+}
+div.main .content .markdown abbr {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #666666;
+  text-transform: uppercase;
+}
+div.main .content .markdown abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted #808080;
+}
+div.main .content .markdown blockquote {
+  padding: .5rem 1rem;
+  margin: .8rem 0;
+  color: #7a7a7a;
+  border-left: .25rem solid #e5e5e5;
+}
+div.main .content .markdown blockquote p:last-child {
+  margin-bottom: 0;
+}
+div.main .content .markdown figure {
+  width: 100%;
+  background: #fff;
+  margin-bottom: 1em;
+}
+div.main .content .markdown figure img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  position: static;
+  margin: auto;
+}
+div.main .content .markdown table {
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-collapse: collapse;
+}
+div.main .content .markdown td,
+div.main .content .markdown th {
+  padding: .25rem .5rem;
+  border: 1px solid #e5e5e5;
+}
+div.main .content .markdown tbody tr:nth-child(odd) td,
+div.main .content .markdown tbody tr:nth-child(odd) th {
+  background-color: #f7f7f7;
+}
+div.main .content .markdown .footnotes ol {
+  list-style-type: decimal;
+  margin-left: 16px;
+}
+div.main .content .markdown .footnotes li {
+  list-style-type: unset;
+}
+div.main .content .markdown .footnote-ref {
+  font-size: 0.7em;
+}
+div.main .content .navigation {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  padding: 2em;
+}
+div.main .content .navigation div {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  margin-top: 1em;
+}
+div.main .content .navigation .icon {
+  width: 16px;
+  height: 16px;
+}
+div.main .content .navigation a {
+  width: 250px;
+  margin: 0 1em;
+  text-align: center;
+  font-style: italic;
+  color: #313537;
+}
+div.main .content .share, div.main .content .share div {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  justify-content: center;
+}
+div.main .content .share {
+  background-color: rgba(152, 152, 152, 0.07);
+  padding: 1em 0;
+}
+div.main .content .share a {
+  margin: 0 6px;
+}
+kbd {
+  padding: 0.1em 0.6em;
+  border: 1px solid #ccc;
+  font-size: 11px;
+  font-family: Arial,Helvetica,sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  -moz-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  -webkit-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 0 0.1em;
+  text-shadow: 0 1px 0 #fff;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Fonts */
+
+
+.wf-raleway-n4-active body, 
+.wf-raleway-n4-active div.header nav ul a,
+.wf-raleway-n7-active div.main .content .page-heading,
+.wf-raleway-n2-active div.main .container.f04 .content .num,
+.wf-raleway-n7-active div.main .content .markdown h1,
+.wf-raleway-n7-active div.main .content .markdown h2,
+.wf-raleway-n7-active div.main .content .markdown h3,
+.wf-raleway-n7-active div.main .content .markdown h4,
+.wf-raleway-n7-active div.main .content .markdown h5,
+.wf-raleway-n7-active div.main .content .markdown h6 {
+      font-family: 'Raleway';
+}
+
+.wf-merriweather-n3-active div.main .content .markdown {
+      font-family: 'Merriweather';
+}
+
+.wf-ubuntu-mono-n4-active div.main .content .markdown code,
+.wf-ubuntu-mono-n4-active div.main .content .markdown pre {
+      font-family: 'Ubuntu Mono';
+}
+
+
+</style>
+<style media="(min-width: 600px)">
+  body {
+-webkit-justify-content: center;
+-moz-justify-content: center;
+-ms-justify-content: center;
+justify-content: center;
+}
+.non-narrow.zero-top-spacing {
+padding-top: 0 !important;
+}
+section {
+padding: 0 16px;
+margin-left: 100px;
+margin-right: 100px;
+
+max-width: 750px;
+
+}
+div.column {
+padding: 0 16px;
+
+max-width: 750px;
+
+}
+div.header {
+background-color: transparent;
+}
+div.header .container {
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+justify-content: flex-start;
+}
+div.header .container .logo {
+margin: 0;
+}
+div.header-home .container .logo {
+max-width: 216px;
+margin-left: 24px;
+}
+div.header-home .name-home {
+padding-top: 30px;
+font-size: 40px;
+}
+div.header-home nav ul a {
+font-size: 18px;
+}
+div.header .content {
+-webkit-align-items: flex-start;
+-moz-align-items: flex-start;
+-ms-align-items: flex-start;
+align-items: flex-start;
+}
+div.header .name {
+color: #333333;
+}
+div.header nav {
+font-size: 14px;
+margin-bottom: 0;
+}
+div.header nav ul {
+text-align: left;
+}
+div.header nav ul a {
+color: #666666;
+}
+div.header nav ul a:hover {
+color: #333333;
+}
+div.footer {
+background-color: transparent;
+}
+div.footer .container {
+flex-direction: row;
+}
+div.footer .container a {
+margin-left: 3px;
+margin-right: 3px;
+color: #666666;
+}
+div.footer .container a:hover {
+color: #333333;
+}
+div.footer .container a .icon {
+font-size: 18px;
+}
+div.footer .container a .icon.larger {
+font-size: 20px;
+}
+div.main .content .front-matter .date,
+div.main .content .front-matter .author,
+div.main .content .front-matter .tags,
+div.main .content .front-matter .word-count,
+div.main .content .front-matter .middot:before {
+display: initial;
+}
+div.main .container.f04 {
+-webkit-justify-content: flex-start;
+-moz-justify-content: flex-start;
+-ms-justify-content: flex-start;
+justify-content: flex-start;
+}
+div.main .container.f04 .content {
+-webkit-align-items: flex-start;
+-moz-align-items: flex-start;
+-ms-align-items: flex-start;
+align-items: flex-start;
+}
+div.main .container.f04 .content .num {
+margin: 0 0 10px 0;
+font-size: 32px;
+}
+div.main .container.f04 .content .detail {
+margin-bottom: 30px;
+}
+.container {
+padding: 0 30px;
+}
+div.header {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+div.footer {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+div.main {
+padding-top: 0;
+}
+div.main .content {
+  
+  font-size: 16px;
+  
+}
+div.main .container .content .post-item {
+display: flex;
+list-style: none;
+padding-left: 1.5em;
+}
+div.main .container .content .post-item .meta {
+display: block;
+}
+div.main .content .markdown blockquote {
+padding-right: 5rem;
+padding-left: 1.25rem;
+}
+div.main .content .navigation {
+-webkit-flex-direction: row;
+-moz-flex-direction: row;
+-ms-flex-direction: row;
+flex-direction: row;
+}
+div.main .content .navigation div {
+margin-top: 0em;
+}
+
+</style>
+<style media="(min-width: 769px)">
+  div.main .content .markdown figure {
+width: 110%;
+margin-left: -4%;
+}
+div.main .content .markdown img {
+max-width: 110%;
+width: 110%;
+margin-left: -4%;
+}
+div.main .content .markdown pre {
+width: 110%;
+margin-left: -4%;
+}
+
+</style>
+
+<noscript>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" rel="stylesheet">
+</noscript>
+
+
+  <style type="text/css" media="screen">
+    .hljs{display:block;background:white;padding:0.5em;color:#333333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-string,.hljs-variable,.hljs-template-variable,.hljs-strong,.hljs-emphasis,.hljs-quote{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-literal,.hljs-symbol,.hljs-bullet,.hljs-attribute{color:#0086b3}.hljs-section,.hljs-name{color:#63a35c}.hljs-tag{color:#333333}.hljs-title,.hljs-attr,.hljs-selector-id,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}
+  </style>
+
+
+
+  <style type="text/css" media="screen">
+    .progressive{overflow:hidden;position:relative;background:#efefef}.progressive__img{width:100%;height:100%;transform:translateZ(0)}.progressive--not-loaded{filter:blur(30px)}.progressive--is-loaded{filter:blur(20px);animation:a .5s both}@keyframes a{0%{filter:blur(20px)}to{filter:blur(0)}}
+
+  </style>
+
+
+
+
+
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/post/img/logo.png"
+
+>
+
+
+
+
+</head>
+
+
+<body>
+
+
+<div class="header column">
+
+    <div class="container">
+        
+        <div class="content">
+            <a href="/post/"><div class="name"><h1>Data land</h1></div></a>
+            <nav>
+                <ul>
+                    
+                    
+                        
+                            
+                            <li><a href="/post/posts">posts</a></li>
+                            
+                        
+                    
+                    
+                        
+                            <li><a href="/post/about/">about</a></li>
+                        
+                    
+                        
+                            <li><a href="/post/resume/">resume</a></li>
+                        
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="main column">
+    <div class="container">
+        <div class="content">
+            <div class="page-heading">
+
+    
+    Nå SCB:s api från R
+    
+
+</div>
+
+            <div class="markdown">
+                
+    
+    
+<script src="/post/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/post/rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="/post/rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="/post/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/post/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/post/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="/post/rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="/post/rmarkdown-libs/plotlyjs/plotly-latest.min.js"></script>
+
+
+<div id="na-scbs-databas-fran-r" class="section level2">
+<h2>Nå SCB:s databas från R</h2>
+<p>Målet med det här inlägget är att visa hur man kan nå SCB:s API från R med hjälp av paketet <code>pxweb</code>.</p>
+</div>
+<div id="scbs-api" class="section level2">
+<h2>SCB:s API</h2>
+<p>Att ta fram tabeller SCB:s statistikdatabas <a href="http://www.statistikdatabasen.scb.se/" class="uri">http://www.statistikdatabasen.scb.se/</a> är relativt enkelt. Men att använda statistiken från deras tabeller för att göra exempelvis diagram kan vara tradigt. Särskilt om man är intresserad av olika undergrupper eller vill uppdatera siffrorna kontinuerligt.</p>
+<p>Tack och lov finns det ett ganska enkelt sätt att komma åt SCB:s databas-API från R. Det är <a href="https://github.com/MansMeg/">Måns Magnusson</a>, doktorand i Statistik vid Linköpings universitet och något av en R-guru (!?!?) i Sverige som tillsammans med <a href="https://github.com/LCHansson/">Love Hansson</a> och <a href="https://github.com/antagomir">Leo Lahti</a> byggt R-paketet pxweb som samlar API:er, d.v.s. direkt kontakt med databaser, för en rad olika officiella statistikdatabaser, däribland SCB. Woho! Aldrig mer stökiga tabeller från SCB!</p>
+<p><em>En liten brasklapp: Måns har meddelat att han håller på att skriva om paketet så det här inlägget kan mycket väl bli obsolet.</em></p>
+</div>
+<div id="och-vidare" class="section level2">
+<h2>Och vidare!</h2>
+<p>Vi börjar med att ladda paketen vi kommer att behöva.</p>
+<pre class="r"><code>library(dplyr)
+library(stringr)
+library(ggplot2)
+library(pxweb)
+library(plotly)
+library(scales)</code></pre>
+</div>
+<div id="pxweb" class="section level2">
+<h2>pxweb</h2>
+<p>Funktionen ´interactive_pxweb()´ är en interaktiv funktion som kommunicerar med den databas du vill hämta data från. Funktionen skiljer sig lite från SCB:s statistikdatabas men man känner igen sig.</p>
+<p>En ganska avgörande skillnad är att man i SCB:s databasverktyg kan låta bli att välja ganska många nedbrytningar. Bland annat kan man i databasverktyget för folkmängd låta bli att dela upp befolkning i civilstånd. I pxweb-paketet måste du i regel alltid välja dessa (i databasverktyget frivilliga) undergrupper. Men det är enkelt hanterat i R (men en mardröm i exempelvis Excel).</p>
+<pre class="r"><code> data &lt;- interactive_pxweb()</code></pre>
+<p>Funktionen <code>interactive_pxweb()</code>skriver även koden för den data du valt, i det här fallet blev koden:</p>
+<pre class="r"><code>data &lt;- get_pxweb_data(url = 
+                        &quot;http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101A/BefolkningNy&quot;,
+                 dims = list(Region = c(&#39;00&#39;),
+                             Civilstand = c(&#39;*&#39;),
+                             Alder = c(&#39;tot&#39;),
+                             Kon = c(&#39;*&#39;),
+                             ContentsCode = c(&#39;BE0101N1&#39;),
+                             Tid = c(&#39;1968&#39;, &#39;1969&#39;, &#39;1970&#39;, &#39;1971&#39;, &#39;1972&#39;,
+                                     &#39;1973&#39;, &#39;1974&#39;, &#39;1975&#39;, &#39;1976&#39;, &#39;1977&#39;,
+                                     &#39;1978&#39;, &#39;1979&#39;, &#39;1980&#39;, &#39;1981&#39;, &#39;1982&#39;,
+                                     &#39;1983&#39;, &#39;1984&#39;, &#39;1985&#39;, &#39;1986&#39;, &#39;1987&#39;,
+                                     &#39;1988&#39;, &#39;1989&#39;, &#39;1990&#39;, &#39;1991&#39;, &#39;1992&#39;,
+                                     &#39;1993&#39;, &#39;1994&#39;, &#39;1995&#39;, &#39;1996&#39;, &#39;1997&#39;,
+                                     &#39;1998&#39;, &#39;1999&#39;, &#39;2000&#39;, &#39;2001&#39;, &#39;2002&#39;,
+                                     &#39;2003&#39;, &#39;2004&#39;, &#39;2005&#39;, &#39;2006&#39;, &#39;2007&#39;,
+                                     &#39;2008&#39;, &#39;2009&#39;, &#39;2010&#39;, &#39;2011&#39;, &#39;2012&#39;,
+                                     &#39;2013&#39;, &#39;2014&#39;, &#39;2015&#39;, &#39;2016&#39;)),
+                 clean = TRUE)</code></pre>
+<p>Jag har valt hela riket, alla civilståndstyper, inga åldersnedbrytningar och data från 1968-2016.</p>
+<p>Ett problem nu är att jag data med 392 observationer på 5 variabler. Egentligen vill jag bara ha tre variabler: en variabel för år, en för kön och en för folkmängd.</p>
+<pre class="r"><code>head(data)</code></pre>
+<pre><code>##     region civilstånd        ålder kön   år tabellinnehåll  values
+## 1 00 Riket     ogifta totalt ålder män 1968      Folkmängd 1833641
+## 2 00 Riket     ogifta totalt ålder män 1969      Folkmängd 1857631
+## 3 00 Riket     ogifta totalt ålder män 1970      Folkmängd 1884570
+## 4 00 Riket     ogifta totalt ålder män 1971      Folkmängd 1899395
+## 5 00 Riket     ogifta totalt ålder män 1972      Folkmängd 1910239
+## 6 00 Riket     ogifta totalt ålder män 1973      Folkmängd 1921499</code></pre>
+<p>För att manipulera data använder jag det populära paketet <code>dplyr</code>.</p>
+<p>Med funktionen <code>group_by</code> kan jag summera antalet invånare över kön och år.</p>
+<pre class="r"><code>data &lt;- data %&gt;%
+  group_by(kön, år) %&gt;%
+  summarise(antal_invånare = sum(values))</code></pre>
+<p>På så sätt blir jag av med civilstånd.</p>
+<p>Ett till problem är att variablen år inte är defnierad som ett datum så jag använder <code>as.Date()</code> för att ange format. I det här fallet är den i årtal, “%Y”.</p>
+<pre class="r"><code>data$år &lt;- as.Date(data$år, format = &quot;%Y&quot;)</code></pre>
+<p>Nu kan vi visualisera med det populäraste paketet för datavisualseringar i R ggplot2.</p>
+<pre class="r"><code>folkmangd &lt;- ggplot(data) +
+  geom_line(aes(x = år,
+                y = antal_invånare,
+                group = kön, color = kön)) +
+  scale_x_date() +
+  scale_y_continuous(labels = format_format(big.mark = &quot; &quot;,
+                                            decimal.mark = &quot;,&quot;,
+                                            scientific = FALSE),
+                     limits = c(0,5020000)) +
+  labs(title = &quot;Folkökning 1968-2016&quot;,
+       x = &quot;År&quot;, y = &quot;Antal invånare&quot;, color = &quot;Kön&quot;) +
+  scale_color_discrete(labels = c(&quot;Kvinnor&quot;, &quot;Män&quot;))</code></pre>
+<p>Med paketet <code>plotly</code> och funktionen <code>ggplotly()</code> kan vi enkelt göra en ggplot till en interaktiv graf. Det är inte svårare än att vi använder funktionen på vår ggplot och vips så är den interaktiv.</p>
+<pre class="r"><code>ggplotly(folkmangd)</code></pre>
+<div id="817349ed0451" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="817349ed0451">{"x":{"data":[{"x":[-456,-91,274,639,1005,1370,1735,2100,2466,2831,3196,3561,3927,4292,4657,5022,5388,5753,6118,6483,6849,7214,7579,7944,8310,8675,9040,9405,9771,10136,10501,10866,11232,11597,11962,12327,12693,13058,13423,13788,14154,14519,14884,15249,15615,15980,16345,16710,17076],"y":[3972078,4007740,4045374,4066592,4077814,4089903,4108883,4127179,4143597,4162518,4174933,4187488,4198115,4204411,4210127,4214436,4222072,4231029,4244002,4261500,4283008,4314956,4346613,4373496,4397428,4424155,4460127,4471425,4474782,4475712,4478703,4481308,4490039,4500683,4513681,4529014,4545081,4561202,4589734,4619006,4652637,4691668,4725326,4756021,4789988,4830507,4875115,4920051,4981806],"text":["år: 1968-10-02<br />antal_invånare: 3972078<br />kön: kvinnor<br />kön: kvinnor","år: 1969-10-02<br />antal_invånare: 4007740<br />kön: kvinnor<br />kön: kvinnor","år: 1970-10-02<br />antal_invånare: 4045374<br />kön: kvinnor<br />kön: kvinnor","år: 1971-10-02<br />antal_invånare: 4066592<br />kön: kvinnor<br />kön: kvinnor","år: 1972-10-02<br />antal_invånare: 4077814<br />kön: kvinnor<br />kön: kvinnor","år: 1973-10-02<br />antal_invånare: 4089903<br />kön: kvinnor<br />kön: kvinnor","år: 1974-10-02<br />antal_invånare: 4108883<br />kön: kvinnor<br />kön: kvinnor","år: 1975-10-02<br />antal_invånare: 4127179<br />kön: kvinnor<br />kön: kvinnor","år: 1976-10-02<br />antal_invånare: 4143597<br />kön: kvinnor<br />kön: kvinnor","år: 1977-10-02<br />antal_invånare: 4162518<br />kön: kvinnor<br />kön: kvinnor","år: 1978-10-02<br />antal_invånare: 4174933<br />kön: kvinnor<br />kön: kvinnor","år: 1979-10-02<br />antal_invånare: 4187488<br />kön: kvinnor<br />kön: kvinnor","år: 1980-10-02<br />antal_invånare: 4198115<br />kön: kvinnor<br />kön: kvinnor","år: 1981-10-02<br />antal_invånare: 4204411<br />kön: kvinnor<br />kön: kvinnor","år: 1982-10-02<br />antal_invånare: 4210127<br />kön: kvinnor<br />kön: kvinnor","år: 1983-10-02<br />antal_invånare: 4214436<br />kön: kvinnor<br />kön: kvinnor","år: 1984-10-02<br />antal_invånare: 4222072<br />kön: kvinnor<br />kön: kvinnor","år: 1985-10-02<br />antal_invånare: 4231029<br />kön: kvinnor<br />kön: kvinnor","år: 1986-10-02<br />antal_invånare: 4244002<br />kön: kvinnor<br />kön: kvinnor","år: 1987-10-02<br />antal_invånare: 4261500<br />kön: kvinnor<br />kön: kvinnor","år: 1988-10-02<br />antal_invånare: 4283008<br />kön: kvinnor<br />kön: kvinnor","år: 1989-10-02<br />antal_invånare: 4314956<br />kön: kvinnor<br />kön: kvinnor","år: 1990-10-02<br />antal_invånare: 4346613<br />kön: kvinnor<br />kön: kvinnor","år: 1991-10-02<br />antal_invånare: 4373496<br />kön: kvinnor<br />kön: kvinnor","år: 1992-10-02<br />antal_invånare: 4397428<br />kön: kvinnor<br />kön: kvinnor","år: 1993-10-02<br />antal_invånare: 4424155<br />kön: kvinnor<br />kön: kvinnor","år: 1994-10-02<br />antal_invånare: 4460127<br />kön: kvinnor<br />kön: kvinnor","år: 1995-10-02<br />antal_invånare: 4471425<br />kön: kvinnor<br />kön: kvinnor","år: 1996-10-02<br />antal_invånare: 4474782<br />kön: kvinnor<br />kön: kvinnor","år: 1997-10-02<br />antal_invånare: 4475712<br />kön: kvinnor<br />kön: kvinnor","år: 1998-10-02<br />antal_invånare: 4478703<br />kön: kvinnor<br />kön: kvinnor","år: 1999-10-02<br />antal_invånare: 4481308<br />kön: kvinnor<br />kön: kvinnor","år: 2000-10-02<br />antal_invånare: 4490039<br />kön: kvinnor<br />kön: kvinnor","år: 2001-10-02<br />antal_invånare: 4500683<br />kön: kvinnor<br />kön: kvinnor","år: 2002-10-02<br />antal_invånare: 4513681<br />kön: kvinnor<br />kön: kvinnor","år: 2003-10-02<br />antal_invånare: 4529014<br />kön: kvinnor<br />kön: kvinnor","år: 2004-10-02<br />antal_invånare: 4545081<br />kön: kvinnor<br />kön: kvinnor","år: 2005-10-02<br />antal_invånare: 4561202<br />kön: kvinnor<br />kön: kvinnor","år: 2006-10-02<br />antal_invånare: 4589734<br />kön: kvinnor<br />kön: kvinnor","år: 2007-10-02<br />antal_invånare: 4619006<br />kön: kvinnor<br />kön: kvinnor","år: 2008-10-02<br />antal_invånare: 4652637<br />kön: kvinnor<br />kön: kvinnor","år: 2009-10-02<br />antal_invånare: 4691668<br />kön: kvinnor<br />kön: kvinnor","år: 2010-10-02<br />antal_invånare: 4725326<br />kön: kvinnor<br />kön: kvinnor","år: 2011-10-02<br />antal_invånare: 4756021<br />kön: kvinnor<br />kön: kvinnor","år: 2012-10-02<br />antal_invånare: 4789988<br />kön: kvinnor<br />kön: kvinnor","år: 2013-10-02<br />antal_invånare: 4830507<br />kön: kvinnor<br />kön: kvinnor","år: 2014-10-02<br />antal_invånare: 4875115<br />kön: kvinnor<br />kön: kvinnor","år: 2015-10-02<br />antal_invånare: 4920051<br />kön: kvinnor<br />kön: kvinnor","år: 2016-10-02<br />antal_invånare: 4981806<br />kön: kvinnor<br />kön: kvinnor"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"kvinnor","legendgroup":"kvinnor","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-456,-91,274,639,1005,1370,1735,2100,2466,2831,3196,3561,3927,4292,4657,5022,5388,5753,6118,6483,6849,7214,7579,7944,8310,8675,9040,9405,9771,10136,10501,10866,11232,11597,11962,12327,12693,13058,13423,13788,14154,14519,14884,15249,15615,15980,16345,16710,17076],"y":[3959115,3996530,4035768,4048573,4051315,4054525,4067808,4081263,4092582,4104598,4109504,4115522,4119822,4118622,4117357,4116137,4120549,4127110,4137513,4152583,4175880,4212080,4244017,4270623,4294585,4320954,4356254,4366071,4369717,4371913,4375619,4380118,4392753,4408445,4427107,4446656,4466311,4486550,4523523,4563921,4603710,4649014,4690244,4726834,4765905,4814357,4872240,4930966,5013347],"text":["år: 1968-10-02<br />antal_invånare: 3959115<br />kön: män<br />kön: män","år: 1969-10-02<br />antal_invånare: 3996530<br />kön: män<br />kön: män","år: 1970-10-02<br />antal_invånare: 4035768<br />kön: män<br />kön: män","år: 1971-10-02<br />antal_invånare: 4048573<br />kön: män<br />kön: män","år: 1972-10-02<br />antal_invånare: 4051315<br />kön: män<br />kön: män","år: 1973-10-02<br />antal_invånare: 4054525<br />kön: män<br />kön: män","år: 1974-10-02<br />antal_invånare: 4067808<br />kön: män<br />kön: män","år: 1975-10-02<br />antal_invånare: 4081263<br />kön: män<br />kön: män","år: 1976-10-02<br />antal_invånare: 4092582<br />kön: män<br />kön: män","år: 1977-10-02<br />antal_invånare: 4104598<br />kön: män<br />kön: män","år: 1978-10-02<br />antal_invånare: 4109504<br />kön: män<br />kön: män","år: 1979-10-02<br />antal_invånare: 4115522<br />kön: män<br />kön: män","år: 1980-10-02<br />antal_invånare: 4119822<br />kön: män<br />kön: män","år: 1981-10-02<br />antal_invånare: 4118622<br />kön: män<br />kön: män","år: 1982-10-02<br />antal_invånare: 4117357<br />kön: män<br />kön: män","år: 1983-10-02<br />antal_invånare: 4116137<br />kön: män<br />kön: män","år: 1984-10-02<br />antal_invånare: 4120549<br />kön: män<br />kön: män","år: 1985-10-02<br />antal_invånare: 4127110<br />kön: män<br />kön: män","år: 1986-10-02<br />antal_invånare: 4137513<br />kön: män<br />kön: män","år: 1987-10-02<br />antal_invånare: 4152583<br />kön: män<br />kön: män","år: 1988-10-02<br />antal_invånare: 4175880<br />kön: män<br />kön: män","år: 1989-10-02<br />antal_invånare: 4212080<br />kön: män<br />kön: män","år: 1990-10-02<br />antal_invånare: 4244017<br />kön: män<br />kön: män","år: 1991-10-02<br />antal_invånare: 4270623<br />kön: män<br />kön: män","år: 1992-10-02<br />antal_invånare: 4294585<br />kön: män<br />kön: män","år: 1993-10-02<br />antal_invånare: 4320954<br />kön: män<br />kön: män","år: 1994-10-02<br />antal_invånare: 4356254<br />kön: män<br />kön: män","år: 1995-10-02<br />antal_invånare: 4366071<br />kön: män<br />kön: män","år: 1996-10-02<br />antal_invånare: 4369717<br />kön: män<br />kön: män","år: 1997-10-02<br />antal_invånare: 4371913<br />kön: män<br />kön: män","år: 1998-10-02<br />antal_invånare: 4375619<br />kön: män<br />kön: män","år: 1999-10-02<br />antal_invånare: 4380118<br />kön: män<br />kön: män","år: 2000-10-02<br />antal_invånare: 4392753<br />kön: män<br />kön: män","år: 2001-10-02<br />antal_invånare: 4408445<br />kön: män<br />kön: män","år: 2002-10-02<br />antal_invånare: 4427107<br />kön: män<br />kön: män","år: 2003-10-02<br />antal_invånare: 4446656<br />kön: män<br />kön: män","år: 2004-10-02<br />antal_invånare: 4466311<br />kön: män<br />kön: män","år: 2005-10-02<br />antal_invånare: 4486550<br />kön: män<br />kön: män","år: 2006-10-02<br />antal_invånare: 4523523<br />kön: män<br />kön: män","år: 2007-10-02<br />antal_invånare: 4563921<br />kön: män<br />kön: män","år: 2008-10-02<br />antal_invånare: 4603710<br />kön: män<br />kön: män","år: 2009-10-02<br />antal_invånare: 4649014<br />kön: män<br />kön: män","år: 2010-10-02<br />antal_invånare: 4690244<br />kön: män<br />kön: män","år: 2011-10-02<br />antal_invånare: 4726834<br />kön: män<br />kön: män","år: 2012-10-02<br />antal_invånare: 4765905<br />kön: män<br />kön: män","år: 2013-10-02<br />antal_invånare: 4814357<br />kön: män<br />kön: män","år: 2014-10-02<br />antal_invånare: 4872240<br />kön: män<br />kön: män","år: 2015-10-02<br />antal_invånare: 4930966<br />kön: män<br />kön: män","år: 2016-10-02<br />antal_invånare: 5013347<br />kön: män<br />kön: män"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","name":"män","legendgroup":"män","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":78.1735159817352},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":"Folkökning 1968-2016","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-1332.6,17952.6],"tickmode":"array","ticktext":["1970","1980","1990","2000","2010"],"tickvals":[0,3652,7305,10957,14610],"categoryorder":"array","categoryarray":["1970","1980","1990","2000","2010"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"År","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-251000,5271000],"tickmode":"array","ticktext":["0","1 000 000","2 000 000","3 000 000","4 000 000","5 000 000"],"tickvals":[0,1000000,2000000,3000000,4000000,5000000],"categoryorder":"array","categoryarray":["0","1 000 000","2 000 000","3 000 000","4 000 000","5 000 000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"Antal invånare","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.913385826771654},"annotations":[{"text":"Kön","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"81732f21a553":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"81732f21a553","visdat":{"81732f21a553":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+</div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="footer column">
+    <div class="container">
+
+        
+
+        <div class="copyright">
+
+        
+            
+                <a href="/post/postlicense">Copyright © 2019 Filip Wästberg</a>
+            
+        
+
+        </div>
+        <div class="icons">
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="https://github.com/filipwastberg" rel=me target="_blank">
+                <img class="icon" src="/post/postimg/github.svg" alt="github" />
+            </a>
+        
+
+        
+            <a href="https://twitter.com/filipwastberg" rel=me target="_blank">
+                <img class="icon" src="/post/postimg/twitter.svg" alt="twitter" />
+            </a>
+        
+
+        
+            <a href="https://www.linkedin.com/in/filipwastberg" rel=me target="_blank">
+                <img class="icon" src="/post/postimg/linkedin.svg" alt="linkedin" />
+            </a>
+        
+
+        
+
+        
+
+        
+            <a href="mailto:filip.wastberg@gmail.com">
+                <img class="icon" src="/post/postimg/email.svg" alt="email" />
+            </a>
+        
+
+        
+            <a href="/post/post/index.xml">
+                <img class="icon" src="/post/postimg/rss.svg" alt="rss" />
+            </a>
+        
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>
+  WebFont.load({
+    google: {
+      families: ['Raleway:400,600,700', 'Merriweather:300,300i,700,700i', 'Ubuntu+Mono:400,700']
+    }
+  });
+</script>
+
+
+
+  <script src="/post/postjs/highlight.min.js" defer></script>
+  
+
+
+
+  <script src="/post/postjs/progressively.min.js" defer></script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-108426846-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script>
+  window.onload = function() {
+    
+      hljs.initHighlighting();
+    
+    
+      progressively.init({delay: 30, throttle: 50});
+    
+    
+  };
+</script>
+
+
+
+
+</body>
+</html>
+
