@@ -5,13 +5,11 @@
   <url>
     <loc>/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -20,27 +18,23 @@
   </url>
   
   <url>
-    <loc>/post/</loc>
+    <loc>/categories/packages/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/packages/</loc>
+    <loc>/post/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/python/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/r/</loc>
     <lastmod>2019-06-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -56,13 +50,11 @@
   <url>
     <loc>/categories/musik/</loc>
     <lastmod>2017-11-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/textanalys/</loc>
     <lastmod>2017-11-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -73,19 +65,11 @@
   <url>
     <loc>/categories/offentlig-statistik/</loc>
     <lastmod>2017-11-15T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/</loc>
     <lastmod>2017-11-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2017-11-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -99,15 +83,13 @@
   </url>
   
   <url>
-    <loc>/categories/scb/</loc>
+    <loc>/tags/pxweb/</loc>
     <lastmod>2017-10-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/pxweb/</loc>
+    <loc>/categories/scb/</loc>
     <lastmod>2017-10-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>
