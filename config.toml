@@ -1,4 +1,4 @@
-baseurl = "https://dataland.rbind.io"
+baseurl = "https://dataland.rbind.io/"
 theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
@@ -8,28 +8,58 @@ layoutdir = "layouts"
 publishdir = "public"
 author = "Filip Wästberg"
 title = "Dataland"
-pygmentsuseclasses = true
+disqusshortname = ""
 pluralizelisttitles = false
-disqusshortname = "dataland-rbind-io-1"
-googleAnalytics = "UA-108426846-1"
-
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+disableKinds = ["taxonomy", "taxonomyTerm"]
 
 [permalinks]
-fixed = ":title/"
 blog = "blog/:slug/"
 
 [params]
-author = "Filip Wästberg"
-cachebuster = true
 dateform = "Jan 2, 2006"
 dateformfull = "Mon Jan 2 2006 15:04:05 MST"
-description = "Dataland"
+description = "A blog by Filip Wästberg"
+copyright = "Copyright © 2017-{year} Filip Wästberg"
+# copyrightUrl = "https://creativecommons.org/licenses/by-sa/4.0/"
 logofile = "img/h_logo_no_text1.png"
 faviconfile = "img/h_logo_no_text1.png"
 highlightjs = true
-lang = "en"
+# options for highlight.js (version, additional languages, and theme)
+highlightjsVersion = "9.11.0"
+highlightjsCDN = "https://cdn.bootcss.com"
+highlightjsLang = ["r", "yaml"]
+highlightjsTheme = "github"
+progressively = true
+share = true
+# Share to googleplus, twitter, fb, linkedin by default
+# disable by setting share_on_<social network> = false
+# example: share_on_googleplus = false
+latestpostcount = 5
 github = "https://github.com/filipwastberg"
 email = "filip.wastberg@gmail.com"
 linkedin = "filipwastberg"
 twitter = "@filipwastberg"
+social_banner = "img/banner.png"
+usesmallsummarycard = true
+posts_navigation = true
+# issoHost = "comments.domain.tld:1234"
+# githubRepo = "githubUsername/repositoryName/tree/master"
+small_banner_logo = false
+
+[params.utteranc]
+enable = true
+repo = "mtn/cocoa-eh-hugo-theme"
+issueTerm = "title"
+
+[params.colors]
+identifier = "#527fc1f"
+identifier_dark = "#1a3152"
+trivial = "#6a7a8b"
+foreground = "#181d2a"
+background = "#f9f9f9"
+background_dark = "#282a36"
+code = "#87a5d2"
+type = "#97d28b"
+special = "#ffcb8d"
+value = "#96c2d7"
+statement = "#ff8e91"

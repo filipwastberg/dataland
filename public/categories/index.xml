@@ -1,76 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Dataland</title>
+    <title>Categories on A Hugo website</title>
     <link>/categories/</link>
-    <description>Recent content in Categories on Dataland</description>
+    <description>Recent content in Categories on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
-    <lastBuildDate>Fri, 23 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>r</title>
+      <title>R</title>
       <link>/categories/r/</link>
-      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
       <guid>/categories/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>packages</title>
-      <link>/categories/packages/</link>
-      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/packages/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>python</title>
-      <link>/categories/python/</link>
-      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>musik</title>
-      <link>/categories/musik/</link>
-      <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/musik/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>textanalys</title>
-      <link>/categories/textanalys/</link>
-      <pubDate>Sun, 26 Nov 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/textanalys/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Offentlig statistik</title>
-      <link>/categories/offentlig-statistik/</link>
-      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/offentlig-statistik/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>SCB</title>
-      <link>/categories/scb/</link>
-      <pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/scb/</guid>
       <description></description>
     </item>
     

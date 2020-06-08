@@ -1,9 +1,9 @@
 {{ partial "header.html" . }}
-<section class="main">
-    <div class="container">
-        <div class="content">
-            {{ .Content }}
-        </div>
-    </div>
-</section>
+
+{{ if (or (in .Site.Params.blogs .Section) (and (eq "blog" .Section) (not (isset .Site.Params "blogs")))) }}
+{{ partial "blog_single.html" . }}
+{{ else }}
+{{ partial "base_single.html" . }}
+{{ end }}
+
 {{ partial "footer.html" . }}
