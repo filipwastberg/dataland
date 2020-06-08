@@ -43,7 +43,7 @@
   </url>
   
   <url>
-    <loc>/blog/linked-post/</loc>
+    <loc>/blog/about/</loc>
     <lastmod>2019-06-24T21:49:20+02:00</lastmod>
   </url>
   
@@ -98,7 +98,7 @@
   </url>
   
   <url>
-    <loc>/fixed/about/</loc>
+    <loc>/about/</loc>
   </url>
   
   <url>
@@ -106,7 +106,7 @@
   </url>
   
   <url>
-    <loc>/fixed/resume/</loc>
+    <loc>/resume/</loc>
   </url>
   
 </urlset>

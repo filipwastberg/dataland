@@ -1,4 +1,4 @@
-baseurl = "http://dataland.rbind.io"
+baseurl = "https://dataland.rbind.io"
 theme = "cocoa-eh-hugo-theme"
 builddrafts = true
 canonifyurls = true
@@ -8,46 +8,28 @@ layoutdir = "layouts"
 publishdir = "public"
 author = "Filip Wästberg"
 title = "Dataland"
-disqusshortname = "dataland-rbind-io-1"
+pygmentsuseclasses = true
 pluralizelisttitles = false
+disqusshortname = "dataland-rbind-io-1"
 googleAnalytics = "UA-108426846-1"
 
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
-    post = "/:year/:month/:day/:slug"
-    
-[[params.menu]]
-    before = true
-    label  = "Home"
-    link   = "/"
-
-[[params.menu]]
-    before = false
-    label  = "Tags"
-    link   = "tags/"
-
-[[params.menu]]
-    before = false
-    label  = "Categories"
-    link   = "categories/"
+fixed = ":title/"
+blog = "blog/:slug/"
 
 [params]
-    # Tell me who you are
-    dateform = "Jan 2, 2006"
-    dateformfull = "Mon Jan 2 2006 15:04:05 MST"
-    description = "Example blog"
-    copyright = "Copyright © 2019 Filip Wästberg"
-    logofile = "css/images/h_logo_no_text1.png"
-    favicon = ""
-    highlightjs = true
-    progressively = true
-    align_left = false
-    lang = "en"
-    github = "filipwastberg"
-    email = "filip.wastberg@gmail.com"
-    linkedin = "filipwastberg"
-    twitter = "filipwastberg"
-    social_banner = "img/banner.png"
-    posts_navigation = true
-    small_banner_logo = false
-    latestpostcount = 5 
+author = "Filip Wästberg"
+cachebuster = true
+dateform = "Jan 2, 2006"
+dateformfull = "Mon Jan 2 2006 15:04:05 MST"
+description = "Dataland"
+logofile = "img/h_logo_no_text1.png"
+faviconfile = "img/h_logo_no_text1.png"
+highlightjs = true
+lang = "en"
+github = "https://github.com/filipwastberg"
+email = "filip.wastberg@gmail.com"
+linkedin = "filipwastberg"
+twitter = "@filipwastberg"

@@ -32,10 +32,10 @@ Det vanligaste är att man tar det felmeddelande man får och lägger in det i G
     
     <item>
       <title>About</title>
-      <link>/blog/linked-post/</link>
+      <link>/blog/about/</link>
       <pubDate>Mon, 24 Jun 2019 21:49:20 +0200</pubDate>
       
-      <guid>/blog/linked-post/</guid>
+      <guid>/blog/about/</guid>
       <description>I am a data scientist working at a analytics consultant firm Ferrologic in Sweden. This blog is about data science, mainly in R.
 I&amp;rsquo;ll do some posts in english and some in Swedish,
 If you want to contact me you can do so by Mail eller Twitter.
@@ -88,10 +88,10 @@ Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag
     
     <item>
       <title>about</title>
-      <link>/fixed/about/</link>
+      <link>/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/fixed/about/</guid>
+      <guid>/about/</guid>
       <description>My name is Filip Wästberg and I&amp;rsquo;m a Data Science Consultant at Ferrologic Analytics, a Solita company, in Sweden. This is my personal blog about Data Science, R and everything around it.
 The posts you&amp;rsquo;ll find here are both in English and in Swedish.
 Feel free to contact med by mail or LinkedIn.
@@ -100,10 +100,10 @@ This blog was created with the R package Blogdown.</description>
     
     <item>
       <title>resume</title>
-      <link>/fixed/resume/</link>
+      <link>/resume/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/fixed/resume/</guid>
+      <guid>/resume/</guid>
       <description>Who am I? My name is Filip Wästberg and I&amp;rsquo;m a creative and curious Data Scientist who likes to work with data and humans. Currently I work as a Data Science Consultant at Ferrologic Analytics.
 Skills and Tools  R, SQL, Python, Spark and some rusty SAS/SPSS GitHub, Linux, Markdown writing and speaking  Experience Data Scientist Consultant, Ferrologic 2018-present
  Practical experience from building and implementing predictive models Strong skills in data manipulation and visualization Experience from working together with software engineers, data engineers and managers to implement data science products Host of the company&amp;rsquo;s Data Science Meetup in Stockholm Instructor of various R-related courses for clients  Research Executive, Demoskop 2016-2018</description>
