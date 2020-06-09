@@ -2,9 +2,6 @@
 title: "resume"
 ---
 
-## Who am I?
-My name is Filip Wästberg and I'm a creative and curious Data Scientist who likes to work with data and humans. Currently I work as a Data Science Consultant at Ferrologic Analytics. 
-
 ## Skills and Tools
 
 * R, SQL, Python, Spark and some rusty SAS/SPSS

@@ -34,6 +34,17 @@ Först behöver vi lite data. Den tar vi ner från Tilastokeskus - Finlands stat
     </item>
     
     <item>
+      <title>ETS-prognoser i R </title>
+      <link>/post/prognosmodeller-i-r/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/prognosmodeller-i-r/</guid>
+      <description>Prognoser är ett viktigt verktyg för vilken verksamhet som helst. Det underlättar resursplanering och väl utfört ger det en indikation om vart en verksamhet är på väg.
+En av de klassiska arbetshästarna inom tidsserieanalys är ETS(Exponential Smoothing). Modellen är populär då den ofta ger bra prognoser och är enkel att förstå.
+Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äldre observationer får en exponentiellt mindre vikt, medan senare observationer får en högre vikt.</description>
+    </item>
+    
+    <item>
       <title>Creating Python modules like R packages</title>
       <link>/post/python-packages-for-r-users/</link>
       <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>

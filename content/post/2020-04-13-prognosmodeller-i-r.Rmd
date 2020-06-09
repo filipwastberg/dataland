@@ -1,0 +1,155 @@
+---
+title: 'ETS-prognoser i R '
+author: Filip Wästberg
+date: '2020-04-13'
+slug: prognosmodeller-i-r
+categories:
+  - forecast
+  - excel
+tags:
+  - forecast
+  - ets
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+Prognoser är ett viktigt verktyg för vilken verksamhet som helst. Det underlättar resursplanering och väl utfört ger det en indikation om vart en verksamhet är på väg.
+
+En av de klassiska arbetshästarna inom tidsserieanalys är ETS(Exponential Smoothing). Modellen är populär då den ofta ger bra prognoser och är enkel att förstå.
+
+Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äldre observationer får en exponentiellt mindre vikt, medan senare observationer får en högre vikt. Vill du lära dig mer om ETS finns det väl dokumenterat [här](https://otexts.com/fpp2/expsmooth.html).
+
+Med tanke på ETS popularitet, samt att den inte är så beräkningstung, är det inte konstigt att det är den modellen som Excel byggt in i sin funktion för prognoser. Är du nyfiken på hur du gör det i Excel kan du kolla det [här inlägget](https://analysbloggen.se/ar-excel-basta-spakulan-for-att-gora-prognoser/) av David Stavegård som gör omtyckta #torsdagstips i Excel på LinkedIn.
+
+Men jag tänkte att vi skulle gå igenom hur man gör en ETS-prognos i R och hur man kan jämföra den mot andra prognosmodeller. Vi utgår från samma data som David använder, som är exempeldata från Excels hemsida. Det kan vi enkelt ladda ner med `download.file()`.
+
+```{r eval=FALSE}
+download.file("https://download.microsoft.com/download/7/8/E/78E7FB59-A554-4586-B3F4-AEAEBC4036AF/Forecast_ets_example.xlsx", 
+														destfile = "Forecast_ets_example.xlsx")
+```
+
+För att läsa in Excel-filen använder vi paketet `readxl` och `tidyverse`. Vi hoppar över de två första raderna i arbetsboken som är tomma och läser bara in de fem första kolumnerna. Vi använder också paketet janitor och funktionen `clean_names()` för att få lite bättre ordning på kolumnnamnen.
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+library(janitor)
+
+ets_ex <- read_excel("Forecast_ets_example.xlsx", skip = 2) %>% 
+	select(1:5) %>% 
+	clean_names()
+```
+
+Inspekterar vi arbetsbladet så ser vi att det handlar om antalet passagerare på en flygplats och att det är kolumnen `airport_passengers` som vi ska bygga en prognos på. De andra kolumnerna innehåller värden för den prognos som gjorts i Excel. 
+
+```{r}
+ets_ex
+```
+
+## Prognosticering i R
+
+För att jobba med tidsserier och prognosticering i R brukar jag använda mig av tre paket:
+
+- `fable` för att anpassa modeller och göra prognoser
+- `tsibble` för att jobba med tidsserier, exempelvis identifiera gap i tidsserien
+- `feasts` för *feature extraction*, d.v.s. undersöka säsongsvariation och trend. 
+
+```{r message=FALSE}
+library(fable)
+library(tsibble)
+library(feasts)
+```
+
+## Definiera tidsserien
+
+- Eftersom vi endast är intresserade av ursprungskolumnen `airport_passenger` tar vi bort de andra kolumnerna. 
+- Vi filtrerar också bort alla saknade värden.
+- Vi definierar `date` som `yearmonth()`
+- Till sist definierar vi det här som en tidsserie med `as_tsibble()`. Vi ser då också att den väljer `date` som indexvariabel.
+
+```{r message=TRUE}
+airport_ts <- ets_ex %>% 
+	select(1:2) %>% 
+	filter(!is.na(airport_passengers)) %>% 
+	mutate(date = yearmonth(date)) %>% 
+	as_tsibble()
+```
+
+## Undersökning av features
+
+Nu kan vi undersöka tidsserien med `feasts`. Vi kan exempelvis göra en säsongs- och trenddekomposition med funktionen `STL()` i funktionen `model()`. Vi ser då att vi har ganska stor säsongsvariation och en uppgående trend.
+
+```{r}
+airport_ts %>% 
+	model(STL()) %>%
+	components() %>% 
+	autoplot()
+```
+
+## Skapa en prognos
+
+I R har vi möjlighet att specificera modeller för specifika fall, men ofta kan det vara bra att börja med ett automatiskt tillvägagångssätt. Funktionen `ETS()` skapar (om inget annat anges) automatiskt den bästa prognosmodellen baserat på din data. I paketet `fable` finns dessutom stöd för flera andra typer av modeller, exempelvis `ARIMA()`. 
+
+Nedan anpassar vi en ETS-modell och en Arima-modell och gör sedan en prognos 1 år framåt i tiden.
+
+```{r}
+forecast_modell <- airport_ts %>% 
+	model(
+    ets = ETS(airport_passengers),
+    arima = ARIMA(airport_passengers)
+  ) 
+
+forecast_modell %>%
+  forecast(h = "1 year") %>% 
+	autoplot(airport_ts)
+```
+
+## Vilken modell är bäst?
+
+Det finns flera sätt att utvärdera huruvida en prognosmodell är bättre än en annan. Vanligtvis delar man upp data i större träningsdataset som man tränar och utvärderar en modell på och ett testdataset som man sparar till allra sist.
+
+Oavsett hur du lägger upp utvärderingen kan du med paketen vi använder här använda funktionen `accuracy()`. Vi kan exempelvis utvärdera modellerna på träningsdata.
+
+```{r}
+accuracy(forecast_modell)
+```
+
+Vill du läsa mer om hur man utvärderar tidseriemodeller kan jag rekommendera det [här kapitlet](https://otexts.com/fpp3/diagnostics.html) i *Forecasting: Principles and Practice* av Rob J. Hyndman och George Athanasopoulos.
+
+## Skriva tillbaka till Excel
+
+Baserat på RMSE, MAE och MASE verkar ETS-modellen vara den bästa på träningsdata, så vi väljer att gå vidare med den för den här gången.
+
+Om vi nu vill ha ett resultat likt det vi får från Excels prognosfunktion kan vi enkelt skriva vårt resultat från R till Excel med paketet `openxlsx`.
+
+```{r}
+library(openxlsx)
+forecast_final <- airport_ts %>% 
+	model(
+    ets = ETS(airport_passengers)
+  ) %>%
+  forecast(h = "1 year") %>% 
+	hilo(level = 95) %>% 
+	unnest(`95%`)
+
+write.xlsx(forecast_final, file = paste0("prognos-", Sys.Date(), ".xlsx"), asTable = TRUE)
+```
+
+Resultatet blir då en vanlig tabell i Excel. 
+
+![](/post/2020-04-13-prognosmodeller-i-r_files/excel-table.png)
+
+## Varför göra det här i R?
+
+Prognosfunktionen i Excel är bra om du vill få en snabb uppfattning om din tidsserie. Men i många fall är inte data så tillrättalagt som det här exemplet. I regel behöver en analytiker göra flera transformationer och bearbetningar innan man ens kan anpassa en prognosmodell.
+
+Genom att göra alla de stegen, och själva prognosen, i ett programmeringsspråk som R så sparas all kod i ett skript som du kan exekvera så fort du får ny data och behöver uppdatera prognosen. Det här gör att du i princip kan automatisera hela prognosflödet.
+
+Utöver det här innehåller R tusentals kostnadsfria paket för statistiska beräkningar. I många fall fungerar inte ETS eller Arima-modeller särskilt bra, särskilt om du har data som är mer granulär, exempelvis per vecka, dag eller timme. Då behöver du tillgång till andra typer av modeller, och dessa finns i R. 
+
+Prognoser är viktiga och kan ha stor påverkan på din verksamhet. Genom att använda ett programmeringsspråk säkerställer du att dina resultat går att reproducera.
+
+
+

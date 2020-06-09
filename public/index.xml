@@ -34,6 +34,17 @@ Först behöver vi lite data. Den tar vi ner från Tilastokeskus - Finlands stat
     </item>
     
     <item>
+      <title>ETS-prognoser i R </title>
+      <link>/post/prognosmodeller-i-r/</link>
+      <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/prognosmodeller-i-r/</guid>
+      <description>Prognoser är ett viktigt verktyg för vilken verksamhet som helst. Det underlättar resursplanering och väl utfört ger det en indikation om vart en verksamhet är på väg.
+En av de klassiska arbetshästarna inom tidsserieanalys är ETS(Exponential Smoothing). Modellen är populär då den ofta ger bra prognoser och är enkel att förstå.
+Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äldre observationer får en exponentiellt mindre vikt, medan senare observationer får en högre vikt.</description>
+    </item>
+    
+    <item>
       <title>Creating Python modules like R packages</title>
       <link>/post/python-packages-for-r-users/</link>
       <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
@@ -71,8 +82,7 @@ This blog was created with the R package Blogdown.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/resume/</guid>
-      <description>Who am I? My name is Filip Wästberg and I&amp;rsquo;m a creative and curious Data Scientist who likes to work with data and humans. Currently I work as a Data Science Consultant at Ferrologic Analytics.
-Skills and Tools  R, SQL, Python, Spark and some rusty SAS/SPSS GitHub, Linux, Markdown writing and speaking  Experience Data Scientist Consultant, Ferrologic 2018-present
+      <description>Skills and Tools  R, SQL, Python, Spark and some rusty SAS/SPSS GitHub, Linux, Markdown writing and speaking  Experience Data Scientist Consultant, Ferrologic 2018-present
  Practical experience from building and implementing predictive models Strong skills in data manipulation and visualization Experience from working together with software engineers, data engineers and managers to implement data science products Host of the company&amp;rsquo;s Data Science Meetup in Stockholm Instructor of various R-related courses for clients  Research Executive, Demoskop 2016-2018</description>
     </item>
     

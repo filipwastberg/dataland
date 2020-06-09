@@ -15,24 +15,24 @@
 <meta property="og:site_name" content="Dataland" />
 <meta property="og:locale" content="en-US" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/resume/" />
-<meta property="og:title" content="resume" />
-<meta property="twitter:title" content="resume">
+<meta property="og:url" content="/post/prognosmodeller-i-r/" />
+<meta property="og:title" content="ETS-prognoser i R " />
+<meta property="twitter:title" content="ETS-prognoser i R ">
 
-    <meta property="og:image" content="/img/banner.png">
+    <meta property="og:image" content="//images/image.jpg">
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:image" content="/img/banner.png">
+    <meta property="twitter:image" content="//images/image.jpg">
 
-<meta property="og:description" content="">
-<meta property="twitter:description" content="">
+<meta property="og:description" content="Desc">
+<meta property="twitter:description" content="Desc">
 
 <title>
 
 
-     Dataland - resume 
+     Dataland - ETS-prognoser i R  
 
 </title>
-<link rel="canonical" href="/resume/">
+<link rel="canonical" href="/post/prognosmodeller-i-r/">
 
 
 <style media="screen">
@@ -1114,7 +1114,7 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
             <div class="page-heading">
 
     
-    resume
+    ETS-prognoser i R 
     
 
 </div>
@@ -1124,52 +1124,127 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     
     
 
-<h2 id="skills-and-tools">Skills and Tools</h2>
 
+<p>Prognoser är ett viktigt verktyg för vilken verksamhet som helst. Det underlättar resursplanering och väl utfört ger det en indikation om vart en verksamhet är på väg.</p>
+<p>En av de klassiska arbetshästarna inom tidsserieanalys är ETS(Exponential Smoothing). Modellen är populär då den ofta ger bra prognoser och är enkel att förstå.</p>
+<p>Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äldre observationer får en exponentiellt mindre vikt, medan senare observationer får en högre vikt. Vill du lära dig mer om ETS finns det väl dokumenterat <a href="https://otexts.com/fpp2/expsmooth.html">här</a>.</p>
+<p>Med tanke på ETS popularitet, samt att den inte är så beräkningstung, är det inte konstigt att det är den modellen som Excel byggt in i sin funktion för prognoser. Är du nyfiken på hur du gör det i Excel kan du kolla det <a href="https://analysbloggen.se/ar-excel-basta-spakulan-for-att-gora-prognoser/">här inlägget</a> av David Stavegård som gör omtyckta #torsdagstips i Excel på LinkedIn.</p>
+<p>Men jag tänkte att vi skulle gå igenom hur man gör en ETS-prognos i R och hur man kan jämföra den mot andra prognosmodeller. Vi utgår från samma data som David använder, som är exempeldata från Excels hemsida. Det kan vi enkelt ladda ner med <code>download.file()</code>.</p>
+<pre class="r"><code>download.file(&quot;https://download.microsoft.com/download/7/8/E/78E7FB59-A554-4586-B3F4-AEAEBC4036AF/Forecast_ets_example.xlsx&quot;, 
+                                                        destfile = &quot;Forecast_ets_example.xlsx&quot;)</code></pre>
+<p>För att läsa in Excel-filen använder vi paketet <code>readxl</code> och <code>tidyverse</code>. Vi hoppar över de två första raderna i arbetsboken som är tomma och läser bara in de fem första kolumnerna. Vi använder också paketet janitor och funktionen <code>clean_names()</code> för att få lite bättre ordning på kolumnnamnen.</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)
+library(janitor)
+
+ets_ex &lt;- read_excel(&quot;Forecast_ets_example.xlsx&quot;, skip = 2) %&gt;% 
+    select(1:5) %&gt;% 
+    clean_names()</code></pre>
+<p>Inspekterar vi arbetsbladet så ser vi att det handlar om antalet passagerare på en flygplats och att det är kolumnen <code>airport_passengers</code> som vi ska bygga en prognos på. De andra kolumnerna innehåller värden för den prognos som gjorts i Excel.</p>
+<pre class="r"><code>ets_ex</code></pre>
+<pre><code>## # A tibble: 81 x 5
+##    date                airport_passeng… forecast_airpor… lower_confidenc…
+##    &lt;dttm&gt;                         &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2009-01-01 00:00:00          2644539               NA               NA
+##  2 2009-02-01 00:00:00          2359800               NA               NA
+##  3 2009-03-01 00:00:00          2925918               NA               NA
+##  4 2009-04-01 00:00:00          3024973               NA               NA
+##  5 2009-05-01 00:00:00          3177100               NA               NA
+##  6 2009-06-01 00:00:00          3419595               NA               NA
+##  7 2009-07-01 00:00:00          3649702               NA               NA
+##  8 2009-08-01 00:00:00          3650668               NA               NA
+##  9 2009-09-01 00:00:00          3191526               NA               NA
+## 10 2009-10-01 00:00:00          3249428               NA               NA
+## # … with 71 more rows, and 1 more variable:
+## #   upper_confidence_bound_airport_passengers &lt;dbl&gt;</code></pre>
+<div id="prognosticering-i-r" class="section level2">
+<h2>Prognosticering i R</h2>
+<p>För att jobba med tidsserier och prognosticering i R brukar jag använda mig av tre paket:</p>
 <ul>
-<li>R, SQL, Python, Spark and some rusty SAS/SPSS</li>
-<li>GitHub, Linux, Markdown</li>
-<li>writing and speaking</li>
+<li><code>fable</code> för att anpassa modeller och göra prognoser</li>
+<li><code>tsibble</code> för att jobba med tidsserier, exempelvis identifiera gap i tidsserien</li>
+<li><code>feasts</code> för <em>feature extraction</em>, d.v.s. undersöka säsongsvariation och trend.</li>
 </ul>
-
-<h2 id="experience">Experience</h2>
-
-<h4 id="data-scientist-consultant-ferrologic">Data Scientist Consultant, Ferrologic</h4>
-
-<p>2018-present</p>
-
+<pre class="r"><code>library(fable)
+library(tsibble)
+library(feasts)</code></pre>
+</div>
+<div id="definiera-tidsserien" class="section level2">
+<h2>Definiera tidsserien</h2>
 <ul>
-<li>Practical experience from building and implementing predictive models</li>
-<li>Strong skills in data manipulation and visualization</li>
-<li>Experience from working together with software engineers, data engineers and managers to implement data science products</li>
-<li>Host of the company&rsquo;s Data Science Meetup in Stockholm</li>
-<li>Instructor of various R-related courses for clients</li>
+<li>Eftersom vi endast är intresserade av ursprungskolumnen <code>airport_passenger</code> tar vi bort de andra kolumnerna.</li>
+<li>Vi filtrerar också bort alla saknade värden.</li>
+<li>Vi definierar <code>date</code> som <code>yearmonth()</code></li>
+<li>Till sist definierar vi det här som en tidsserie med <code>as_tsibble()</code>. Vi ser då också att den väljer <code>date</code> som indexvariabel.</li>
 </ul>
+<pre class="r"><code>airport_ts &lt;- ets_ex %&gt;% 
+    select(1:2) %&gt;% 
+    filter(!is.na(airport_passengers)) %&gt;% 
+    mutate(date = yearmonth(date)) %&gt;% 
+    as_tsibble()</code></pre>
+<pre><code>## Using `date` as index variable.</code></pre>
+</div>
+<div id="undersökning-av-features" class="section level2">
+<h2>Undersökning av features</h2>
+<p>Nu kan vi undersöka tidsserien med <code>feasts</code>. Vi kan exempelvis göra en säsongs- och trenddekomposition med funktionen <code>STL()</code> i funktionen <code>model()</code>. Vi ser då att vi har ganska stor säsongsvariation och en uppgående trend.</p>
+<pre class="r"><code>airport_ts %&gt;% 
+    model(STL()) %&gt;%
+    components() %&gt;% 
+    autoplot()</code></pre>
+<pre><code>## Model not specified, defaulting to automatic modelling of the `airport_passengers` variable. Override this using the model formula.</code></pre>
+<p><img src="/post/2020-04-13-prognosmodeller-i-r_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="skapa-en-prognos" class="section level2">
+<h2>Skapa en prognos</h2>
+<p>I R har vi möjlighet att specificera modeller för specifika fall, men ofta kan det vara bra att börja med ett automatiskt tillvägagångssätt. Funktionen <code>ETS()</code> skapar (om inget annat anges) automatiskt den bästa prognosmodellen baserat på din data. I paketet <code>fable</code> finns dessutom stöd för flera andra typer av modeller, exempelvis <code>ARIMA()</code>.</p>
+<p>Nedan anpassar vi en ETS-modell och en Arima-modell och gör sedan en prognos 1 år framåt i tiden.</p>
+<pre class="r"><code>forecast_modell &lt;- airport_ts %&gt;% 
+    model(
+    ets = ETS(airport_passengers),
+    arima = ARIMA(airport_passengers)
+  ) 
 
-<h4 id="research-executive-demoskop">Research Executive, Demoskop</h4>
+forecast_modell %&gt;%
+  forecast(h = &quot;1 year&quot;) %&gt;% 
+    autoplot(airport_ts)</code></pre>
+<p><img src="/post/2020-04-13-prognosmodeller-i-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="vilken-modell-är-bäst" class="section level2">
+<h2>Vilken modell är bäst?</h2>
+<p>Det finns flera sätt att utvärdera huruvida en prognosmodell är bättre än en annan. Vanligtvis delar man upp data i större träningsdataset som man tränar och utvärderar en modell på och ett testdataset som man sparar till allra sist.</p>
+<p>Oavsett hur du lägger upp utvärderingen kan du med paketen vi använder här använda funktionen <code>accuracy()</code>. Vi kan exempelvis utvärdera modellerna på träningsdata.</p>
+<pre class="r"><code>accuracy(forecast_modell)</code></pre>
+<pre><code>## # A tibble: 2 x 9
+##   .model .type        ME   RMSE    MAE     MPE  MAPE  MASE    ACF1
+##   &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 ets    Training -2974. 52441. 41678. -0.0921  1.20 0.248 -0.0585
+## 2 arima  Training  1243. 56912. 41951.  0.0212  1.17 0.249 -0.0831</code></pre>
+<p>Vill du läsa mer om hur man utvärderar tidseriemodeller kan jag rekommendera det <a href="https://otexts.com/fpp3/diagnostics.html">här kapitlet</a> i <em>Forecasting: Principles and Practice</em> av Rob J. Hyndman och George Athanasopoulos.</p>
+</div>
+<div id="skriva-tillbaka-till-excel" class="section level2">
+<h2>Skriva tillbaka till Excel</h2>
+<p>Baserat på RMSE, MAE och MASE verkar ETS-modellen vara den bästa på träningsdata, så vi väljer att gå vidare med den för den här gången.</p>
+<p>Om vi nu vill ha ett resultat likt det vi får från Excels prognosfunktion kan vi enkelt skriva vårt resultat från R till Excel med paketet <code>openxlsx</code>.</p>
+<pre class="r"><code>library(openxlsx)
+forecast_final &lt;- airport_ts %&gt;% 
+    model(
+    ets = ETS(airport_passengers)
+  ) %&gt;%
+  forecast(h = &quot;1 year&quot;) %&gt;% 
+    hilo(level = 95) %&gt;% 
+    unnest(`95%`)
 
-<p>2016-2018</p>
-
-<ul>
-<li>Analyzed survey data from a wide range of industries, mainly in SAS, Excel and Powerpoint</li>
-<li>Lead a small initiative to further incorporate R into the company way of work</li>
-</ul>
-
-<h4 id="data-analyst-and-operation-lead-vision-union">Data analyst and operation lead, Vision (Union)</h4>
-
-<p>2015-2016</p>
-
-<ul>
-<li>Where part of a team that was responsible for recruting student members to the Union Vision</li>
-<li>Developed models and wrote reports on what kind of students the Union should focus on</li>
-</ul>
-
-<h2 id="education">Education</h2>
-
-<ul>
-<li>Uppsala University - BSc in Political Science and Statistics, 2014</li>
-<li>Uppsala and Stockholm University - Arabic, 2013</li>
-</ul>
+write.xlsx(forecast_final, file = paste0(&quot;prognos-&quot;, Sys.Date(), &quot;.xlsx&quot;), asTable = TRUE)</code></pre>
+<p>Resultatet blir då en vanlig tabell i Excel.</p>
+<p><img src="/post/2020-04-13-prognosmodeller-i-r_files/excel-table.png" /></p>
+</div>
+<div id="varför-göra-det-här-i-r" class="section level2">
+<h2>Varför göra det här i R?</h2>
+<p>Prognosfunktionen i Excel är bra om du vill få en snabb uppfattning om din tidsserie. Men i många fall är inte data så tillrättalagt som det här exemplet. I regel behöver en analytiker göra flera transformationer och bearbetningar innan man ens kan anpassa en prognosmodell.</p>
+<p>Genom att göra alla de stegen, och själva prognosen, i ett programmeringsspråk som R så sparas all kod i ett skript som du kan exekvera så fort du får ny data och behöver uppdatera prognosen. Det här gör att du i princip kan automatisera hela prognosflödet.</p>
+<p>Utöver det här innehåller R tusentals kostnadsfria paket för statistiska beräkningar. I många fall fungerar inte ETS eller Arima-modeller särskilt bra, särskilt om du har data som är mer granulär, exempelvis per vecka, dag eller timme. Då behöver du tillgång till andra typer av modeller, och dessa finns i R.</p>
+<p>Prognoser är viktiga och kan ha stor påverkan på din verksamhet. Genom att använda ett programmeringsspråk säkerställer du att dina resultat går att reproducera.</p>
+</div>
 
 
             </div>
