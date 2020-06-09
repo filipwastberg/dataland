@@ -1,0 +1,127 @@
+---
+title: Översätt provresultat till betyg i R
+author: Filip Wästberg
+date: '2020-04-09'
+slug: oversatt-provresultat-till-betyg-i-r
+description: Desc
+meta_img: /images/image.jpg
+---
+
+Jag har länge varit imponerad av David Stavegård och hans #torsdagstips i Excel där han med konkreta exempel visar hur man löser verkliga databearbetningsproblem med Excel.
+
+Jag har tagit mig friheten att översatta några av dessa #torsdagstips till hur jag skulle lösa dem i programmeringsspråket R. 
+
+I det här torsdagstipset har vi Excel-fil med provresultat från en klass och vi vill göra om resultaten till betyg. I Excel använder David funktionen ifs(). I R använder vi funktionen case_when() från paketet dplyr. 
+
+Det här problemet kanske låter banalt, men för mig var det här en av de svårare sakerna att göra när jag började programmera i R. Men så är det, det som känns otroligt enkelt idag var svårt igår.
+
+Vi vet att provresultatet ska leda till följande betyg:
+
+- A >= 95
+- B >= 85
+- C >= 75
+- D >= 65
+- E >= 55
+- F > 54
+
+Vi kan börja med att generera en slumpmässig fil med provresultat. Tack vara Peter Dahlgren på Stockholm universitet, som lagt upp en fil med svenska namn, kan vi generera 30 svenska kill- och tjejnamn utan att först behöva skriva dem.
+
+Jag har skapat en enkel funktion för det här som heter `skapa_klass()` som skapar ett fiktivt dataset med provresultat för $n$ antal elever. Är du nyfiken kan du läsa den nedan, annars är det bara att hoppa över.
+
+```{r}
+skapa_klass <- function(antal_elever = 30){
+	män <- read_csv("https://raw.githubusercontent.com/peterdalle/svensktext/master/namn/mansnamn.csv", col_names = FALSE, locale = locale(encoding = "Latin1"))
+	kvinnor <- read_csv("https://raw.githubusercontent.com/peterdalle/svensktext/master/namn/kvinnonamn.csv", col_names = FALSE, locale = locale(encoding = "Latin1"))
+	
+	alla_namn <- bind_rows(män, kvinnor) %>% 
+		rename(namn = X1)
+	
+	klass <- tibble(
+		namn = sample(alla_namn$namn, 30, replace = TRUE),
+		provresultat = sample(c(40:100), 30, replace = TRUE))
+	
+	klass
+}
+```
+
+Vi kan börja med att skapa en klass på 30 elever.
+
+Hur kan vi göra om det här till betyg? 
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+klass1 <- skapa_klass(antal_elever = 30)
+
+klass1
+```
+
+Det enklaste sättet att göra om provresultateten till betyg i R är genom funktionen `case_when()` som vi använder i `mutate()`. Det här gäller så klart inte bara provresultat utan du kan sätta upp vilka typer av villkor du vill, och de behöver inte bara vara numeriska.
+
+```{r}
+klass1 <- klass1 %>% 
+	mutate(betyg = case_when(
+		provresultat >= 95 ~ "A",
+		provresultat >= 85 ~ "B",
+		provresultat >= 75 ~ "C",
+		provresultat >= 65 ~ "D",
+		provresultat >= 55 ~ "E",
+		provresultat < 55 ~ "F",
+	))
+
+klass1
+```
+
+Lätt som en plätt!
+
+## Varför göra det här i R?
+
+Genom att skriva det här som ett skript kan du enkelt byta ut din datafil och kör om resultatet och på så sätt spara tid.
+
+För att illustrera det här har jag skapa 24 olika klasser där vi ska göra samma sak för alla klasser. Hade vi gjort det i Excel hade det inneburit mycket klippa och klistra, och här vill vi verkligen inte gör fel.
+
+Istället kan vi skapa en enkel funktion som tar en fil med data och översätter provresultat till betyg och sedan skriver resultatet till en Excel-fil.
+
+```{r eval=FALSE}
+library(openxlsx)
+library(readxl)
+översätt_provresultat <- function(sökväg){
+	data <- read_excel(sökväg) %>% ## Skulle det vara en Excel-fil kan 
+		mutate(betyg = case_when(
+		provresultat >= 95 ~ "A",
+		provresultat >= 85 ~ "B",
+		provresultat >= 75 ~ "C",
+		provresultat >= 65 ~ "D",
+		provresultat >= 55 ~ "E",
+		provresultat < 55 ~ "F",
+	))
+	write.xlsx(data, paste0("provresultat/klass-", unique(data$klass), "-provresultat.xlsx"))
+}
+
+sökvägar <- paste0("data/", list.files("data"))
+
+map(sökvägar, översätt_provresultat)
+```
+
+Nu har vi sparat flera timmar av tråkigt arbete och kan istället ta en kaffe med kollegorna!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

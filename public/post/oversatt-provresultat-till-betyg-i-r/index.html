@@ -15,24 +15,24 @@
 <meta property="og:site_name" content="Dataland" />
 <meta property="og:locale" content="en-US" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/post/" />
-<meta property="og:title" content="Post" />
-<meta property="twitter:title" content="Post">
+<meta property="og:url" content="/post/oversatt-provresultat-till-betyg-i-r/" />
+<meta property="og:title" content="Översätt provresultat till betyg i R" />
+<meta property="twitter:title" content="Översätt provresultat till betyg i R">
 
-    <meta property="og:image" content="/img/banner.png">
+    <meta property="og:image" content="//images/image.jpg">
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:image" content="/img/banner.png">
+    <meta property="twitter:image" content="//images/image.jpg">
 
-<meta property="og:description" content="">
-<meta property="twitter:description" content="">
+<meta property="og:description" content="Desc">
+<meta property="twitter:description" content="Desc">
 
 <title>
 
 
-     Dataland - Post 
+     Dataland - Översätt provresultat till betyg i R 
 
 </title>
-<link rel="canonical" href="/post/">
+<link rel="canonical" href="/post/oversatt-provresultat-till-betyg-i-r/">
 
 
 <style media="screen">
@@ -1066,8 +1066,6 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 
 
 
-  <link href="/post/index.xml" rel="alternate" type="application/rss+xml" title="Dataland" />
-
 
 </head>
 
@@ -1075,7 +1073,7 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 <body>
 
 
-<div class="header header-home column">
+<div class="header column">
 
     <div class="container">
         
@@ -1108,107 +1106,134 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     </div>
 </div>
 
+
+
 <div class="main column">
     <div class="container">
         <div class="content">
-            <div class="posts">
-                <div class="page-heading">Post</div>
+            <div class="page-heading">
 
+    
+    Översätt provresultat till betyg i R
+    
+
+</div>
+
+            <div class="markdown">
                 
+    
+    
 
-                
-                <ul>
-                    
-                      
-                        <li class="groupby">Jun, 2020</li>
-                        
-                          
-                            <li class="post-item">
-    <span class="meta">Jun 8, 2020</span>
-    
-    <a href="/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/"><span>Hämta data direkt från SCB till R</span></a>
-    
-</li>
 
-                          
-                        
-                      
-                    
-                      
-                        <li class="groupby">May, 2020</li>
-                        
-                          
-                            <li class="post-item">
-    <span class="meta">May 28, 2020</span>
+<p>Jag har länge varit imponerad av David Stavegård och hans #torsdagstips i Excel där han med konkreta exempel visar hur man löser verkliga databearbetningsproblem med Excel.</p>
+<p>Jag har tagit mig friheten att översatta några av dessa #torsdagstips till hur jag skulle lösa dem i programmeringsspråket R.</p>
+<p>I det här torsdagstipset har vi Excel-fil med provresultat från en klass och vi vill göra om resultaten till betyg. I Excel använder David funktionen ifs(). I R använder vi funktionen case_when() från paketet dplyr.</p>
+<p>Det här problemet kanske låter banalt, men för mig var det här en av de svårare sakerna att göra när jag började programmera i R. Men så är det, det som känns otroligt enkelt idag var svårt igår.</p>
+<p>Vi vet att provresultatet ska leda till följande betyg:</p>
+<ul>
+<li>A &gt;= 95</li>
+<li>B &gt;= 85</li>
+<li>C &gt;= 75</li>
+<li>D &gt;= 65</li>
+<li>E &gt;= 55</li>
+<li>F &gt; 54</li>
+</ul>
+<p>Vi kan börja med att generera en slumpmässig fil med provresultat. Tack vara Peter Dahlgren på Stockholm universitet, som lagt upp en fil med svenska namn, kan vi generera 30 svenska kill- och tjejnamn utan att först behöva skriva dem.</p>
+<p>Jag har skapat en enkel funktion för det här som heter <code>skapa_klass()</code> som skapar ett fiktivt dataset med provresultat för <span class="math inline">\(n\)</span> antal elever. Är du nyfiken kan du läsa den nedan, annars är det bara att hoppa över.</p>
+<pre class="r"><code>skapa_klass &lt;- function(antal_elever = 30){
+    män &lt;- read_csv(&quot;https://raw.githubusercontent.com/peterdalle/svensktext/master/namn/mansnamn.csv&quot;, col_names = FALSE, locale = locale(encoding = &quot;Latin1&quot;))
+    kvinnor &lt;- read_csv(&quot;https://raw.githubusercontent.com/peterdalle/svensktext/master/namn/kvinnonamn.csv&quot;, col_names = FALSE, locale = locale(encoding = &quot;Latin1&quot;))
     
-    <a href="/post/automatisera-powerpoints-i-r/"><span>Automatisera PowerPoints i R</span></a>
+    alla_namn &lt;- bind_rows(män, kvinnor) %&gt;% 
+        rename(namn = X1)
     
-</li>
+    klass &lt;- tibble(
+        namn = sample(alla_namn$namn, 30, replace = TRUE),
+        provresultat = sample(c(40:100), 30, replace = TRUE))
+    
+    klass
+}</code></pre>
+<p>Vi kan börja med att skapa en klass på 30 elever.</p>
+<p>Hur kan vi göra om det här till betyg?</p>
+<pre class="r"><code>library(tidyverse)
+klass1 &lt;- skapa_klass(antal_elever = 30)
 
-                          
-                        
-                      
-                    
-                      
-                        <li class="groupby">Apr, 2020</li>
-                        
-                          
-                            <li class="post-item">
-    <span class="meta">Apr 13, 2020</span>
-    
-    <a href="/post/prognosmodeller-i-r/"><span>ETS-prognoser i R </span></a>
-    
-</li>
+klass1</code></pre>
+<pre><code>## # A tibble: 30 x 2
+##    namn      provresultat
+##    &lt;chr&gt;            &lt;int&gt;
+##  1 Hakon               76
+##  2 Zejnep              79
+##  3 Belal               93
+##  4 Fathi               79
+##  5 Haxhere             95
+##  6 Milania             87
+##  7 Katharina           84
+##  8 Hermon              53
+##  9 Fariborz            57
+## 10 Setayesh            43
+## # … with 20 more rows</code></pre>
+<p>Det enklaste sättet att göra om provresultateten till betyg i R är genom funktionen <code>case_when()</code> som vi använder i <code>mutate()</code>. Det här gäller så klart inte bara provresultat utan du kan sätta upp vilka typer av villkor du vill, och de behöver inte bara vara numeriska.</p>
+<pre class="r"><code>klass1 &lt;- klass1 %&gt;% 
+    mutate(betyg = case_when(
+        provresultat &gt;= 95 ~ &quot;A&quot;,
+        provresultat &gt;= 85 ~ &quot;B&quot;,
+        provresultat &gt;= 75 ~ &quot;C&quot;,
+        provresultat &gt;= 65 ~ &quot;D&quot;,
+        provresultat &gt;= 55 ~ &quot;E&quot;,
+        provresultat &lt; 55 ~ &quot;F&quot;,
+    ))
 
-                          
-                        
-                          
-                            <li class="post-item">
-    <span class="meta">Apr 9, 2020</span>
-    
-    <a href="/post/oversatt-provresultat-till-betyg-i-r/"><span>Översätt provresultat till betyg i R</span></a>
-    
-</li>
+klass1</code></pre>
+<pre><code>## # A tibble: 30 x 3
+##    namn      provresultat betyg
+##    &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;
+##  1 Hakon               76 C    
+##  2 Zejnep              79 C    
+##  3 Belal               93 B    
+##  4 Fathi               79 C    
+##  5 Haxhere             95 A    
+##  6 Milania             87 B    
+##  7 Katharina           84 C    
+##  8 Hermon              53 F    
+##  9 Fariborz            57 E    
+## 10 Setayesh            43 F    
+## # … with 20 more rows</code></pre>
+<p>Lätt som en plätt!</p>
+<div id="varför-göra-det-här-i-r" class="section level2">
+<h2>Varför göra det här i R?</h2>
+<p>Genom att skriva det här som ett skript kan du enkelt byta ut din datafil och kör om resultatet och på så sätt spara tid.</p>
+<p>För att illustrera det här har jag skapa 24 olika klasser där vi ska göra samma sak för alla klasser. Hade vi gjort det i Excel hade det inneburit mycket klippa och klistra, och här vill vi verkligen inte gör fel.</p>
+<p>Istället kan vi skapa en enkel funktion som tar en fil med data och översätter provresultat till betyg och sedan skriver resultatet till en Excel-fil.</p>
+<pre class="r"><code>library(openxlsx)
+library(readxl)
+översätt_provresultat &lt;- function(sökväg){
+    data &lt;- read_excel(sökväg) %&gt;% ## Skulle det vara en Excel-fil kan 
+        mutate(betyg = case_when(
+        provresultat &gt;= 95 ~ &quot;A&quot;,
+        provresultat &gt;= 85 ~ &quot;B&quot;,
+        provresultat &gt;= 75 ~ &quot;C&quot;,
+        provresultat &gt;= 65 ~ &quot;D&quot;,
+        provresultat &gt;= 55 ~ &quot;E&quot;,
+        provresultat &lt; 55 ~ &quot;F&quot;,
+    ))
+    write.xlsx(data, paste0(&quot;provresultat/klass-&quot;, unique(data$klass), &quot;-provresultat.xlsx&quot;))
+}
 
-                          
-                        
-                      
-                    
-                      
-                        <li class="groupby">Jun, 2019</li>
-                        
-                          
-                            <li class="post-item">
-    <span class="meta">Jun 25, 2019</span>
-    
-    <a href="/post/python-packages-for-r-users/"><span>Creating Python modules like R packages</span></a>
-    
-</li>
+sökvägar &lt;- paste0(&quot;data/&quot;, list.files(&quot;data&quot;))
 
-                          
-                        
-                      
-                    
-                      
-                        <li class="groupby">Nov, 2017</li>
-                        
-                          
-                            <li class="post-item">
-    <span class="meta">Nov 7, 2017</span>
-    
-    <a href="/post/vilken-%C3%A4r-kents-mest-deprimerande-lat/"><span>Vilken är Kents mest deprimerande låt?</span></a>
-    
-</li>
+map(sökvägar, översätt_provresultat)</code></pre>
+<p>Nu har vi sparat flera timmar av tråkigt arbete och kan istället ta en kaffe med kollegorna!</p>
+</div>
 
-                          
-                        
-                      
-                    
-                </ul>
+
             </div>
         </div>
     </div>
 </div>
+
+
+
 <div class="footer column">
     <div class="container">
 

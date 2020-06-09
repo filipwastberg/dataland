@@ -45,6 +45,17 @@ Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äld
     </item>
     
     <item>
+      <title>Översätt provresultat till betyg i R</title>
+      <link>/post/oversatt-provresultat-till-betyg-i-r/</link>
+      <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/oversatt-provresultat-till-betyg-i-r/</guid>
+      <description>Jag har länge varit imponerad av David Stavegård och hans #torsdagstips i Excel där han med konkreta exempel visar hur man löser verkliga databearbetningsproblem med Excel.
+Jag har tagit mig friheten att översatta några av dessa #torsdagstips till hur jag skulle lösa dem i programmeringsspråket R.
+I det här torsdagstipset har vi Excel-fil med provresultat från en klass och vi vill göra om resultaten till betyg. I Excel använder David funktionen ifs().</description>
+    </item>
+    
+    <item>
       <title>Creating Python modules like R packages</title>
       <link>/post/python-packages-for-r-users/</link>
       <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
