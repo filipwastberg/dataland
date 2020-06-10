@@ -6,10 +6,20 @@
     <description>Recent content in Post on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 08 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GIS och Kartor i R</title>
+      <link>/post/kartor-i-r/</link>
+      <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/kartor-i-r/</guid>
+      <description>Geografiska informationssystem eller GIS är ett stort område inom dataanalys som traditionellt endast varit möjligt i mjukvaruprogram med höga licenskostnader. Men med den senaste tidens explosion av mjukvara som är Open Source är det idag möjligt att göra minst lika avancerade analyser helt kostnadsfritt. Här tänkte jag visa hur vi kan använda paket i R för att göra GIS.
+Vi utgår från kartdata från SCB, som ni hittar här. Ladda ner Shape-filen som är en zippad fil, unzippa den och välj sedan geografiska indelning du är ute efter.</description>
+    </item>
     
     <item>
       <title>Hämta data direkt från SCB till R</title>

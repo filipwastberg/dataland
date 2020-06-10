@@ -1,0 +1,149 @@
+---
+title: GIS och Kartor i R
+author: Filip Wästberg
+date: '2020-06-10'
+slug: kartor-i-r
+categories: []
+tags: []
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+Geografiska informationssystem eller GIS är ett stort område inom dataanalys som traditionellt endast varit möjligt i mjukvaruprogram med höga licenskostnader. Men med den senaste tidens explosion av mjukvara som är Open Source är det idag möjligt att göra minst lika avancerade analyser helt kostnadsfritt. Här tänkte jag visa hur vi kan använda paket i R för att göra GIS. 
+
+Vi utgår från kartdata från SCB, som ni hittar [här](https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/digitala-granser/). Ladda ner Shape-filen som är en zippad fil, unzippa den och välj sedan geografiska indelning du är ute efter. 
+
+För att kunna läsa in kartor i R använder vi oss av RStudio, skapar ett nytt projekt (*File -> New Project...*) och lägger in hela mappen med filer för den geografiska indelning du valt. 
+
+Du kan så klart göra det här programmatiskt också genom:
+
+```{r eval=FALSE}
+download.file("https://www.scb.se/contentassets/3443fea3fa6640f7a57ea15d9a372d33/shape_svenska.zip", destfile = "shape_svenska.zip")
+
+unzip("shape_svenska.zip", exdir = "shape_svenska")
+
+unzip("shape_svenska/LanRT90.zip", exdir = "lan_rt90")
+```
+
+Då får vi dessa filer i mappen `lan_rt90`.
+
+```{r}
+list.files("lan_rt90")
+```
+
+Viktigt att notera är att du behöver alla filer i mappen för att ladda in geografisk data till R. Men du behöver bara ladda in en av filerna, nämligen den som är Shape (.shp).
+
+För att läsa in och bearbeta kartfiler använder vi paktet `sf`(*Simple Features*) som gör det enkelt att läsa in och manipulera kartfiler.
+
+Vi laddar in shape-filen med `read_sf()` och ser då att varje län har en `geometry`, en multipolygon, som är gränserna för länet. 
+```{r}
+library(sf)
+
+lan <- read_sf("lan_rt90/Lan_RT90_region.shp")
+
+lan
+```
+
+För att visualisera det här krävs inget mer än att använda `ggplot2` tillsammans med `geom_sf()` på data.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+ggplot(lan) +
+  geom_sf()
+```
+Med `geom_sf()` får vi ett koordinatsystem med longitude och latitude, men vill vi bara ha en "clean" karta kan vi exempelvis använda `theme_map()` från paketet `ggthemes`.
+
+```{r}
+library(ggthemes)
+ggplot(lan) +
+  geom_sf() +
+  theme_map()
+```
+
+I längden vill vi dock fylla den här kartan med någon slags information. Vi vänder oss då till `SCB` med paketet `pxweb`, som är ett paket för att hämta data från SCB direkt till R. Koden nedan är i huvudsak genererad från funktionen `pxweb_interactive()`, som vi använt för att interaktivt prata med SCB:s API. Nedan har jag tagit ner data för antalet personer eftergymnasial utbildning per län samt befolkning, för att kunna visualisera andelen i regionen med eftergymnasial utbildning.
+
+Är du intresserad av hur man hämtar data från SCB till R har jag skrivit ett inlägg om det [här](https://dataland.rbind.io/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/). Är du inte intresserad av hur vi hämtar data kan du bara hoppa över det här kodblocket.
+
+```{r message=FALSE, warning=FALSE}
+library(pxweb)
+library(janitor)
+
+pxweb_query_list <- list(
+  "Region"= lan$LnKod, ## Här använder jag länskoder från shape-filen för att få ner alla län
+  "UtbildningsNiva"=c("6"),
+  "Alder"=c("16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95+"),
+  "Kon"=c("1","2"),
+  "ContentsCode"=c("000000I2"),
+  "Tid"=c("2019"))
+
+# Download data 
+px_utb <- pxweb_get(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/UF/UF0506/UtbBefRegionR",
+            query = pxweb_query_list)
+
+# Convert to data.frame 
+utb <- as.data.frame(px_utb, column.name.type = "text", variable.value.type = "text")
+
+## Vi är bara ute efter att visualisera totalen per region, inte på åldersnivå, därför summerar jag per region
+tbl_utb <- utb %>% 
+  janitor::clean_names() %>% 
+  group_by(region) %>% 
+  summarise(eftergymn = sum(befolkning_16_95_ar))
+
+pxweb_query_list <-  list(
+  "Region"= lan$LnKod,
+  "Alder"=c("tot"),
+  "Kon"=c("1","2"),
+  "ContentsCode"=c("BE0101A9"),
+  "Tid"=c("2019"))
+
+# Download data 
+px_bef <- pxweb_get(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101A/FolkmangdNov",
+            query = pxweb_query_list)
+
+# Convert to data.frame 
+bef <- as.data.frame(px_bef, column.name.type = "text", variable.value.type = "text")
+
+tbl_bef <- bef %>% 
+  clean_names() %>% 
+  group_by(region) %>% 
+  summarise(befolkning = sum(folkmangden_den_1_november))
+
+tbl_eftergymn <- tbl_bef %>% 
+  left_join(tbl_utb) %>% 
+  mutate(procent_eftergymn = round(eftergymn /befolkning, 3))
+```
+
+Nu har vi data som vi kan joina på vår geografiska data. Ett problem är dock att vi i data från SCB:s API inte fått med länskoder. Det löser jag genom att rensa bort strängen `" län"` med `str_replace()`. Formatetet på länsnamn är då detsamma och vi kan joina på den geografiska information och visualisera andel personer med eftergymnasial utbildning per län.
+
+```{r}
+tbl_eftergymn %>% 
+  mutate(region = str_replace(region, " län", "")) %>% 
+  left_join(lan, by = c("region" = "LnNamn")) %>% 
+  ggplot(aes(fill = procent_eftergymn)) +
+  geom_sf(aes(geometry = geometry)) +
+  theme_map() +
+  theme(legend.position = c(1, 0.15)) +
+  scale_fill_viridis_c(option = "magma",
+                       labels = scales::percent_format(accuracy = 1),
+                       direction = -1) +
+  labs(
+    title = "Andel eftergymnasial utbildning per län",
+    caption = "Källa: SCB",
+    fill = "Eftergymnasial\nutbildning"
+  )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

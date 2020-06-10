@@ -8,6 +8,7 @@ layoutdir = "layouts"
 publishdir = "public"
 author = "Filip Wästberg"
 title = "Dataland"
+subtitle = "A blog by Filip Wästberg"
 disqusshortname = ""
 pluralizelisttitles = false
 disableKinds = ["taxonomy", "taxonomyTerm"]

@@ -6,17 +6,27 @@
     <description>Recent content on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 08 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>GIS och Kartor i R</title>
+      <link>/blog/kartor-i-r/</link>
+      <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/kartor-i-r/</guid>
+      <description>Geografiska informationssystem eller GIS är ett stort område inom dataanalys som traditionellt endast varit möjligt i mjukvaruprogram med höga licenskostnader. Men med den senaste tidens explosion av mjukvara som är Open Source är det idag möjligt att göra minst lika avancerade analyser helt kostnadsfritt. Här tänkte jag visa hur vi kan använda paket i R för att göra GIS.
+Vi utgår från kartdata från SCB, som ni hittar här. Ladda ner Shape-filen som är en zippad fil, unzippa den och välj sedan geografiska indelning du är ute efter.</description>
+    </item>
+    
+    <item>
       <title>Hämta data direkt från SCB till R</title>
-      <link>/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/</link>
+      <link>/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/</link>
       <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/</guid>
+      <guid>/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/</guid>
       <description>Visste du att du kan hämta data direkt från SCB, Statistiska centralbyrån till R?
 Du behöver alltså inte gå in i statistikdatabasen och ta ut en ny Excel-tabell varje gång du ska uppdatera SCB-statistik utan kan istället låta paketet pxweb av Måns Magnusson ställa frågor mot SCB:s API och få koden för det. Perfekt om ens verksamhet använder offentlig statistik återkommande.
 Med den interaktiva funktionen pxweb_interactive() kan vi prata med SCB:s (och flera andra nationella statistikcentraler) API.</description>
@@ -24,10 +34,10 @@ Med den interaktiva funktionen pxweb_interactive() kan vi prata med SCB:s (och f
     
     <item>
       <title>Automatisera PowerPoints i R</title>
-      <link>/post/automatisera-powerpoints-i-r/</link>
+      <link>/blog/automatisera-powerpoints-i-r/</link>
       <pubDate>Thu, 28 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/automatisera-powerpoints-i-r/</guid>
+      <guid>/blog/automatisera-powerpoints-i-r/</guid>
       <description>Jag skulle påstå att PowerPoint tillsammans med Excel är det överlägset vanligaste sättet att rapportera analytiska resultat. I min roll som konsult har jag träffat många analytiker som önskar att de kunde lägga mindre tid på att ta fram PowerPoints och mer tid på faktisk analys.
 Med paketet officer kan du enkelt skapa PowerPoints från R och dessutom utnyttja din organisations mall.
 Först behöver vi lite data. Den tar vi ner från Tilastokeskus - Finlands statistikcentral med hjälp av paketet pxweb.</description>
@@ -35,10 +45,10 @@ Först behöver vi lite data. Den tar vi ner från Tilastokeskus - Finlands stat
     
     <item>
       <title>ETS-prognoser i R </title>
-      <link>/post/prognosmodeller-i-r/</link>
+      <link>/blog/prognosmodeller-i-r/</link>
       <pubDate>Mon, 13 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/prognosmodeller-i-r/</guid>
+      <guid>/blog/prognosmodeller-i-r/</guid>
       <description>Prognoser är ett viktigt verktyg för vilken verksamhet som helst. Det underlättar resursplanering och väl utfört ger det en indikation om vart en verksamhet är på väg.
 En av de klassiska arbetshästarna inom tidsserieanalys är ETS(Exponential Smoothing). Modellen är populär då den ofta ger bra prognoser och är enkel att förstå.
 Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äldre observationer får en exponentiellt mindre vikt, medan senare observationer får en högre vikt.</description>
@@ -46,10 +56,10 @@ Modellen skapar en prognos genom att räkna ut ett viktat medelvärde, där äld
     
     <item>
       <title>Översätt provresultat till betyg i R</title>
-      <link>/post/oversatt-provresultat-till-betyg-i-r/</link>
+      <link>/blog/oversatt-provresultat-till-betyg-i-r/</link>
       <pubDate>Thu, 09 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/oversatt-provresultat-till-betyg-i-r/</guid>
+      <guid>/blog/oversatt-provresultat-till-betyg-i-r/</guid>
       <description>Jag har länge varit imponerad av David Stavegård och hans #torsdagstips i Excel där han med konkreta exempel visar hur man löser verkliga databearbetningsproblem med Excel.
 Jag har tagit mig friheten att översatta några av dessa #torsdagstips till hur jag skulle lösa dem i programmeringsspråket R.
 I det här torsdagstipset har vi Excel-fil med provresultat från en klass och vi vill göra om resultaten till betyg. I Excel använder David funktionen ifs().</description>
@@ -57,19 +67,19 @@ I det här torsdagstipset har vi Excel-fil med provresultat från en klass och v
     
     <item>
       <title>Creating Python modules like R packages</title>
-      <link>/post/python-packages-for-r-users/</link>
+      <link>/blog/python-packages-for-r-users/</link>
       <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/python-packages-for-r-users/</guid>
+      <guid>/blog/python-packages-for-r-users/</guid>
       <description>An R user created a package in Python - you will not believe what happened next I am a Data Scientist at a consulting firm in Sweden. I have a background in statistics and social science but have spent the last couple of years mainly trying to understand consumers and how they behave. I have worked with everything from making Powerpoint presentations to building recommender systems. In other words I am a pretty typical data scientist.</description>
     </item>
     
     <item>
       <title>Vilken är Kents mest deprimerande låt?</title>
-      <link>/post/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
+      <link>/blog/vilken-%C3%A4r-kents-mest-deprimerande-lat/</link>
       <pubDate>Tue, 07 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
+      <guid>/blog/vilken-%C3%A4r-kents-mest-deprimerande-lat/</guid>
       <description>Charlie Thompson är en analytiker som räknat ut vilken som är Radioheads mest deprimerande låtar. Den blev ganska träffsäker så jag tänkte pröva en liknande metod på Sveriges största depp-rockband: Kent.
 Sååå! Vilken är egentligen Kents mest deprimerande låt?
 Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag kan hämta data från Spotify och låttexter från hemsidan Genius. Tanken är att jag i R skapar en modell som slår samman allt det här till ett depp-index.</description>
@@ -85,6 +95,16 @@ Till min hjälp har jag det statistiska programmeringsspråket R, med vilket jag
 The posts you&amp;rsquo;ll find here are both in English and in Swedish.
 Feel free to contact med by mail or LinkedIn.
 This blog was created with the R package Blogdown.</description>
+    </item>
+    
+    <item>
+      <title>Home</title>
+      <link>/home/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/home/</guid>
+      <description>Welcome to dataland, a Data Science blog by Filip Wästberg.
+Here you&amp;rsquo;ll find some blogposts about Data Science, mostly in R, and mostly in Swedish.</description>
     </item>
     
     <item>
