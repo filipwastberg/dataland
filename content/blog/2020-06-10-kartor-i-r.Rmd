@@ -118,10 +118,11 @@ tbl_eftergymn <- tbl_bef %>%
 Nu har vi data som vi kan joina på vår geografiska data. Ett problem är dock att vi i data från SCB:s API inte fått med länskoder. Det löser jag genom att rensa bort strängen `" län"` med `str_replace()`. Formatetet på länsnamn är då detsamma och vi kan joina på den geografiska information och visualisera andel personer med eftergymnasial utbildning per län.
 
 ```{r}
-tbl_eftergymn %>% 
+tbl_eftergymn <- tbl_eftergymn %>% 
   mutate(region = str_replace(region, " län", "")) %>% 
-  left_join(lan, by = c("region" = "LnNamn")) %>% 
-  ggplot(aes(fill = procent_eftergymn)) +
+  left_join(lan, by = c("region" = "LnNamn"))
+
+ggplot(tbl_eftergymn, aes(fill = procent_eftergymn)) +
   geom_sf(aes(geometry = geometry)) +
   theme_map() +
   theme(legend.position = c(1, 0.15)) +
@@ -133,6 +134,8 @@ tbl_eftergymn %>%
     caption = "Källa: SCB",
     fill = "Eftergymnasial\nutbildning"
   )
+
+ggsave("scb-karta-eftergymn.png")
 ```
 
 

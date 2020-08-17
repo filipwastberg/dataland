@@ -1,0 +1,125 @@
+---
+title: Anropa Kolada från R
+author: Filip Wästberg
+date: '2020-08-17'
+categories:
+  - opendata
+  - r
+slug: anropa-kolada-fran-r
+description: Desc
+meta_img: /images/image.jpg
+---
+
+I ett tidigare inlägg tittade jag på hur man kan [hämta data direkt från SCB till R](https://dataland.rbind.io/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/) med hjälp av paketet `pxweb`. 
+
+SCB har massa intressant data men mycket är på en nationell nivå. En annan datakälla, som är helt inriktad på kommunal och regional statistik, är Kolada, som är Sveriges kommuner och regioners (SKR) webbtjänst för regional statistik. 
+
+Likt SCB har Kolada ett gränssnitt på webben, och precis som SCB har de också ett öppet API. Love Hansson, som är analytiker på Pensionsmyndigheten, har byggt ett paket för att anropa Kolada från R. Det här innebär att om du jobbar mycket med kommunal eller regional statistik kan du med hjälp av R-skript automatisera all inhämtning och rapportering av regional statistik från Kolada.
+
+## rKolada
+
+Paketet installeras enkelt med `install.packages("rKolada")`.
+
+För att få en övergripande bild över Koladas datamodell och paketet `rKolada` kan jag varmt rekommendera Love Hanssons vignette som finns [här](https://lchansson.github.io/rKolada/articles/introduction-to-rkolada.html).
+
+## Hur Kolada fungerar
+
+På Koladas hemsida kan du enkelt söka efter olika KPI-er. Där kan du också få en enkel tabell och visualisering av resultatet. `rKolada` ger oss möjlighet att programmatiskt ta ut dessa tabeller, vilket underlättar om vi behöver ta ut statistik fler gånger än en. 
+
+Med funktionen `get_kpi()` får vi en tabell med alla KPI-er som finns tillgängliga. 
+
+```{r warning=FALSE, message=FALSE}
+library(rKolada)
+library(tidyverse)
+
+kpis <- get_kpi()
+
+kpis
+```
+
+Vi kan filtrera dessa med `dplyr` och `stringr` eller använda den inbyggda funktionen `kpi_search()`:
+
+```{r}
+kpi_bygglov <- kpi_search(kpis, c("bostäder som beviljats bygglov"), column = "description")
+
+kpi_bygglov
+```
+
+För att få ner data för detta KPI behöver 1) ett ID och 2) specificera vilken eller vilka kommuner du vill ha data för.
+
+ID får du enkelt ut genom `kpi_extract_ids()`. 
+
+```{r}
+kpi_extract_ids(kpi_bygglov)
+```
+
+De kommuner, eller regionala indelningar som finns, kan vi på motsvarande sätt få genom `get_municipality()`.
+
+```{r}
+get_municipality()
+```
+
+En bra sak med Kolada är att de för alla Sveriges kommuner har referenskommuner, kommuner som på olika sätt liknar kommunen du är intresserad av. På så sätt kan vi enkelt ta fram kommuner som är relevanta att jämföra med. I `rKolada` gör vi det med `get_municipality_groups()` och den tillhörande *search*-funktionen. 
+
+```{r}
+get_municipality_groups() %>% 
+  municipality_grp_search("Finspång")
+```
+
+I slutändan har vi nu all metadata vi behöver och vill då få in den faktiska datan. För att få tag i den använder vi bara `get_values()`, då får vi tillbaka en data.frame med all data som vi frågat efter. 
+
+```{r}
+kpi_id <- kpi_search(kpis, c("bostäder som beviljats bygglov"),
+                                  column = "description") %>% 
+  kpi_extract_ids()
+
+munic_grp <- get_municipality_groups() %>%
+  municipality_grp_search("Liknande kommuner socioekonomi, Finspång") %>% 
+  municipality_grp_extract_ids()
+
+finspang_id <- get_municipality() %>%
+  municipality_search("Finspång") %>% 
+  municipality_extract_ids()
+
+# Get values
+grp_data <- get_values(
+  kpi = kpi_id,
+  municipality = c(
+    munic_grp,
+    finspang_id
+  )
+)
+
+grp_data
+```
+
+Vi har nu data som antingen kan visualiseras, inkluderas i en Rmarkdown-genererad PDF-rapport, skrivas till en Excel, PowerPoint, lagra i en databas med mera. 
+
+Här nöjer vi oss med en enkel visualisering:
+
+```{r}
+ggplot(grp_data, aes(x = year, y = value, color = municipality)) +
+  geom_line() +
+  labs(
+    title = "Antal bostäder som beviljats bygglov under två senaste åren",
+    subtitle = "Antal/100 invånare",
+    caption = "Källa: SKR och SCB",
+    y = "Antal/1000 invånare",
+    x = "År",
+    color = "Kommun"
+  ) +
+  theme_minimal() +
+  ggthemes::scale_color_colorblind()
+```
+
+Ett stort tack till Love Hansson som lagt tid på att designa ett paket som jag tror kan underlätta för många analytiker på myndigheter, universitet och ute bland Sveriges kommuner och landsting. 
+
+/ Filip
+
+
+
+
+
+
+
+

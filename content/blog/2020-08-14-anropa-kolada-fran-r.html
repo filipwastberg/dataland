@@ -1,0 +1,151 @@
+---
+title: Anropa Kolada från R
+author: Filip Wästberg
+date: '2020-08-17'
+categories:
+  - opendata
+  - r
+slug: anropa-kolada-fran-r
+description: Desc
+meta_img: /images/image.jpg
+---
+
+
+
+<p>I ett tidigare inlägg tittade jag på hur man kan <a href="https://dataland.rbind.io/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/">hämta data direkt från SCB till R</a> med hjälp av paketet <code>pxweb</code>.</p>
+<p>SCB har massa intressant data men mycket är på en nationell nivå. En annan datakälla, som är helt inriktad på kommunal och regional statistik, är Kolada, som är Sveriges kommuner och regioners (SKR) webbtjänst för regional statistik.</p>
+<p>Likt SCB har Kolada ett gränssnitt på webben, och precis som SCB har de också ett öppet API. Love Hansson, som är analytiker på Pensionsmyndigheten, har byggt ett paket för att anropa Kolada från R. Det här innebär att om du jobbar mycket med kommunal eller regional statistik kan du med hjälp av R-skript automatisera all inhämtning och rapportering av regional statistik från Kolada.</p>
+<div id="rkolada" class="section level2">
+<h2>rKolada</h2>
+<p>Paketet installeras enkelt med <code>install.packages("rKolada")</code>.</p>
+<p>För att få en övergripande bild över Koladas datamodell och paketet <code>rKolada</code> kan jag varmt rekommendera Love Hanssons vignette som finns <a href="https://lchansson.github.io/rKolada/articles/introduction-to-rkolada.html">här</a>.</p>
+</div>
+<div id="hur-kolada-fungerar" class="section level2">
+<h2>Hur Kolada fungerar</h2>
+<p>På Koladas hemsida kan du enkelt söka efter olika KPI-er. Där kan du också få en enkel tabell och visualisering av resultatet. <code>rKolada</code> ger oss möjlighet att programmatiskt ta ut dessa tabeller, vilket underlättar om vi behöver ta ut statistik fler gånger än en.</p>
+<p>Med funktionen <code>get_kpi()</code> får vi en tabell med alla KPI-er som finns tillgängliga.</p>
+<pre class="r"><code>library(rKolada)
+library(tidyverse)
+
+kpis &lt;- get_kpi()
+
+kpis</code></pre>
+<pre><code>## # A tibble: 4,887 x 13
+##    auspices description has_ou_data id    is_divided_by_g… municipality_ty…
+##    &lt;chr&gt;    &lt;chr&gt;       &lt;lgl&gt;       &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;           
+##  1 E        Personalko… FALSE       N000…                0 K               
+##  2 E        Personalko… FALSE       N000…                0 K               
+##  3 X        Kommunalek… FALSE       N000…                0 K               
+##  4 &lt;NA&gt;     Externa in… FALSE       N000…                0 K               
+##  5 &lt;NA&gt;     Inkomstutj… FALSE       N000…                0 K               
+##  6 &lt;NA&gt;     Kostnadsut… FALSE       N000…                0 K               
+##  7 X        Reglerings… FALSE       N000…                0 K               
+##  8 &lt;NA&gt;     Utjämnings… FALSE       N000…                0 K               
+##  9 X        Införandeb… FALSE       N000…                0 K               
+## 10 X        Strukturbi… FALSE       N000…                0 K               
+## # … with 4,877 more rows, and 7 more variables: operating_area &lt;chr&gt;,
+## #   ou_publication_date &lt;chr&gt;, perspective &lt;chr&gt;, prel_publication_date &lt;chr&gt;,
+## #   publ_period &lt;chr&gt;, publication_date &lt;chr&gt;, title &lt;chr&gt;</code></pre>
+<p>Vi kan filtrera dessa med <code>dplyr</code> och <code>stringr</code> eller använda den inbyggda funktionen <code>kpi_search()</code>:</p>
+<pre class="r"><code>kpi_bygglov &lt;- kpi_search(kpis, c(&quot;bostäder som beviljats bygglov&quot;), column = &quot;description&quot;)
+
+kpi_bygglov</code></pre>
+<pre><code>## # A tibble: 1 x 13
+##   auspices description has_ou_data id    is_divided_by_g… municipality_ty…
+##   &lt;chr&gt;    &lt;chr&gt;       &lt;lgl&gt;       &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;           
+## 1 X        Antal bost… FALSE       N079…                0 K               
+## # … with 7 more variables: operating_area &lt;chr&gt;, ou_publication_date &lt;chr&gt;,
+## #   perspective &lt;chr&gt;, prel_publication_date &lt;chr&gt;, publ_period &lt;chr&gt;,
+## #   publication_date &lt;chr&gt;, title &lt;chr&gt;</code></pre>
+<p>För att få ner data för detta KPI behöver 1) ett ID och 2) specificera vilken eller vilka kommuner du vill ha data för.</p>
+<p>ID får du enkelt ut genom <code>kpi_extract_ids()</code>.</p>
+<pre class="r"><code>kpi_extract_ids(kpi_bygglov)</code></pre>
+<pre><code>## [1] &quot;N07925&quot;</code></pre>
+<p>De kommuner, eller regionala indelningar som finns, kan vi på motsvarande sätt få genom <code>get_municipality()</code>.</p>
+<pre class="r"><code>get_municipality()</code></pre>
+<pre><code>## # A tibble: 312 x 3
+##    id    title      type 
+##    &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;
+##  1 1440  Ale        K    
+##  2 1489  Alingsås   K    
+##  3 0764  Alvesta    K    
+##  4 0604  Aneby      K    
+##  5 1984  Arboga     K    
+##  6 2506  Arjeplog   K    
+##  7 2505  Arvidsjaur K    
+##  8 1784  Arvika     K    
+##  9 1882  Askersund  K    
+## 10 2084  Avesta     K    
+## # … with 302 more rows</code></pre>
+<p>En bra sak med Kolada är att de för alla Sveriges kommuner har referenskommuner, kommuner som på olika sätt liknar kommunen du är intresserad av. På så sätt kan vi enkelt ta fram kommuner som är relevanta att jämföra med. I <code>rKolada</code> gör vi det med <code>get_municipality_groups()</code> och den tillhörande <em>search</em>-funktionen.</p>
+<pre class="r"><code>get_municipality_groups() %&gt;% 
+  municipality_grp_search(&quot;Finspång&quot;)</code></pre>
+<pre><code>## # A tibble: 11 x 3
+##    id      members          title                                          
+##    &lt;chr&gt;   &lt;list&gt;           &lt;chr&gt;                                          
+##  1 G123871 &lt;df[,2] [7 × 2]&gt; Liknande kommuner socioekonomi, Finspång, 2018 
+##  2 G146009 &lt;df[,2] [7 × 2]&gt; Liknande regioner socioekonomi, Finspång, 2018 
+##  3 G35908  &lt;df[,2] [7 × 2]&gt; Liknande kommuner grundskola, Finspång, 2018   
+##  4 G36200  &lt;df[,2] [7 × 2]&gt; Liknande kommuner gymnasieskola, Finspång, 2018
+##  5 G36492  &lt;df[,2] [7 × 2]&gt; Liknande kommuner IFO, Finspång, 2018          
+##  6 G36784  &lt;df[,2] [7 × 2]&gt; Liknande kommuner äldreomsorg, Finspång, 2018  
+##  7 G37368  &lt;df[,2] [7 × 2]&gt; Liknande kommuner, övergripande, Finspång, 2018
+##  8 G39541  &lt;df[,2] [7 × 2]&gt; Liknande kommuner LSS, Finspång, 2018          
+##  9 G85502  &lt;df[,2] [7 × 2]&gt; Liknande kommuner fritidshem, Finspång, 2018   
+## 10 G85794  &lt;df[,2] [7 × 2]&gt; Liknande kommuner förskola, Finspång, 2018     
+## 11 G87668  &lt;df[,2] [7 × 2]&gt; Liknande kommuner integration, Finspång, 2018</code></pre>
+<p>I slutändan har vi nu all metadata vi behöver och vill då få in den faktiska datan. För att få tag i den använder vi bara <code>get_values()</code>, då får vi tillbaka en data.frame med all data som vi frågat efter.</p>
+<pre class="r"><code>kpi_id &lt;- kpi_search(kpis, c(&quot;bostäder som beviljats bygglov&quot;),
+                                  column = &quot;description&quot;) %&gt;% 
+  kpi_extract_ids()
+
+munic_grp &lt;- get_municipality_groups() %&gt;%
+  municipality_grp_search(&quot;Liknande kommuner socioekonomi, Finspång&quot;) %&gt;% 
+  municipality_grp_extract_ids()
+
+finspang_id &lt;- get_municipality() %&gt;%
+  municipality_search(&quot;Finspång&quot;) %&gt;% 
+  municipality_extract_ids()
+
+# Get values
+grp_data &lt;- get_values(
+  kpi = kpi_id,
+  municipality = c(
+    munic_grp,
+    finspang_id
+  )
+)
+
+grp_data</code></pre>
+<pre><code>## # A tibble: 24 x 8
+##    kpi    municipality_id  year count gender value municipality municipality_ty…
+##    &lt;chr&gt;  &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;           
+##  1 N07925 0562             2015     1 T       0.7  Finspång     K               
+##  2 N07925 0687             2015     1 T       2.3  Tranås       K               
+##  3 N07925 0884             2015     1 T       0.6  Vimmerby     K               
+##  4 N07925 1082             2015     1 T       1.4  Karlshamn    K               
+##  5 N07925 1272             2015     1 T       6    Bromölla     K               
+##  6 N07925 1472             2015     1 T       1.4  Tibro        K               
+##  7 N07925 1981             2015     1 T       3.8  Sala         K               
+##  8 N07925 1984             2015     1 T       0.9  Arboga       K               
+##  9 N07925 0562             2017     1 T       4.54 Finspång     K               
+## 10 N07925 0687             2017     1 T       8.57 Tranås       K               
+## # … with 14 more rows</code></pre>
+<p>Vi har nu data som antingen kan visualiseras, inkluderas i en Rmarkdown-genererad PDF-rapport, skrivas till en Excel, PowerPoint, lagra i en databas med mera.</p>
+<p>Här nöjer vi oss med en enkel visualisering:</p>
+<pre class="r"><code>ggplot(grp_data, aes(x = year, y = value, color = municipality)) +
+  geom_line() +
+  labs(
+    title = &quot;Antal bostäder som beviljats bygglov under två senaste åren&quot;,
+    subtitle = &quot;Antal/100 invånare&quot;,
+    caption = &quot;Källa: SKR och SCB&quot;,
+    y = &quot;Antal/1000 invånare&quot;,
+    x = &quot;År&quot;,
+    color = &quot;Kommun&quot;
+  ) +
+  theme_minimal() +
+  ggthemes::scale_color_colorblind()</code></pre>
+<p><img src="/blog/2020-08-14-anropa-kolada-fran-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Ett stort tack till Love Hansson som lagt tid på att designa ett paket som jag tror kan underlätta för många analytiker på myndigheter, universitet och ute bland Sveriges kommuner och landsting.</p>
+<p>/ Filip</p>
+</div>
