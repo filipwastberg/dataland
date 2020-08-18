@@ -1,7 +1,7 @@
 ---
 title: Demokratisera databaser med R
 author: Filip Wästberg
-date: '2020-08-17'
+date: '2020-08-20'
 slug: demokratisera-databaser-med-r
 categories:
   - databases
@@ -21,7 +21,7 @@ Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller 
 
 Det här är olyckligt, men eftersom det är så pass vanligt, har mycket tid och kraft hos R-utvecklare världen över de senaste åren gått till att göra det enklare att koppla upp sig mot databaser. I centrum för det här arbetet står ett paket som heter `dplyr`. Det är ett paket vars syfte är att göra manipulering och bearbetning av data enklare, med stark fokus på läsbarhet och användarvänlighet. Resultatet är ett intuitivt syntax som i princip vem som helst kan förstå.
 
-Nedan utgår vi från data om irisblommon, där vi först filterar bort arter "setosa" och sedan räknar ut den genomsnittliga bladlängden per art.
+Nedan utgår vi från data om irisblomman, där vi först filterar bort arten "setosa" och sedan räknar ut den genomsnittliga bladlängden per art.
 
 ```{r}
 library(dplyr)
@@ -31,28 +31,45 @@ iris %>%
   summarise(mean_sepal_length = mean(Sepal.Length))
 ```
 
-Eftersom att data i arbetslivet ofta ligger i databaser har utvecklarna bakom `dplyr` och de största databaspaketen i R lagt ner mycket tid på att skriva översättningar från `dplyr` till olika databaser. Det här betyder att om data-settet ovan ligger i en databas kan vi använda i princip samma syntax för att bearbeta data.
+Eftersom data i arbetslivet ofta ligger i databaser har utvecklarna bakom `dplyr` och de största databaspaketen i R lagt ner mycket tid på att skriva översättningar från `dplyr` till olika databaser. Dessa finns i systerpaketet `dbplyr`. Det betyder att om exempelvis data-settet ovan skulle ligga i en databas skulle vi kunna använda i princip samma syntax för att bearbeta data i databasen.
 
-Först behöver vi skapa en koppling till databasen vi använder:
+Låt oss göra exakt det här genom att skapa en exempeldatabas. Generellt behöver vi användarnamn, lösenord och serverspecifikation för att ansluta till en databas. Men principerna är desamma oavsett om vi skapar den tillfälligt på datorn eller om det är en livs levande databas.
 
 ```{r}
+library(DBI)
+library(dbplyr)
 
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+
+dbWriteTable(con, "iris", iris)
+
+iris_tbl <- tbl(con, "iris")
 ```
 
 Objektet `iris_tbl` är nu en koppling till tabellen `iris` i databasen `con`. Det här är det enda som behövs för att kunna använda `dplyr` för att bearbeta data i databasen.
 
 ```{r}
-iris %>% 
+iris_tbl %>% 
   group_by(Species) %>% 
   summarise(mean_sepal_length = mean(Sepal.Length))
 ```
 
-Ovan kod exekveras alltså inte i R, som generellt körs lokalt på en server eller en dator, utan på den server där databasen ligger(vilket i det här fallet är på min egen dator). Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder än vad som är möjligt direkt i R, genom att flytta komputeringen till en databas.
+Ovan kod exekveras alltså inte i R, som generellt körs lokalt på en server eller en dator, utan på den server där databasen ligger. I bakgrunden översätter `dplyr` koden till `SQL`. Vi kan se hur den översatta queryn ser ut genom `show_query()`:
+
+```{r}
+iris_tbl %>% 
+  group_by(Species) %>% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %>% 
+  show_query()
+```
+
+Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder än vad som är möjligt direkt i R, genom att flytta komputeringen till en databas.
 
 När vi är klara med, säg en aggregering, kan vi enkelt ta in resultatet till R och modellera eller visualisera resultatet.
 
 ```{r}
-iris %>% 
+library(ggplot2)
+iris_tbl %>% 
   group_by(Species) %>% 
   summarise(mean_sepal_length = mean(Sepal.Length)) %>% 
   collect() %>% 
@@ -63,12 +80,11 @@ iris %>%
   theme_minimal()
 ```
 
-
 ## Vad innebär det här för en analytiker?
 
-Det här gör att en analytiker kan arbeta sömlöst med databaser och R. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att skapa statistiska modeller och AI-flöden. 
+Det här gör att vi som analytiker kan arbeta sömlöst med databaser direkt i R. Vi slipper hoppa mellan olika UI:s för alla de databaser som finns i vår organisation. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att där skapa statistiska modeller och AI-flöden. 
 
-Men framför allt möjliggör `dplyr` för en analytiker att använda *ett* interface till alla databaser som finns i en organisation. Vi slipper då hoppa mellan olika databas-UI:s och bygga manuella dataflöden för olika databaser. För en analytiker är själva databearbetningen bara ett steg i analysen och om man kan flytta databearbetningen närmare ett analytiskt verktyg, som R, så kan man dels spara tid men framför allt bygga mer robusta flöden. 
+För en analytiker är själva databearbetningen bara ett steg i analysen och om man kan flytta databearbetningen närmare ett analytiskt verktyg, som R, kan man dels spara tid men framför allt bygga mer robusta flöden. 
 
 / Filip
 

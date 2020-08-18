@@ -1205,13 +1205,13 @@ lan</code></pre>
 <pre class="r"><code>library(tidyverse)
 ggplot(lan) +
   geom_sf()</code></pre>
-<p><img src="/post/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 Med <code>geom_sf()</code> får vi ett koordinatsystem med longitude och latitude, men vill vi bara ha en “clean” karta kan vi exempelvis använda <code>theme_map()</code> från paketet <code>ggthemes</code>.</p>
 <pre class="r"><code>library(ggthemes)
 ggplot(lan) +
   geom_sf() +
   theme_map()</code></pre>
-<p><img src="/post/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>I längden vill vi dock fylla den här kartan med någon slags information. Vi vänder oss då till <code>SCB</code> med paketet <code>pxweb</code>, som är ett paket för att hämta data från SCB direkt till R. Koden nedan är i huvudsak genererad från funktionen <code>pxweb_interactive()</code>, som vi använt för att interaktivt prata med SCB:s API. Nedan har jag tagit ner data för antalet personer eftergymnasial utbildning per län samt befolkning, för att kunna visualisera andelen i regionen med eftergymnasial utbildning.</p>
 <p>Är du intresserad av hur man hämtar data från SCB till R har jag skrivit ett inlägg om det <a href="https://dataland.rbind.io/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/">här</a>. Är du inte intresserad av hur vi hämtar data kan du bara hoppa över det här kodblocket.</p>
 <pre class="r"><code>library(pxweb)
@@ -1261,10 +1261,11 @@ tbl_eftergymn &lt;- tbl_bef %&gt;%
   left_join(tbl_utb) %&gt;% 
   mutate(procent_eftergymn = round(eftergymn /befolkning, 3))</code></pre>
 <p>Nu har vi data som vi kan joina på vår geografiska data. Ett problem är dock att vi i data från SCB:s API inte fått med länskoder. Det löser jag genom att rensa bort strängen <code>" län"</code> med <code>str_replace()</code>. Formatetet på länsnamn är då detsamma och vi kan joina på den geografiska information och visualisera andel personer med eftergymnasial utbildning per län.</p>
-<pre class="r"><code>tbl_eftergymn %&gt;% 
+<pre class="r"><code>tbl_eftergymn &lt;- tbl_eftergymn %&gt;% 
   mutate(region = str_replace(region, &quot; län&quot;, &quot;&quot;)) %&gt;% 
-  left_join(lan, by = c(&quot;region&quot; = &quot;LnNamn&quot;)) %&gt;% 
-  ggplot(aes(fill = procent_eftergymn)) +
+  left_join(lan, by = c(&quot;region&quot; = &quot;LnNamn&quot;))
+
+ggplot(tbl_eftergymn, aes(fill = procent_eftergymn)) +
   geom_sf(aes(geometry = geometry)) +
   theme_map() +
   theme(legend.position = c(1, 0.15)) +
@@ -1276,7 +1277,9 @@ tbl_eftergymn &lt;- tbl_bef %&gt;%
     caption = &quot;Källa: SCB&quot;,
     fill = &quot;Eftergymnasial\nutbildning&quot;
   )</code></pre>
-<p><img src="/post/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>ggsave(&quot;scb-karta-eftergymn.png&quot;)</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
 
 
             </div>
@@ -1307,6 +1310,11 @@ tbl_eftergymn &lt;- tbl_bef %&gt;%
                 </div>
                 
                 <div style="width: 100%;"></div>
+                
+                <div>
+                    <a href="/blog/anropa-kolada-fran-r/">Anropa Kolada från R</a>
+                    <img class="icon" src="/img/next.svg" alt="next" />
+                </div>
                 
             </div>
             
