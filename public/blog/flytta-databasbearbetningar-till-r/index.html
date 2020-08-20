@@ -15,9 +15,9 @@
 <meta property="og:site_name" content="Dataland" />
 <meta property="og:locale" content="en-US" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/blog/anropa-kolada-fran-r/" />
-<meta property="og:title" content="Anropa Kolada från R" />
-<meta property="twitter:title" content="Anropa Kolada från R">
+<meta property="og:url" content="/blog/flytta-databasbearbetningar-till-r/" />
+<meta property="og:title" content="Varför ni ska flytta databasbearbetningarna till R" />
+<meta property="twitter:title" content="Varför ni ska flytta databasbearbetningarna till R">
 
     <meta property="og:image" content="//images/image.jpg">
     <meta property="twitter:card" content="summary">
@@ -29,10 +29,10 @@
 <title>
 
 
-     Dataland - Anropa Kolada från R 
+     Dataland - Varför ni ska flytta databasbearbetningarna till R 
 
 </title>
-<link rel="canonical" href="/blog/anropa-kolada-fran-r/">
+<link rel="canonical" href="/blog/flytta-databasbearbetningar-till-r/">
 
 
 <style media="screen">
@@ -1120,32 +1120,40 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
                     <div class="page-heading">
 
     
-    Anropa Kolada från R
+    Varför ni ska flytta databasbearbetningarna till R
     
 
 </div>
 
                 </div>
                 <div class="meta">
-                    <div class="date" title="Mon Aug 17 2020 00:00:00 UTC">Aug 17, 2020</div>
+                    <div class="date" title="Thu Aug 20 2020 00:00:00 UTC">Aug 20, 2020</div>
                     
                         
                         <div class="author middot" title="Filip Wästberg">Filip Wästberg</div>
                         
                     
                     
-                    <div class="reading-time middot">6 minute read</div>
+                    <div class="reading-time middot">4 minute read</div>
                     
                     
                       <div class="tags">
                     
                         <ul>
                           
+                            <li class="middot"><a href="/tags/sql">sql</a> </li>
+                          
+                            <li class="middot"><a href="/tags/dplyr">dplyr</a> </li>
+                          
                         </ul>
                     </div>
                     <div class="tags">
                         <ul>
                           
+                            
+                          
+                          
+                            
                           
                         </ul>
                     </div>
@@ -1157,141 +1165,74 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     
 
 
-<p>I ett tidigare inlägg tittade jag på hur man kan <a href="https://dataland.rbind.io/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/">hämta data direkt från SCB till R</a> med hjälp av paketet <code>pxweb</code>.</p>
-<p>SCB har massa intressant data men mycket är på en nationell nivå. En annan datakälla, som är helt inriktad på kommunal och regional statistik, är Kolada, som är Sveriges kommuner och regioners (SKR) webbtjänst för regional statistik.</p>
-<p>Likt SCB har Kolada ett gränssnitt på webben, och precis som SCB har de också ett öppet API. Love Hansson, som är analytiker på Pensionsmyndigheten, har byggt ett paket för att anropa Kolada från R. Det här innebär att om du jobbar mycket med kommunal eller regional statistik kan du med hjälp av R-skript automatisera all inhämtning och rapportering av regional statistik från Kolada.</p>
-<div id="rkolada" class="section level2">
-<h2>rKolada</h2>
-<p>Paketet installeras enkelt med <code>install.packages("rKolada")</code>.</p>
-<p>För att få en övergripande bild över Koladas datamodell och paketet <code>rKolada</code> kan jag varmt rekommendera Love Hanssons vignette som finns <a href="https://lchansson.github.io/rKolada/articles/introduction-to-rkolada.html">här</a>.</p>
+<p>Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande). Många databaser som är skräddarsydda för en organisation har egna User Interface (UI) av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser. Det sägs ibland att en Data Scientist arbetar till 80% med databearbetning, men om personen i fråga spenderar dagarna att navigera olika databaser och deras UI:s är den siffran säkert högre.</p>
+<p>Att nå och effektivit kunna kommunicera med databaser från ett och samma verktyg kan spara en Data Scientist mycket tid.</p>
+<div id="databaser-i-r" class="section level2">
+<h2>Databaser i R</h2>
+<p>Det finns flera sätt att göra det här på, men jag kommer att argumentera för att göra det i R och IDE:n RStudio.</p>
+<p>R har gjort en osannolik resa från att vara ett ganska nischat programmeringsspråk för statistiker till att bli ett av det mest populära verktygen att göra dataanalys i. Ett viktigt skäl till R:s framgång är paketet <code>dplyr</code>. <code>dplyr</code> används för att göra datamanipulering och bearbetning enklare, med ett starkt fokus på läsbarhet och användarvänlighet. Det har ett intuitivt syntax som i princip vem som helst kan förstå.</p>
+<p>För att visa hur enkelt <code>dplyr</code>:s syntax är kan vi utgå från data om irisblomman. Nedan filterar vi först bort arten “setosa” och räknar sedan ut den genomsnittliga bladlängden per art. I princip vem som helst kan förstå ungefär vad som pågår nedan.</p>
+<pre class="r"><code>library(dplyr)
+iris %&gt;% 
+  filter(Species != &quot;setosa&quot;) %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   Species    mean_sepal_length
+##   &lt;fct&gt;                  &lt;dbl&gt;
+## 1 versicolor              5.94
+## 2 virginica               6.59</code></pre>
+<p>Vad har det här med databaser att göra? Eftersom data i arbetslivet ofta ligger i databaser har utvecklarna bakom <code>dplyr</code> lagt ner mycket tid på att skriva SQL-översättningar från <code>dplyr</code> till olika databaser. Vad det här innebär i praktiken är att du kan använda <code>dplyr</code>-syntax för att göra komputeringar i en databas.</p>
+<p>Låt oss göra exakt det här genom att skapa en exempeldatabas. Generellt behöver vi användarnamn, lösenord och serverspecifikation för att ansluta till en databas. Men principerna är desamma oavsett om vi skapar den tillfälligt på datorn eller om det är en livs levande databas. För att arbeta med databaser i R laddar vi också paketen <code>DBI</code> och <code>dbplyr</code>.</p>
+<pre class="r"><code>library(DBI)
+library(dbplyr)
+
+con &lt;- dbConnect(RSQLite::SQLite(), &quot;:memory:&quot;)
+
+dbWriteTable(con, &quot;iris&quot;, iris)
+
+iris_tbl &lt;- tbl(con, &quot;iris&quot;)</code></pre>
+<p>Objektet <code>iris_tbl</code> är nu en koppling till tabellen <code>iris</code> i databasen <code>con</code>. Det här är det enda som behövs för att kunna använda <code>dplyr</code> för att bearbeta data i databasen.</p>
+<pre class="r"><code>iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
+<pre><code>## Warning: Missing values are always removed in SQL.
+## Use `mean(x, na.rm = TRUE)` to silence this warning
+## This warning is displayed only once per session.</code></pre>
+<pre><code>## # Source:   lazy query [?? x 2]
+## # Database: sqlite 3.30.1 [:memory:]
+##   Species    mean_sepal_length
+##   &lt;chr&gt;                  &lt;dbl&gt;
+## 1 setosa                  5.01
+## 2 versicolor              5.94
+## 3 virginica               6.59</code></pre>
+<p>Ovan kod exekveras alltså inte i R, som generellt körs lokalt på en server eller en dator, utan på den server där databasen ligger. I bakgrunden översätter <code>dplyr</code> koden till <code>SQL</code>. Vi kan se hur den översatta queryn ser ut genom <code>show_query()</code>:</p>
+<pre class="r"><code>iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %&gt;% 
+  show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT `Species`, AVG(`Sepal.Length`) AS `mean_sepal_length`
+## FROM `iris`
+## GROUP BY `Species`</code></pre>
+<p>Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder i en databas än vad som är möjligt direkt i R.</p>
+<p>När vi är klara med, säg en aggregering, kan vi enkelt ta in resultatet till R och modellera eller visualisera resultatet.</p>
+<pre class="r"><code>library(ggplot2)
+iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %&gt;% 
+  collect() %&gt;% 
+  ggplot() +
+  aes(y = Species, x = mean_sepal_length, fill = Species) +
+  geom_col() +
+  theme(legend.position = &quot;none&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/blog/2020-08-17-demokratisera-databaser-med-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
-<div id="hur-kolada-fungerar" class="section level2">
-<h2>Hur Kolada fungerar</h2>
-<p>På Koladas hemsida kan du enkelt söka efter olika KPI-er. Där kan du också få en enkel tabell och visualisering av resultatet. <code>rKolada</code> ger oss möjlighet att programmatiskt ta ut dessa tabeller, vilket underlättar om vi behöver ta ut statistik fler gånger än en.</p>
-<p>Med funktionen <code>get_kpi()</code> får vi en tabell med alla KPI-er som finns tillgängliga.</p>
-<pre class="r"><code>library(rKolada)
-library(tidyverse)
-
-kpis &lt;- get_kpi()
-
-kpis</code></pre>
-<pre><code>## # A tibble: 4,887 x 13
-##    auspices description has_ou_data id    is_divided_by_g… municipality_ty…
-##    &lt;chr&gt;    &lt;chr&gt;       &lt;lgl&gt;       &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;           
-##  1 E        Personalko… FALSE       N000…                0 K               
-##  2 E        Personalko… FALSE       N000…                0 K               
-##  3 X        Kommunalek… FALSE       N000…                0 K               
-##  4 &lt;NA&gt;     Externa in… FALSE       N000…                0 K               
-##  5 &lt;NA&gt;     Inkomstutj… FALSE       N000…                0 K               
-##  6 &lt;NA&gt;     Kostnadsut… FALSE       N000…                0 K               
-##  7 X        Reglerings… FALSE       N000…                0 K               
-##  8 &lt;NA&gt;     Utjämnings… FALSE       N000…                0 K               
-##  9 X        Införandeb… FALSE       N000…                0 K               
-## 10 X        Strukturbi… FALSE       N000…                0 K               
-## # … with 4,877 more rows, and 7 more variables: operating_area &lt;chr&gt;,
-## #   ou_publication_date &lt;chr&gt;, perspective &lt;chr&gt;, prel_publication_date &lt;chr&gt;,
-## #   publ_period &lt;chr&gt;, publication_date &lt;chr&gt;, title &lt;chr&gt;</code></pre>
-<p>Vi kan filtrera dessa med <code>dplyr</code> och <code>stringr</code> eller använda den inbyggda funktionen <code>kpi_search()</code>:</p>
-<pre class="r"><code>kpi_bygglov &lt;- kpi_search(kpis, c(&quot;bostäder som beviljats bygglov&quot;), column = &quot;description&quot;)
-
-kpi_bygglov</code></pre>
-<pre><code>## # A tibble: 1 x 13
-##   auspices description has_ou_data id    is_divided_by_g… municipality_ty…
-##   &lt;chr&gt;    &lt;chr&gt;       &lt;lgl&gt;       &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;           
-## 1 X        Antal bost… FALSE       N079…                0 K               
-## # … with 7 more variables: operating_area &lt;chr&gt;, ou_publication_date &lt;chr&gt;,
-## #   perspective &lt;chr&gt;, prel_publication_date &lt;chr&gt;, publ_period &lt;chr&gt;,
-## #   publication_date &lt;chr&gt;, title &lt;chr&gt;</code></pre>
-<p>För att få ner data för detta KPI behöver 1) ett ID och 2) specificera vilken eller vilka kommuner du vill ha data för.</p>
-<p>ID får du enkelt ut genom <code>kpi_extract_ids()</code>.</p>
-<pre class="r"><code>kpi_extract_ids(kpi_bygglov)</code></pre>
-<pre><code>## [1] &quot;N07925&quot;</code></pre>
-<p>De kommuner, eller regionala indelningar som finns, kan vi på motsvarande sätt få genom <code>get_municipality()</code>.</p>
-<pre class="r"><code>get_municipality()</code></pre>
-<pre><code>## # A tibble: 312 x 3
-##    id    title      type 
-##    &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;
-##  1 1440  Ale        K    
-##  2 1489  Alingsås   K    
-##  3 0764  Alvesta    K    
-##  4 0604  Aneby      K    
-##  5 1984  Arboga     K    
-##  6 2506  Arjeplog   K    
-##  7 2505  Arvidsjaur K    
-##  8 1784  Arvika     K    
-##  9 1882  Askersund  K    
-## 10 2084  Avesta     K    
-## # … with 302 more rows</code></pre>
-<p>En bra sak med Kolada är att de för alla Sveriges kommuner har referenskommuner, kommuner som på olika sätt liknar kommunen du är intresserad av. På så sätt kan vi enkelt ta fram kommuner som är relevanta att jämföra med. I <code>rKolada</code> gör vi det med <code>get_municipality_groups()</code> och den tillhörande <em>search</em>-funktionen.</p>
-<pre class="r"><code>get_municipality_groups() %&gt;% 
-  municipality_grp_search(&quot;Finspång&quot;)</code></pre>
-<pre><code>## # A tibble: 11 x 3
-##    id      members          title                                          
-##    &lt;chr&gt;   &lt;list&gt;           &lt;chr&gt;                                          
-##  1 G123871 &lt;df[,2] [7 × 2]&gt; Liknande kommuner socioekonomi, Finspång, 2018 
-##  2 G146009 &lt;df[,2] [7 × 2]&gt; Liknande regioner socioekonomi, Finspång, 2018 
-##  3 G35908  &lt;df[,2] [7 × 2]&gt; Liknande kommuner grundskola, Finspång, 2018   
-##  4 G36200  &lt;df[,2] [7 × 2]&gt; Liknande kommuner gymnasieskola, Finspång, 2018
-##  5 G36492  &lt;df[,2] [7 × 2]&gt; Liknande kommuner IFO, Finspång, 2018          
-##  6 G36784  &lt;df[,2] [7 × 2]&gt; Liknande kommuner äldreomsorg, Finspång, 2018  
-##  7 G37368  &lt;df[,2] [7 × 2]&gt; Liknande kommuner, övergripande, Finspång, 2018
-##  8 G39541  &lt;df[,2] [7 × 2]&gt; Liknande kommuner LSS, Finspång, 2018          
-##  9 G85502  &lt;df[,2] [7 × 2]&gt; Liknande kommuner fritidshem, Finspång, 2018   
-## 10 G85794  &lt;df[,2] [7 × 2]&gt; Liknande kommuner förskola, Finspång, 2018     
-## 11 G87668  &lt;df[,2] [7 × 2]&gt; Liknande kommuner integration, Finspång, 2018</code></pre>
-<p>I slutändan har vi nu all metadata vi behöver och vill då få in den faktiska datan. För att få tag i den använder vi bara <code>get_values()</code>, då får vi tillbaka en data.frame med all data som vi frågat efter.</p>
-<pre class="r"><code>kpi_id &lt;- kpi_search(kpis, c(&quot;bostäder som beviljats bygglov&quot;),
-                                  column = &quot;description&quot;) %&gt;% 
-  kpi_extract_ids()
-
-munic_grp &lt;- get_municipality_groups() %&gt;%
-  municipality_grp_search(&quot;Liknande kommuner socioekonomi, Finspång&quot;) %&gt;% 
-  municipality_grp_extract_ids()
-
-finspang_id &lt;- get_municipality() %&gt;%
-  municipality_search(&quot;Finspång&quot;) %&gt;% 
-  municipality_extract_ids()
-
-# Get values
-grp_data &lt;- get_values(
-  kpi = kpi_id,
-  municipality = c(
-    munic_grp,
-    finspang_id
-  )
-)
-
-grp_data</code></pre>
-<pre><code>## # A tibble: 24 x 8
-##    kpi    municipality_id  year count gender value municipality municipality_ty…
-##    &lt;chr&gt;  &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;           
-##  1 N07925 0562             2015     1 T       0.7  Finspång     K               
-##  2 N07925 0687             2015     1 T       2.3  Tranås       K               
-##  3 N07925 0884             2015     1 T       0.6  Vimmerby     K               
-##  4 N07925 1082             2015     1 T       1.4  Karlshamn    K               
-##  5 N07925 1272             2015     1 T       6    Bromölla     K               
-##  6 N07925 1472             2015     1 T       1.4  Tibro        K               
-##  7 N07925 1981             2015     1 T       3.8  Sala         K               
-##  8 N07925 1984             2015     1 T       0.9  Arboga       K               
-##  9 N07925 0562             2017     1 T       4.54 Finspång     K               
-## 10 N07925 0687             2017     1 T       8.57 Tranås       K               
-## # … with 14 more rows</code></pre>
-<p>Vi har nu data som antingen kan visualiseras, inkluderas i en Rmarkdown-genererad PDF-rapport, skrivas till en Excel, PowerPoint, lagra i en databas med mera.</p>
-<p>Här nöjer vi oss med en enkel visualisering:</p>
-<pre class="r"><code>ggplot(grp_data, aes(x = year, y = value, color = municipality)) +
-  geom_line() +
-  labs(
-    title = &quot;Antal bostäder som beviljats bygglov under två senaste åren&quot;,
-    subtitle = &quot;Antal/100 invånare&quot;,
-    caption = &quot;Källa: SKR och SCB&quot;,
-    y = &quot;Antal/1000 invånare&quot;,
-    x = &quot;År&quot;,
-    color = &quot;Kommun&quot;
-  ) +
-  theme_minimal() +
-  ggthemes::scale_color_colorblind()</code></pre>
-<p><img src="/blog/2020-08-14-anropa-kolada-fran-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>Ett stort tack till Love Hansson som lagt tid på att designa ett paket som jag tror kan underlätta för många analytiker på myndigheter, universitet och ute bland Sveriges kommuner och landsting.</p>
+<div id="vad-innebär-det-här-för-en-analytiker" class="section level2">
+<h2>Vad innebär det här för en analytiker?</h2>
+<p>Det här gör att vi som analytiker kan arbeta sömlöst med databaser direkt i R. Vi slipper hoppa mellan olika UI:s för alla de databaser som finns i vår organisation. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att där skapa statistiska modeller och AI-flöden och på så sätt demokratisera</p>
+<p>För en analytiker är själva databearbetningen bara ett steg i analysen och om man kan flytta databearbetningen närmare ett analytiskt verktyg, som R, kan man dels spara tid men framför allt bygga mer robusta flöden.</p>
 <p>/ Filip</p>
 </div>
 
@@ -1320,15 +1261,10 @@ grp_data</code></pre>
                 
                 <div>
                     <img class="icon" src="/img/back.svg" alt="back" />
-                    <a href="/blog/kartor-i-r/">GIS och Kartor i R</a>
+                    <a href="/blog/anropa-kolada-fran-r/">Anropa Kolada från R</a>
                 </div>
                 
                 <div style="width: 100%;"></div>
-                
-                <div>
-                    <a href="/blog/flytta-databasbearbetningar-till-r/">Varför ni ska flytta databasbearbetningarna till R</a>
-                    <img class="icon" src="/img/next.svg" alt="next" />
-                </div>
                 
             </div>
             

@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Demokratisera databaser med R</title>
-      <link>/blog/demokratisera-databaser-med-r/</link>
+      <title>Varför ni ska flytta databasbearbetningarna till R</title>
+      <link>/blog/flytta-databasbearbetningar-till-r/</link>
       <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/demokratisera-databaser-med-r/</guid>
-      <description>Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande) information. Många databaser som är skräddarsydda för en organisation har inte sällan ett eget User Interface (UI) som kan vara av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser.</description>
+      <guid>/blog/flytta-databasbearbetningar-till-r/</guid>
+      <description>Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande). Många databaser som är skräddarsydda för en organisation har egna User Interface (UI) av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser.</description>
     </item>
     
     <item>

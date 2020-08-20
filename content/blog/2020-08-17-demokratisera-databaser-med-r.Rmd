@@ -1,8 +1,8 @@
 ---
-title: Demokratisera databaser med R
+title: Varför ni ska flytta databasbearbetningarna till R 
 author: Filip Wästberg
 date: '2020-08-20'
-slug: demokratisera-databaser-med-r
+slug: flytta-databasbearbetningar-till-r
 categories:
   - databases
   - r
@@ -15,15 +15,19 @@ lobsters_id: ''
 meta_img: /images/image.jpg
 ---
 
-Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande) information. Många databaser som är skräddarsydda för en organisation har inte sällan ett eget User Interface (UI) som kan vara av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser.
+Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande). Många  databaser som är skräddarsydda för en organisation har egna User Interface (UI) av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser. Det sägs ibland att en Data Scientist arbetar till 80% med databearbetning, men om personen i fråga spenderar dagarna att navigera olika databaser och deras UI:s är den siffran säkert högre. 
 
-## dplyr to the rescue
+Att nå och effektivit kunna kommunicera med databaser från ett och samma verktyg kan spara en Data Scientist mycket tid. 
 
-Det här är olyckligt, men eftersom det är så pass vanligt, har mycket tid och kraft hos R-utvecklare världen över de senaste åren gått till att göra det enklare att koppla upp sig mot databaser. I centrum för det här arbetet står ett paket som heter `dplyr`. Det är ett paket vars syfte är att göra manipulering och bearbetning av data enklare, med stark fokus på läsbarhet och användarvänlighet. Resultatet är ett intuitivt syntax som i princip vem som helst kan förstå.
+## Databaser i R
 
-Nedan utgår vi från data om irisblomman, där vi först filterar bort arten "setosa" och sedan räknar ut den genomsnittliga bladlängden per art.
+Det finns flera sätt att göra det här på, men jag kommer att argumentera för att göra det i R och IDE:n RStudio. 
 
-```{r}
+R har gjort en osannolik resa från att vara ett ganska nischat programmeringsspråk för statistiker till att bli ett av det mest populära verktygen att göra dataanalys i. Ett viktigt skäl till R:s framgång är paketet `dplyr`. `dplyr` används för att göra datamanipulering och bearbetning enklare, med ett starkt fokus på läsbarhet och användarvänlighet. Det har ett intuitivt syntax som i princip vem som helst kan förstå.
+
+För att visa hur enkelt `dplyr`:s syntax är kan vi utgå från data om irisblomman. Nedan filterar vi först bort arten "setosa" och räknar sedan ut den genomsnittliga bladlängden per art. I princip vem som helst kan förstå ungefär vad som pågår nedan.
+
+```{r warning=FALSE, message=FALSE}
 library(dplyr)
 iris %>% 
   filter(Species != "setosa") %>% 
@@ -31,11 +35,11 @@ iris %>%
   summarise(mean_sepal_length = mean(Sepal.Length))
 ```
 
-Eftersom data i arbetslivet ofta ligger i databaser har utvecklarna bakom `dplyr` och de största databaspaketen i R lagt ner mycket tid på att skriva översättningar från `dplyr` till olika databaser. Dessa finns i systerpaketet `dbplyr`. Det betyder att om exempelvis data-settet ovan skulle ligga i en databas skulle vi kunna använda i princip samma syntax för att bearbeta data i databasen.
+Vad har det här med databaser att göra? Eftersom data i arbetslivet ofta ligger i databaser har utvecklarna bakom `dplyr` lagt ner mycket tid på att skriva SQL-översättningar från `dplyr` till olika databaser. Vad det här innebär i praktiken är att du kan använda `dplyr`-syntax för att göra komputeringar i en databas. 
 
-Låt oss göra exakt det här genom att skapa en exempeldatabas. Generellt behöver vi användarnamn, lösenord och serverspecifikation för att ansluta till en databas. Men principerna är desamma oavsett om vi skapar den tillfälligt på datorn eller om det är en livs levande databas.
+Låt oss göra exakt det här genom att skapa en exempeldatabas. Generellt behöver vi användarnamn, lösenord och serverspecifikation för att ansluta till en databas. Men principerna är desamma oavsett om vi skapar den tillfälligt på datorn eller om det är en livs levande databas. För att arbeta med databaser i R laddar vi också paketen `DBI` och `dbplyr`.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 library(DBI)
 library(dbplyr)
 
@@ -63,7 +67,7 @@ iris_tbl %>%
   show_query()
 ```
 
-Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder än vad som är möjligt direkt i R, genom att flytta komputeringen till en databas.
+Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder i en databas än vad som är möjligt direkt i R.
 
 När vi är klara med, säg en aggregering, kan vi enkelt ta in resultatet till R och modellera eller visualisera resultatet.
 
@@ -82,7 +86,7 @@ iris_tbl %>%
 
 ## Vad innebär det här för en analytiker?
 
-Det här gör att vi som analytiker kan arbeta sömlöst med databaser direkt i R. Vi slipper hoppa mellan olika UI:s för alla de databaser som finns i vår organisation. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att där skapa statistiska modeller och AI-flöden. 
+Det här gör att vi som analytiker kan arbeta sömlöst med databaser direkt i R. Vi slipper hoppa mellan olika UI:s för alla de databaser som finns i vår organisation. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att där skapa statistiska modeller och AI-flöden och på så sätt demokratisera 
 
 För en analytiker är själva databearbetningen bara ett steg i analysen och om man kan flytta databearbetningen närmare ett analytiskt verktyg, som R, kan man dels spara tid men framför allt bygga mer robusta flöden. 
 
