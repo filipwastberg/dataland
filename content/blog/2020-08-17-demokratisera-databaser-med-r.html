@@ -1,0 +1,89 @@
+---
+title: Varför ni ska flytta databasbearbetningarna till R 
+author: Filip Wästberg
+date: '2020-08-20'
+slug: flytta-databasbearbetningar-till-r
+categories:
+  - databases
+  - r
+tags:
+  - sql
+  - dplyr
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+
+
+<p>Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande). Många databaser som är skräddarsydda för en organisation har egna User Interface (UI) av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser. Det sägs ibland att en Data Scientist arbetar till 80% med databearbetning, men om personen i fråga spenderar dagarna att navigera olika databaser och deras UI:s är den siffran säkert högre.</p>
+<p>Att nå och effektivit kunna kommunicera med databaser från ett och samma verktyg kan spara en Data Scientist mycket tid.</p>
+<div id="databaser-i-r" class="section level2">
+<h2>Databaser i R</h2>
+<p>Det finns flera sätt att göra det här på, men jag kommer att argumentera för att göra det i R och IDE:n RStudio.</p>
+<p>R har gjort en osannolik resa från att vara ett ganska nischat programmeringsspråk för statistiker till att bli ett av det mest populära verktygen att göra dataanalys i. Ett viktigt skäl till R:s framgång är paketet <code>dplyr</code>. <code>dplyr</code> används för att göra datamanipulering och bearbetning enklare, med ett starkt fokus på läsbarhet och användarvänlighet. Det har ett intuitivt syntax som i princip vem som helst kan förstå.</p>
+<p>För att visa hur enkelt <code>dplyr</code>:s syntax är kan vi utgå från data om irisblomman. Nedan filterar vi först bort arten “setosa” och räknar sedan ut den genomsnittliga bladlängden per art. I princip vem som helst kan förstå ungefär vad som pågår nedan.</p>
+<pre class="r"><code>library(dplyr)
+iris %&gt;% 
+  filter(Species != &quot;setosa&quot;) %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   Species    mean_sepal_length
+##   &lt;fct&gt;                  &lt;dbl&gt;
+## 1 versicolor              5.94
+## 2 virginica               6.59</code></pre>
+<p>Vad har det här med databaser att göra? Eftersom data i arbetslivet ofta ligger i databaser har utvecklarna bakom <code>dplyr</code> lagt ner mycket tid på att skriva SQL-översättningar från <code>dplyr</code> till olika databaser. Vad det här innebär i praktiken är att du kan använda <code>dplyr</code>-syntax för att göra komputeringar i en databas.</p>
+<p>Låt oss göra exakt det här genom att skapa en exempeldatabas. Generellt behöver vi användarnamn, lösenord och serverspecifikation för att ansluta till en databas. Men principerna är desamma oavsett om vi skapar den tillfälligt på datorn eller om det är en livs levande databas. För att arbeta med databaser i R laddar vi också paketen <code>DBI</code> och <code>dbplyr</code>.</p>
+<pre class="r"><code>library(DBI)
+library(dbplyr)
+
+con &lt;- dbConnect(RSQLite::SQLite(), &quot;:memory:&quot;)
+
+dbWriteTable(con, &quot;iris&quot;, iris)
+
+iris_tbl &lt;- tbl(con, &quot;iris&quot;)</code></pre>
+<p>Objektet <code>iris_tbl</code> är nu en koppling till tabellen <code>iris</code> i databasen <code>con</code>. Det här är det enda som behövs för att kunna använda <code>dplyr</code> för att bearbeta data i databasen.</p>
+<pre class="r"><code>iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
+<pre><code>## Warning: Missing values are always removed in SQL.
+## Use `mean(x, na.rm = TRUE)` to silence this warning
+## This warning is displayed only once per session.</code></pre>
+<pre><code>## # Source:   lazy query [?? x 2]
+## # Database: sqlite 3.30.1 [:memory:]
+##   Species    mean_sepal_length
+##   &lt;chr&gt;                  &lt;dbl&gt;
+## 1 setosa                  5.01
+## 2 versicolor              5.94
+## 3 virginica               6.59</code></pre>
+<p>Ovan kod exekveras alltså inte i R, som generellt körs lokalt på en server eller en dator, utan på den server där databasen ligger. I bakgrunden översätter <code>dplyr</code> koden till <code>SQL</code>. Vi kan se hur den översatta queryn ser ut genom <code>show_query()</code>:</p>
+<pre class="r"><code>iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %&gt;% 
+  show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT `Species`, AVG(`Sepal.Length`) AS `mean_sepal_length`
+## FROM `iris`
+## GROUP BY `Species`</code></pre>
+<p>Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder i en databas än vad som är möjligt direkt i R.</p>
+<p>När vi är klara med, säg en aggregering, kan vi enkelt ta in resultatet till R och modellera eller visualisera resultatet.</p>
+<pre class="r"><code>library(ggplot2)
+iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %&gt;% 
+  collect() %&gt;% 
+  ggplot() +
+  aes(y = Species, x = mean_sepal_length, fill = Species) +
+  geom_col() +
+  theme(legend.position = &quot;none&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/blog/2020-08-17-demokratisera-databaser-med-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="vad-innebär-det-här-för-en-analytiker" class="section level2">
+<h2>Vad innebär det här för en analytiker?</h2>
+<p>Det här gör att vi som analytiker kan arbeta sömlöst med databaser direkt i R. Vi slipper hoppa mellan olika UI:s för alla de databaser som finns i vår organisation. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att där skapa statistiska modeller och AI-flöden och på så sätt demokratisera</p>
+<p>För en analytiker är själva databearbetningen bara ett steg i analysen och om man kan flytta databearbetningen närmare ett analytiskt verktyg, som R, kan man dels spara tid men framför allt bygga mer robusta flöden.</p>
+<p>/ Filip</p>
+</div>

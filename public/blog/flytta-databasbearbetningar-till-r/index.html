@@ -15,9 +15,9 @@
 <meta property="og:site_name" content="Dataland" />
 <meta property="og:locale" content="en-US" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/blog/kartor-i-r/" />
-<meta property="og:title" content="GIS och Kartor i R" />
-<meta property="twitter:title" content="GIS och Kartor i R">
+<meta property="og:url" content="/blog/flytta-databasbearbetningar-till-r/" />
+<meta property="og:title" content="Varför ni ska flytta databasbearbetningarna till R" />
+<meta property="twitter:title" content="Varför ni ska flytta databasbearbetningarna till R">
 
     <meta property="og:image" content="//images/image.jpg">
     <meta property="twitter:card" content="summary">
@@ -29,10 +29,10 @@
 <title>
 
 
-     Dataland - GIS och Kartor i R 
+     Dataland - Varför ni ska flytta databasbearbetningarna till R 
 
 </title>
-<link rel="canonical" href="/blog/kartor-i-r/">
+<link rel="canonical" href="/blog/flytta-databasbearbetningar-till-r/">
 
 
 <style media="screen">
@@ -1120,14 +1120,14 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
                     <div class="page-heading">
 
     
-    GIS och Kartor i R
+    Varför ni ska flytta databasbearbetningarna till R
     
 
 </div>
 
                 </div>
                 <div class="meta">
-                    <div class="date" title="Wed Jun 10 2020 00:00:00 UTC">Jun 10, 2020</div>
+                    <div class="date" title="Thu Aug 20 2020 00:00:00 UTC">Aug 20, 2020</div>
                     
                         
                         <div class="author middot" title="Filip Wästberg">Filip Wästberg</div>
@@ -1140,6 +1140,10 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
                       <div class="tags">
                     
                         <ul>
+                          
+                            <li class="middot"><a href="/tags/sql">sql</a> </li>
+                          
+                            <li class="middot"><a href="/tags/dplyr">dplyr</a> </li>
                           
                         </ul>
                     </div>
@@ -1161,125 +1165,76 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     
 
 
-<p>Geografiska informationssystem eller GIS är ett stort område inom dataanalys som traditionellt endast varit möjligt i mjukvaruprogram med höga licenskostnader. Men med den senaste tidens explosion av mjukvara som är Open Source är det idag möjligt att göra minst lika avancerade analyser helt kostnadsfritt. Här tänkte jag visa hur vi kan använda paket i R för att göra GIS.</p>
-<p>Vi utgår från kartdata från SCB, som ni hittar <a href="https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/digitala-granser/">här</a>. Ladda ner Shape-filen som är en zippad fil, unzippa den och välj sedan geografiska indelning du är ute efter.</p>
-<p>För att kunna läsa in kartor i R använder vi oss av RStudio, skapar ett nytt projekt (<em>File -&gt; New Project…</em>) och lägger in hela mappen med filer för den geografiska indelning du valt.</p>
-<p>Du kan så klart göra det här programmatiskt också genom:</p>
-<pre class="r"><code>download.file(&quot;https://www.scb.se/contentassets/3443fea3fa6640f7a57ea15d9a372d33/shape_svenska.zip&quot;, destfile = &quot;shape_svenska.zip&quot;)
+<p>Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande). Många databaser som är skräddarsydda för en organisation har egna User Interface (UI) av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser. Det sägs ibland att en Data Scientist arbetar till 80% med databearbetning, men om personen i fråga spenderar dagarna att navigera olika databaser och deras UI:s är den siffran säkert högre.</p>
+<p>Att nå och effektivit kunna kommunicera med databaser från ett och samma verktyg kan spara en Data Scientist mycket tid.</p>
+<div id="databaser-i-r" class="section level2">
+<h2>Databaser i R</h2>
+<p>Det finns flera sätt att göra det här på, men jag kommer att argumentera för att göra det i R och IDE:n RStudio.</p>
+<p>R har gjort en osannolik resa från att vara ett ganska nischat programmeringsspråk för statistiker till att bli ett av det mest populära verktygen att göra dataanalys i. Ett viktigt skäl till R:s framgång är paketet <code>dplyr</code>. <code>dplyr</code> används för att göra datamanipulering och bearbetning enklare, med ett starkt fokus på läsbarhet och användarvänlighet. Det har ett intuitivt syntax som i princip vem som helst kan förstå.</p>
+<p>För att visa hur enkelt <code>dplyr</code>:s syntax är kan vi utgå från data om irisblomman. Nedan filterar vi först bort arten “setosa” och räknar sedan ut den genomsnittliga bladlängden per art. I princip vem som helst kan förstå ungefär vad som pågår nedan.</p>
+<pre class="r"><code>library(dplyr)
+iris %&gt;% 
+  filter(Species != &quot;setosa&quot;) %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   Species    mean_sepal_length
+##   &lt;fct&gt;                  &lt;dbl&gt;
+## 1 versicolor              5.94
+## 2 virginica               6.59</code></pre>
+<p>Vad har det här med databaser att göra? Eftersom data i arbetslivet ofta ligger i databaser har utvecklarna bakom <code>dplyr</code> lagt ner mycket tid på att skriva SQL-översättningar från <code>dplyr</code> till olika databaser. Vad det här innebär i praktiken är att du kan använda <code>dplyr</code>-syntax för att göra komputeringar i en databas.</p>
+<p>Låt oss göra exakt det här genom att skapa en exempeldatabas. Generellt behöver vi användarnamn, lösenord och serverspecifikation för att ansluta till en databas. Men principerna är desamma oavsett om vi skapar den tillfälligt på datorn eller om det är en livs levande databas. För att arbeta med databaser i R laddar vi också paketen <code>DBI</code> och <code>dbplyr</code>.</p>
+<pre class="r"><code>library(DBI)
+library(dbplyr)
 
-unzip(&quot;shape_svenska.zip&quot;, exdir = &quot;shape_svenska&quot;)
+con &lt;- dbConnect(RSQLite::SQLite(), &quot;:memory:&quot;)
 
-unzip(&quot;shape_svenska/LanRT90.zip&quot;, exdir = &quot;lan_rt90&quot;)</code></pre>
-<p>Då får vi dessa filer i mappen <code>lan_rt90</code>.</p>
-<pre class="r"><code>list.files(&quot;lan_rt90&quot;)</code></pre>
-<pre><code>## [1] &quot;Lan_RT90_region.dbf&quot; &quot;Lan_RT90_region.prj&quot; &quot;Lan_RT90_region.shp&quot;
-## [4] &quot;Lan_RT90_region.shx&quot;</code></pre>
-<p>Viktigt att notera är att du behöver alla filer i mappen för att ladda in geografisk data till R. Men du behöver bara ladda in en av filerna, nämligen den som är Shape (.shp).</p>
-<p>För att läsa in och bearbeta kartfiler använder vi paktet <code>sf</code>(<em>Simple Features</em>) som gör det enkelt att läsa in och manipulera kartfiler.</p>
-<p>Vi laddar in shape-filen med <code>read_sf()</code> och ser då att varje län har en <code>geometry</code>, en multipolygon, som är gränserna för länet.</p>
-<pre class="r"><code>library(sf)</code></pre>
-<pre><code>## Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</code></pre>
-<pre class="r"><code>lan &lt;- read_sf(&quot;lan_rt90/Lan_RT90_region.shp&quot;)
+dbWriteTable(con, &quot;iris&quot;, iris)
 
-lan</code></pre>
-<pre><code>## Simple feature collection with 21 features and 2 fields
-## geometry type:  MULTIPOLYGON
-## dimension:      XY
-## bbox:           xmin: 1230810 ymin: 6137234 xmax: 1880916 ymax: 7669583
-## CRS:            3021
-## # A tibble: 21 x 3
-##    LnKod LnNamn                                                         geometry
-##    &lt;chr&gt; &lt;chr&gt;                                                &lt;MULTIPOLYGON [m]&gt;
-##  1 01    Stockholms  (((1581896 6569894, 1584367 6572819, 1585410 6571048, 1587…
-##  2 03    Uppsala     (((1588105 6611272, 1587491 6610219, 1591541 6601881, 1591…
-##  3 04    Södermanla… (((1508793 6538144, 1503218 6541877, 1502168 6544820, 1499…
-##  4 05    Östergötla… (((1448643 6445587, 1446285 6441023, 1438051 6439351, 1437…
-##  5 06    Jönköpings  (((1451287 6423652, 1452508 6419347, 1456711 6414227, 1455…
-##  6 07    Kronobergs  (((1455396 6340554, 1456478 6342310, 1460661 6342030, 1458…
-##  7 08    Kalmar      (((1495818 6327165, 1491423 6329015, 1489201 6333906, 1483…
-##  8 09    Gotlands    (((1658877 6415526, 1662237 6416751, 1664956 6417647, 1666…
-##  9 10    Blekinge    (((1423434 6230844, 1422094 6233619, 1418608 6233013, 1415…
-## 10 12    Skåne       (((1370410 6257557, 1375642 6259726, 1380641 6259554, 1384…
-## # … with 11 more rows</code></pre>
-<p>För att visualisera det här krävs inget mer än att använda <code>ggplot2</code> tillsammans med <code>geom_sf()</code> på data.</p>
-<pre class="r"><code>library(tidyverse)
-ggplot(lan) +
-  geom_sf()</code></pre>
-<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-Med <code>geom_sf()</code> får vi ett koordinatsystem med longitude och latitude, men vill vi bara ha en “clean” karta kan vi exempelvis använda <code>theme_map()</code> från paketet <code>ggthemes</code>.</p>
-<pre class="r"><code>library(ggthemes)
-ggplot(lan) +
-  geom_sf() +
-  theme_map()</code></pre>
-<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>I längden vill vi dock fylla den här kartan med någon slags information. Vi vänder oss då till <code>SCB</code> med paketet <code>pxweb</code>, som är ett paket för att hämta data från SCB direkt till R. Koden nedan är i huvudsak genererad från funktionen <code>pxweb_interactive()</code>, som vi använt för att interaktivt prata med SCB:s API. Nedan har jag tagit ner data för antalet personer eftergymnasial utbildning per län samt befolkning, för att kunna visualisera andelen i regionen med eftergymnasial utbildning.</p>
-<p>Är du intresserad av hur man hämtar data från SCB till R har jag skrivit ett inlägg om det <a href="https://dataland.rbind.io/post/hamta-data-direkt-fr%C3%A5n-scb-till-r/">här</a>. Är du inte intresserad av hur vi hämtar data kan du bara hoppa över det här kodblocket.</p>
-<pre class="r"><code>library(pxweb)
-library(janitor)
-
-pxweb_query_list &lt;- list(
-  &quot;Region&quot;= lan$LnKod, ## Här använder jag länskoder från shape-filen för att få ner alla län
-  &quot;UtbildningsNiva&quot;=c(&quot;6&quot;),
-  &quot;Alder&quot;=c(&quot;16&quot;,&quot;17&quot;,&quot;18&quot;,&quot;19&quot;,&quot;20&quot;,&quot;21&quot;,&quot;22&quot;,&quot;23&quot;,&quot;24&quot;,&quot;25&quot;,&quot;26&quot;,&quot;27&quot;,&quot;28&quot;,&quot;29&quot;,&quot;30&quot;,&quot;31&quot;,&quot;32&quot;,&quot;33&quot;,&quot;34&quot;,&quot;35&quot;,&quot;36&quot;,&quot;37&quot;,&quot;38&quot;,&quot;39&quot;,&quot;40&quot;,&quot;41&quot;,&quot;42&quot;,&quot;43&quot;,&quot;44&quot;,&quot;45&quot;,&quot;46&quot;,&quot;47&quot;,&quot;48&quot;,&quot;49&quot;,&quot;50&quot;,&quot;51&quot;,&quot;52&quot;,&quot;53&quot;,&quot;54&quot;,&quot;55&quot;,&quot;56&quot;,&quot;57&quot;,&quot;58&quot;,&quot;59&quot;,&quot;60&quot;,&quot;61&quot;,&quot;62&quot;,&quot;63&quot;,&quot;64&quot;,&quot;65&quot;,&quot;66&quot;,&quot;67&quot;,&quot;68&quot;,&quot;69&quot;,&quot;70&quot;,&quot;71&quot;,&quot;72&quot;,&quot;73&quot;,&quot;74&quot;,&quot;75&quot;,&quot;76&quot;,&quot;77&quot;,&quot;78&quot;,&quot;79&quot;,&quot;80&quot;,&quot;81&quot;,&quot;82&quot;,&quot;83&quot;,&quot;84&quot;,&quot;85&quot;,&quot;86&quot;,&quot;87&quot;,&quot;88&quot;,&quot;89&quot;,&quot;90&quot;,&quot;91&quot;,&quot;92&quot;,&quot;93&quot;,&quot;94&quot;,&quot;95+&quot;),
-  &quot;Kon&quot;=c(&quot;1&quot;,&quot;2&quot;),
-  &quot;ContentsCode&quot;=c(&quot;000000I2&quot;),
-  &quot;Tid&quot;=c(&quot;2019&quot;))
-
-# Download data 
-px_utb &lt;- pxweb_get(url = &quot;http://api.scb.se/OV0104/v1/doris/sv/ssd/UF/UF0506/UtbBefRegionR&quot;,
-            query = pxweb_query_list)
-
-# Convert to data.frame 
-utb &lt;- as.data.frame(px_utb, column.name.type = &quot;text&quot;, variable.value.type = &quot;text&quot;)
-
-## Vi är bara ute efter att visualisera totalen per region, inte på åldersnivå, därför summerar jag per region
-tbl_utb &lt;- utb %&gt;% 
-  janitor::clean_names() %&gt;% 
-  group_by(region) %&gt;% 
-  summarise(eftergymn = sum(befolkning_16_95_ar))
-
-pxweb_query_list &lt;-  list(
-  &quot;Region&quot;= lan$LnKod,
-  &quot;Alder&quot;=c(&quot;tot&quot;),
-  &quot;Kon&quot;=c(&quot;1&quot;,&quot;2&quot;),
-  &quot;ContentsCode&quot;=c(&quot;BE0101A9&quot;),
-  &quot;Tid&quot;=c(&quot;2019&quot;))
-
-# Download data 
-px_bef &lt;- pxweb_get(url = &quot;http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101A/FolkmangdNov&quot;,
-            query = pxweb_query_list)
-
-# Convert to data.frame 
-bef &lt;- as.data.frame(px_bef, column.name.type = &quot;text&quot;, variable.value.type = &quot;text&quot;)
-
-tbl_bef &lt;- bef %&gt;% 
-  clean_names() %&gt;% 
-  group_by(region) %&gt;% 
-  summarise(befolkning = sum(folkmangden_den_1_november))
-
-tbl_eftergymn &lt;- tbl_bef %&gt;% 
-  left_join(tbl_utb) %&gt;% 
-  mutate(procent_eftergymn = round(eftergymn /befolkning, 3))</code></pre>
-<p>Nu har vi data som vi kan joina på vår geografiska data. Ett problem är dock att vi i data från SCB:s API inte fått med länskoder. Det löser jag genom att rensa bort strängen <code>" län"</code> med <code>str_replace()</code>. Formatetet på länsnamn är då detsamma och vi kan joina på den geografiska information och visualisera andel personer med eftergymnasial utbildning per län.</p>
-<pre class="r"><code>tbl_eftergymn &lt;- tbl_eftergymn %&gt;% 
-  mutate(region = str_replace(region, &quot; län&quot;, &quot;&quot;)) %&gt;% 
-  left_join(lan, by = c(&quot;region&quot; = &quot;LnNamn&quot;))
-
-ggplot(tbl_eftergymn, aes(fill = procent_eftergymn)) +
-  geom_sf(aes(geometry = geometry)) +
-  theme_map() +
-  theme(legend.position = c(1, 0.15)) +
-  scale_fill_viridis_c(option = &quot;magma&quot;,
-                       labels = scales::percent_format(accuracy = 1),
-                       direction = -1) +
-  labs(
-    title = &quot;Andel eftergymnasial utbildning per län&quot;,
-    caption = &quot;Källa: SCB&quot;,
-    fill = &quot;Eftergymnasial\nutbildning&quot;
-  )</code></pre>
-<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>ggsave(&quot;scb-karta-eftergymn.png&quot;)</code></pre>
-<pre><code>## Saving 7 x 5 in image</code></pre>
+iris_tbl &lt;- tbl(con, &quot;iris&quot;)</code></pre>
+<p>Objektet <code>iris_tbl</code> är nu en koppling till tabellen <code>iris</code> i databasen <code>con</code>. Det här är det enda som behövs för att kunna använda <code>dplyr</code> för att bearbeta data i databasen.</p>
+<pre class="r"><code>iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
+<pre><code>## Warning: Missing values are always removed in SQL.
+## Use `mean(x, na.rm = TRUE)` to silence this warning
+## This warning is displayed only once per session.</code></pre>
+<pre><code>## # Source:   lazy query [?? x 2]
+## # Database: sqlite 3.30.1 [:memory:]
+##   Species    mean_sepal_length
+##   &lt;chr&gt;                  &lt;dbl&gt;
+## 1 setosa                  5.01
+## 2 versicolor              5.94
+## 3 virginica               6.59</code></pre>
+<p>Ovan kod exekveras alltså inte i R, som generellt körs lokalt på en server eller en dator, utan på den server där databasen ligger. I bakgrunden översätter <code>dplyr</code> koden till <code>SQL</code>. Vi kan se hur den översatta queryn ser ut genom <code>show_query()</code>:</p>
+<pre class="r"><code>iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %&gt;% 
+  show_query()</code></pre>
+<pre><code>## &lt;SQL&gt;
+## SELECT `Species`, AVG(`Sepal.Length`) AS `mean_sepal_length`
+## FROM `iris`
+## GROUP BY `Species`</code></pre>
+<p>Poängen är att vi kan använda R för att exekvera databearbetningar på mycket större datamängder i en databas än vad som är möjligt direkt i R.</p>
+<p>När vi är klara med, säg en aggregering, kan vi enkelt ta in resultatet till R och modellera eller visualisera resultatet.</p>
+<pre class="r"><code>library(ggplot2)
+iris_tbl %&gt;% 
+  group_by(Species) %&gt;% 
+  summarise(mean_sepal_length = mean(Sepal.Length)) %&gt;% 
+  collect() %&gt;% 
+  ggplot() +
+  aes(y = Species, x = mean_sepal_length, fill = Species) +
+  geom_col() +
+  theme(legend.position = &quot;none&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="/blog/2020-08-17-demokratisera-databaser-med-r_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="vad-innebär-det-här-för-en-analytiker" class="section level2">
+<h2>Vad innebär det här för en analytiker?</h2>
+<p>Det här gör att vi som analytiker kan arbeta sömlöst med databaser direkt i R. Vi slipper hoppa mellan olika UI:s för alla de databaser som finns i vår organisation. Vi kan aggregera och manipulera data via databasen och sedan lyfta in det i R för att där skapa statistiska modeller och AI-flöden och på så sätt demokratisera</p>
+<p>För en analytiker är själva databearbetningen bara ett steg i analysen och om man kan flytta databearbetningen närmare ett analytiskt verktyg, som R, kan man dels spara tid men framför allt bygga mer robusta flöden.</p>
+<p>/ Filip</p>
+</div>
 
 
             </div>
@@ -1306,15 +1261,10 @@ ggplot(tbl_eftergymn, aes(fill = procent_eftergymn)) +
                 
                 <div>
                     <img class="icon" src="/img/back.svg" alt="back" />
-                    <a href="/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/">Hämta data direkt från SCB till R</a>
+                    <a href="/blog/anropa-kolada-fran-r/">Anropa Kolada från R</a>
                 </div>
                 
                 <div style="width: 100%;"></div>
-                
-                <div>
-                    <a href="/blog/anropa-kolada-fran-r/">Anropa Kolada från R</a>
-                    <img class="icon" src="/img/next.svg" alt="next" />
-                </div>
                 
             </div>
             

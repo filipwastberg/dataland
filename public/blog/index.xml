@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog on Dataland</title>
@@ -6,10 +6,30 @@
     <description>Recent content in Blog on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 10 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Varför ni ska flytta databasbearbetningarna till R</title>
+      <link>/blog/flytta-databasbearbetningar-till-r/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/flytta-databasbearbetningar-till-r/</guid>
+      <description>Att jobba med databaser är en av de viktigaste uppgifterna en analytiker eller data scientist har. En tillräckligt stor organisation kan ha flera databaser med olika information och ibland med samma (om än inte alltid överensstämmande). Många databaser som är skräddarsydda för en organisation har egna User Interface (UI) av varierande kvalitet. Det här leder ibland till att analytiker och data scientists lägger ner mycket tid på att hoppa mellan olika UI:s för olika databaser.</description>
+    </item>
+    
+    <item>
+      <title>Anropa Kolada från R</title>
+      <link>/blog/anropa-kolada-fran-r/</link>
+      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/anropa-kolada-fran-r/</guid>
+      <description>I ett tidigare inlägg tittade jag på hur man kan hämta data direkt från SCB till R med hjälp av paketet pxweb.
+SCB har massa intressant data men mycket är på en nationell nivå. En annan datakälla, som är helt inriktad på kommunal och regional statistik, är Kolada, som är Sveriges kommuner och regioners (SKR) webbtjänst för regional statistik.
+Likt SCB har Kolada ett gränssnitt på webben, och precis som SCB har de också ett öppet API.</description>
+    </item>
     
     <item>
       <title>GIS och Kartor i R</title>
