@@ -44,7 +44,9 @@ con &lt;- dbConnect(RSQLite::SQLite(), &quot;:memory:&quot;)
 dbWriteTable(con, &quot;iris&quot;, iris)
 
 iris_tbl &lt;- tbl(con, &quot;iris&quot;)</code></pre>
-<p>Objektet <code>iris_tbl</code> är nu en koppling till tabellen <code>iris</code> i databasen <code>con</code>. Det här är det enda som behövs för att kunna använda <code>dplyr</code> för att bearbeta data i databasen.</p>
+<p>Objektet <code>iris_tbl</code> är nu en koppling till tabellen <code>iris</code> i databasen <code>con</code>. Vi kan också titta igenom våra databasobjekt under <code>Connections</code> i RStudio.</p>
+<p><img src="/blog/2020-08-17-demokratisera-databaser-med-r_files/connections.png" /></p>
+<p>När vi nu har en databas kan vi använda <code>dplyr</code> för att bearbeta data i databasen.</p>
 <pre class="r"><code>iris_tbl %&gt;% 
   group_by(Species) %&gt;% 
   summarise(mean_sepal_length = mean(Sepal.Length))</code></pre>
