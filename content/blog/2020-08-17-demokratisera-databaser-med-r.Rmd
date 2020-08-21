@@ -52,7 +52,7 @@ iris_tbl <- tbl(con, "iris")
 
 Objektet `iris_tbl` är nu en koppling till tabellen `iris` i databasen `con`. Vi kan också titta igenom våra databasobjekt under `Connections` i RStudio. 
 
-![](/blog/2020-08-17-demokratisera-databaser-med-r_files/connections.png)
+![](/blog/2020-08-17-demokratisera-databaser-med-r_files/connections2.png)
 
 När vi nu har en databas kan vi använda `dplyr` för att bearbeta data i databasen. 
 
