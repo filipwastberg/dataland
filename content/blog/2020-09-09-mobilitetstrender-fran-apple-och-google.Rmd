@@ -1,0 +1,144 @@
+---
+title: Mobilitetstrender från Apple och Google
+author: Filip Wästberg
+date: '2020-09-09'
+slug: mobilitetstrender-fran-apple-och-google
+categories:
+  - covid19
+  - opendata
+tags:
+  - covid19
+description: Desc
+hacker_news_id: ''
+lobsters_id: ''
+meta_img: /images/image.jpg
+---
+
+Under 2020 har det släppts flera nya R-paket som fokuserar på Covid19. Bland annat har ett initiativ av John Hopkins University tagits fram där man försökt standardisera många av de datakällor som finns för covid-relaterad data.
+
+Ett av dessa är Apple respektive Google's mobilitetsdata som de båda techgiganterna släppte öppet i våras. 
+
+Data finns nu i paketet `covid19mobility`. Apple har släppt data som baseras på antalet förfrågningar för vägbeskrivningar för respektive färdmedel. Det är inte lika tydligt hur Google beräknar sin mobilitet men antagligen baseras den mer på platsdata då Google's data dels täcker rörelse i parker, besök i mataffärer m.m.
+
+Paketet är enkelt att använda. Här laddar vi in data, filtrerar ut Sverige och visualiserar:
+
+```{r warning=FALSE, message=FALSE}
+library(covid19mobility)
+library(tidyverse)
+
+mob <- refresh_covid19mobility_apple_country()
+
+mob %>% 
+  filter(location == "Sweden") %>% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, "driving") ~ "Biltrafik",
+    str_detect(data_type, "transit") ~ "Kollektivtrafik",
+    str_detect(data_type, "walking") ~ "Gå",
+  )) %>% 
+  ggplot(aes(x = date, y = value, color = data_typ_svenska)) +
+  geom_line() +
+  scale_x_date(breaks = scales::pretty_breaks(12)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(
+    title = "Mobilitetstrend",
+    subtitle = "Apple's index för mobilitet: mäts genom antal förfrågningar på vägbeskrivningar.",
+    caption = "Källa: Apple ",
+    x = "",
+    y = "Index",
+    color = ""
+  )
+```
+
+Vi kan jämföra länder mot varandra.
+
+```{r}
+mob %>% 
+  filter(location %in% c("Sweden", "Finland", "Norway", "Denmark")) %>% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, "driving") ~ "Biltrafik",
+    str_detect(data_type, "transit") ~ "Kollektivtrafik",
+    str_detect(data_type, "walking") ~ "Gå",
+  )) %>% 
+  ggplot(aes(x = date, y = value, color = alternative_name)) +
+  geom_line() +
+  scale_x_date(breaks = scales::pretty_breaks(12)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(
+    title = "Mobilitetstrend",
+    subtitle = "Apple's index för mobilitet: mäts genom antal förfrågningar på vägbeskrivningar.",
+    caption = "Källa: Apple",
+    x = "",
+    y = "Index",
+    color = ""
+  ) +
+    facet_grid(rows = vars(data_typ_svenska), scales = "free")
+```
+
+Apple har också släppt data för större städer i vissa länder.
+
+```{r}
+city <- refresh_covid19mobility_apple_city()
+
+city %>% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, "driving") ~ "Biltrafik",
+    str_detect(data_type, "transit") ~ "Kollektivtrafik",
+    str_detect(data_type, "walking") ~ "Gå",
+  )) %>% 
+  filter(country == "Sweden") %>% 
+  ggplot(aes(x = date, y = value, color = location)) +
+  geom_line() +
+  facet_grid(rows = vars(data_typ_svenska), scales = "free") +
+  scale_x_date(breaks = scales::pretty_breaks(12)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(
+    title = "Mobilitetstrend",
+    subtitle = "Apple's index för mobilitet: mäts genom antal förfrågningar på vägbeskrivningar.",
+    caption = "Källa: Apple ",
+    x = "",
+    y = "Index",
+    color = ""
+  )
+```
+
+Google's data 
+
+```{r}
+mob_go <- refresh_covid19mobility_google_country()
+
+mob_go %>% 
+  filter(location == "Sweden") %>% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, "driving") ~ "Biltrafik",
+    str_detect(data_type, "transit") ~ "Kollektivtrafik",
+    str_detect(data_type, "walking") ~ "Gå",
+    str_detect(data_type, "park") ~ "Parkbesök",
+    str_detect(data_type, "grocery") ~ "Mataffär/apotek",
+    str_detect(data_type, "resident") ~ "Bostäder",
+    str_detect(data_type, "retail") ~ "Affärer och nöje",
+    str_detect(data_type, "workplace") ~ "Arbetsplatser"
+  )) %>% 
+  ggplot(aes(x = date, y = value, color = data_typ_svenska)) +
+  geom_line() +
+  labs(
+    title = "Mobilitetstrend",
+    subtitle = "Google's index för mobilitet",
+    caption = "Källa: Google ",
+    x = "",
+    y = "%",
+    color = ""
+  ) +
+  theme_minimal() +
+  scale_color_viridis_d()
+```
+
+
+
+
+
+
+
+

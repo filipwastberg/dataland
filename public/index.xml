@@ -6,10 +6,21 @@
     <description>Recent content on Dataland</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 20 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Mobilitetstrender från Apple och Google</title>
+      <link>/blog/mobilitetstrender-fran-apple-och-google/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/mobilitetstrender-fran-apple-och-google/</guid>
+      <description>Under 2020 har det släppts flera nya R-paket som fokuserar på Covid19. Bland annat har ett initiativ av John Hopkins University tagits fram där man försökt standardisera många av de datakällor som finns för covid-relaterad data.
+Ett av dessa är Apple respektive Google’s mobilitetsdata som de båda techgiganterna släppte öppet i våras.
+Data finns nu i paketet covid19mobility. Apple har släppt data som baseras på antalet förfrågningar för vägbeskrivningar för respektive färdmedel.</description>
+    </item>
     
     <item>
       <title>Varför jag flyttat databasbearbetningarna till R</title>

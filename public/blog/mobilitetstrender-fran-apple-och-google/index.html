@@ -2,7 +2,6 @@
 <html lang="en-US">
 
 <head>
-	<meta name="generator" content="Hugo 0.74.3" />
 <meta charset="utf-8">
 <meta name="HandheldFriendly" content="True">
 <meta name="MobileOptimized" content="320">
@@ -16,24 +15,24 @@
 <meta property="og:site_name" content="Dataland" />
 <meta property="og:locale" content="en-US" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/" />
-<meta property="og:title" content="Dataland" />
-<meta property="twitter:title" content="Dataland">
+<meta property="og:url" content="/blog/mobilitetstrender-fran-apple-och-google/" />
+<meta property="og:title" content="Mobilitetstrender från Apple och Google" />
+<meta property="twitter:title" content="Mobilitetstrender från Apple och Google">
 
-    <meta property="og:image" content="/img/banner.png">
+    <meta property="og:image" content="//images/image.jpg">
     <meta property="twitter:card" content="summary">
-    <meta property="twitter:image" content="/img/banner.png">
+    <meta property="twitter:image" content="//images/image.jpg">
 
-<meta property="og:description" content="A blog by Filip Wästberg">
-<meta property="twitter:description" content="A blog by Filip Wästberg">
+<meta property="og:description" content="Desc">
+<meta property="twitter:description" content="Desc">
 
 <title>
 
 
-    Dataland
+     Dataland - Mobilitetstrender från Apple och Google 
 
 </title>
-<link rel="canonical" href="/">
+<link rel="canonical" href="/blog/mobilitetstrender-fran-apple-och-google/">
 
 
 <style media="screen">
@@ -1067,8 +1066,6 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 
 
 
-  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Dataland" />
-
 
 </head>
 
@@ -1076,7 +1073,7 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
 <body>
 
 
-<div class="header header-home column">
+<div class="header column">
 
     <div class="container">
         
@@ -1111,91 +1108,232 @@ div.main .content .markdown pre, div.main .content .markdown pre code {
     </div>
 </div>
 
-<div class="main column">
+
+
+
+
+<div class="main post non-narrow zero-top-spacing column">
     <div class="container">
         <div class="content">
-            
-                <div class="markdown">
-                <p>Welcome to <em>dataland</em>, a Data Science blog by Filip Wästberg.</p>
-<p>Here you&rsquo;ll find some blog posts about Data Science, mostly in R, and mostly in Swedish.</p>
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    
+    Mobilitetstrender från Apple och Google
+    
+
+</div>
 
                 </div>
-            
-
-            
-                <div class="posts">
-                
-                
-                
-                    <div class="page-heading">Latest posts</div>
-                    <ul>
+                <div class="meta">
+                    <div class="date" title="Wed Sep 9 2020 00:00:00 UTC">Sep 9, 2020</div>
+                    
+                        
+                        <div class="author middot" title="Filip Wästberg">Filip Wästberg</div>
+                        
                     
                     
-                        <li class="groupby">Sep, 2020</li>
-                        
-                            <li class="post-item">
-    <span class="meta">Sep 9, 2020</span>
-    
-    <a href="/blog/mobilitetstrender-fran-apple-och-google/"><span>Mobilitetstrender från Apple och Google</span></a>
-    
-</li>
-
-                        
+                    <div class="reading-time middot">3 minute read</div>
                     
-                        <li class="groupby">Aug, 2020</li>
-                        
-                            <li class="post-item">
-    <span class="meta">Aug 20, 2020</span>
-    
-    <a href="/blog/flytta-databasbearbetningar-till-r/"><span>Varför jag flyttat databasbearbetningarna till R</span></a>
-    
-</li>
-
-                        
-                            <li class="post-item">
-    <span class="meta">Aug 17, 2020</span>
-    
-    <a href="/blog/anropa-kolada-fran-r/"><span>Anropa Kolada från R</span></a>
-    
-</li>
-
-                        
                     
-                        <li class="groupby">Jun, 2020</li>
-                        
-                            <li class="post-item">
-    <span class="meta">Jun 10, 2020</span>
-    
-    <a href="/blog/kartor-i-r/"><span>GIS och Kartor i R</span></a>
-    
-</li>
-
-                        
-                            <li class="post-item">
-    <span class="meta">Jun 8, 2020</span>
-    
-    <a href="/blog/hamta-data-direkt-fr%C3%A5n-scb-till-r/"><span>Hämta data direkt från SCB till R</span></a>
-    
-</li>
-
-                        
+                      <div class="tags">
                     
-                    </ul>
-
-                    
-                        <a href="./blog/" class="see-more">See more ...</a>
-                    
-                
+                        <ul>
+                          
+                            <li class="middot"><a href="/tags/covid19">covid19</a> </li>
+                          
+                        </ul>
+                    </div>
+                    <div class="tags">
+                        <ul>
+                          
+                            
+                          
+                          
+                            
+                          
+                        </ul>
+                    </div>
                 </div>
-            
-
-            <div class="best-posts">
-            
-            
             </div>
+            <div class="markdown">
+                
+    
+    
+
+
+<p>Under 2020 har det släppts flera nya R-paket som fokuserar på Covid19. Bland annat har ett initiativ av John Hopkins University tagits fram där man försökt standardisera många av de datakällor som finns för covid-relaterad data.</p>
+<p>Ett av dessa är Apple respektive Google’s mobilitetsdata som de båda techgiganterna släppte öppet i våras.</p>
+<p>Data finns nu i paketet <code>covid19mobility</code>. Apple har släppt data som baseras på antalet förfrågningar för vägbeskrivningar för respektive färdmedel. Det är inte lika tydligt hur Google beräknar sin mobilitet men antagligen baseras den mer på platsdata då Google’s data dels täcker rörelse i parker, besök i mataffärer m.m.</p>
+<p>Paketet är enkelt att använda. Här laddar vi in data, filtrerar ut Sverige och visualiserar:</p>
+<pre class="r"><code>library(covid19mobility)
+library(tidyverse)
+
+mob &lt;- refresh_covid19mobility_apple_country()
+
+mob %&gt;% 
+  filter(location == &quot;Sweden&quot;) %&gt;% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, &quot;driving&quot;) ~ &quot;Biltrafik&quot;,
+    str_detect(data_type, &quot;transit&quot;) ~ &quot;Kollektivtrafik&quot;,
+    str_detect(data_type, &quot;walking&quot;) ~ &quot;Gå&quot;,
+  )) %&gt;% 
+  ggplot(aes(x = date, y = value, color = data_typ_svenska)) +
+  geom_line() +
+  scale_x_date(breaks = scales::pretty_breaks(12)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(
+    title = &quot;Mobilitetstrend&quot;,
+    subtitle = &quot;Apple&#39;s index för mobilitet: mäts genom antal förfrågningar på vägbeskrivningar.&quot;,
+    caption = &quot;Källa: Apple &quot;,
+    x = &quot;&quot;,
+    y = &quot;Index&quot;,
+    color = &quot;&quot;
+  )</code></pre>
+<p><img src="/post/2020-09-09-mobilitetstrender-fran-apple-och-google_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Vi kan jämföra länder mot varandra.</p>
+<pre class="r"><code>mob %&gt;% 
+  filter(location %in% c(&quot;Sweden&quot;, &quot;Finland&quot;, &quot;Norway&quot;, &quot;Denmark&quot;)) %&gt;% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, &quot;driving&quot;) ~ &quot;Biltrafik&quot;,
+    str_detect(data_type, &quot;transit&quot;) ~ &quot;Kollektivtrafik&quot;,
+    str_detect(data_type, &quot;walking&quot;) ~ &quot;Gå&quot;,
+  )) %&gt;% 
+  ggplot(aes(x = date, y = value, color = alternative_name)) +
+  geom_line() +
+  scale_x_date(breaks = scales::pretty_breaks(12)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(
+    title = &quot;Mobilitetstrend&quot;,
+    subtitle = &quot;Apple&#39;s index för mobilitet: mäts genom antal förfrågningar på vägbeskrivningar.&quot;,
+    caption = &quot;Källa: Apple&quot;,
+    x = &quot;&quot;,
+    y = &quot;Index&quot;,
+    color = &quot;&quot;
+  ) +
+    facet_grid(rows = vars(data_typ_svenska), scales = &quot;free&quot;)</code></pre>
+<p><img src="/post/2020-09-09-mobilitetstrender-fran-apple-och-google_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Apple har också släppt data för större städer i vissa länder.</p>
+<pre class="r"><code>city &lt;- refresh_covid19mobility_apple_city()
+
+city %&gt;% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, &quot;driving&quot;) ~ &quot;Biltrafik&quot;,
+    str_detect(data_type, &quot;transit&quot;) ~ &quot;Kollektivtrafik&quot;,
+    str_detect(data_type, &quot;walking&quot;) ~ &quot;Gå&quot;,
+  )) %&gt;% 
+  filter(country == &quot;Sweden&quot;) %&gt;% 
+  ggplot(aes(x = date, y = value, color = location)) +
+  geom_line() +
+  facet_grid(rows = vars(data_typ_svenska), scales = &quot;free&quot;) +
+  scale_x_date(breaks = scales::pretty_breaks(12)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(
+    title = &quot;Mobilitetstrend&quot;,
+    subtitle = &quot;Apple&#39;s index för mobilitet: mäts genom antal förfrågningar på vägbeskrivningar.&quot;,
+    caption = &quot;Källa: Apple &quot;,
+    x = &quot;&quot;,
+    y = &quot;Index&quot;,
+    color = &quot;&quot;
+  )</code></pre>
+<p><img src="/post/2020-09-09-mobilitetstrender-fran-apple-och-google_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Google’s data</p>
+<pre class="r"><code>mob_go &lt;- refresh_covid19mobility_google_country()</code></pre>
+<pre><code>## Warning: 13060 parsing failures.
+##  row        col           expected                  actual                                                                  file
+## 1783 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area &#39;https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv&#39;
+## 1784 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area &#39;https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv&#39;
+## 1785 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area &#39;https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv&#39;
+## 1786 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area &#39;https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv&#39;
+## 1787 metro_area 1/0/T/F/TRUE/FALSE Kabul Metropolitan Area &#39;https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv&#39;
+## .... .......... .................. ....................... .....................................................................
+## See problems(...) for more details.</code></pre>
+<pre class="r"><code>mob_go %&gt;% 
+  filter(location == &quot;Sweden&quot;) %&gt;% 
+  mutate(data_typ_svenska = case_when(
+    str_detect(data_type, &quot;driving&quot;) ~ &quot;Biltrafik&quot;,
+    str_detect(data_type, &quot;transit&quot;) ~ &quot;Kollektivtrafik&quot;,
+    str_detect(data_type, &quot;walking&quot;) ~ &quot;Gå&quot;,
+    str_detect(data_type, &quot;park&quot;) ~ &quot;Parkbesök&quot;,
+    str_detect(data_type, &quot;grocery&quot;) ~ &quot;Mataffär/apotek&quot;,
+    str_detect(data_type, &quot;resident&quot;) ~ &quot;Bostäder&quot;,
+    str_detect(data_type, &quot;retail&quot;) ~ &quot;Affärer och nöje&quot;,
+    str_detect(data_type, &quot;workplace&quot;) ~ &quot;Arbetsplatser&quot;
+  )) %&gt;% 
+  ggplot(aes(x = date, y = value, color = data_typ_svenska)) +
+  geom_line() +
+  labs(
+    title = &quot;Mobilitetstrend&quot;,
+    subtitle = &quot;Google&#39;s index för mobilitet&quot;,
+    caption = &quot;Källa: Google &quot;,
+    x = &quot;&quot;,
+    y = &quot;%&quot;,
+    color = &quot;&quot;
+  ) +
+  theme_minimal() +
+  scale_color_viridis_d()</code></pre>
+<p><img src="/post/2020-09-09-mobilitetstrender-fran-apple-och-google_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+
+            </div>
+            
+            <br>
+            <div class="share">
+                  
+                  <a href="" class="ssk ssk-facebook"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-twitter"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-google-plus"></a>
+                  
+                  
+                  <a href="" class="ssk ssk-linkedin"></a>
+                  
+            </div>
+            
+            
+            <br>
+            <div class="navigation">
+                
+                <div>
+                    <img class="icon" src="/img/back.svg" alt="back" />
+                    <a href="/blog/flytta-databasbearbetningar-till-r/">Varför jag flyttat databasbearbetningarna till R</a>
+                </div>
+                
+                <div style="width: 100%;"></div>
+                
+            </div>
+            
+            
+
+            
+            
+            <div class="post bg-white">
+                <script src="https://utteranc.es/client.js"
+                    repo= "mtn/cocoa-eh-hugo-theme"
+                    issue-term="title"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+                </script>
+            </div>
+            
+
+            
+
+            
         </div>
     </div>
 </div>
+
+
+
 <div class="footer column">
     <div class="container">
 
