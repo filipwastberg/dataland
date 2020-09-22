@@ -53,6 +53,7 @@ library(tidyverse)
 ggplot(lan) +
   geom_sf()
 ```
+
 Med `geom_sf()` får vi ett koordinatsystem med longitude och latitude, men vill vi bara ha en "clean" karta kan vi exempelvis använda `theme_map()` från paketet `ggthemes`.
 
 ```{r}
@@ -134,7 +135,11 @@ ggplot(tbl_eftergymn, aes(fill = procent_eftergymn)) +
     caption = "Källa: SCB",
     fill = "Eftergymnasial\nutbildning"
   )
+```
 
+Visualiseringen kan vi sedan spara som en png-fil.
+
+```{r}
 ggsave("scb-karta-eftergymn.png")
 ```
 

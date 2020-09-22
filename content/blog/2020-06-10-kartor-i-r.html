@@ -30,7 +30,7 @@ unzip(&quot;shape_svenska/LanRT90.zip&quot;, exdir = &quot;lan_rt90&quot;)</code
 <p>För att läsa in och bearbeta kartfiler använder vi paktet <code>sf</code>(<em>Simple Features</em>) som gör det enkelt att läsa in och manipulera kartfiler.</p>
 <p>Vi laddar in shape-filen med <code>read_sf()</code> och ser då att varje län har en <code>geometry</code>, en multipolygon, som är gränserna för länet.</p>
 <pre class="r"><code>library(sf)</code></pre>
-<pre><code>## Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</code></pre>
+<pre><code>## Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</code></pre>
 <pre class="r"><code>lan &lt;- read_sf(&quot;lan_rt90/Lan_RT90_region.shp&quot;)
 
 lan</code></pre>
@@ -38,7 +38,7 @@ lan</code></pre>
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: 1230810 ymin: 6137234 xmax: 1880916 ymax: 7669583
-## CRS:            3021
+## projected CRS:  RT90 2.5 gon V
 ## # A tibble: 21 x 3
 ##    LnKod LnNamn                                                         geometry
 ##    &lt;chr&gt; &lt;chr&gt;                                                &lt;MULTIPOLYGON [m]&gt;
@@ -57,8 +57,8 @@ lan</code></pre>
 <pre class="r"><code>library(tidyverse)
 ggplot(lan) +
   geom_sf()</code></pre>
-<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-Med <code>geom_sf()</code> får vi ett koordinatsystem med longitude och latitude, men vill vi bara ha en “clean” karta kan vi exempelvis använda <code>theme_map()</code> från paketet <code>ggthemes</code>.</p>
+<p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Med <code>geom_sf()</code> får vi ett koordinatsystem med longitude och latitude, men vill vi bara ha en “clean” karta kan vi exempelvis använda <code>theme_map()</code> från paketet <code>ggthemes</code>.</p>
 <pre class="r"><code>library(ggthemes)
 ggplot(lan) +
   geom_sf() +
@@ -130,5 +130,6 @@ ggplot(tbl_eftergymn, aes(fill = procent_eftergymn)) +
     fill = &quot;Eftergymnasial\nutbildning&quot;
   )</code></pre>
 <p><img src="/blog/2020-06-10-kartor-i-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Visualiseringen kan vi sedan spara som en png-fil.</p>
 <pre class="r"><code>ggsave(&quot;scb-karta-eftergymn.png&quot;)</code></pre>
 <pre><code>## Saving 7 x 5 in image</code></pre>
