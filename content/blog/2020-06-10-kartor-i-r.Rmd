@@ -113,7 +113,8 @@ tbl_bef <- bef %>%
 
 tbl_eftergymn <- tbl_bef %>% 
   left_join(tbl_utb) %>% 
-  mutate(procent_eftergymn = round(eftergymn /befolkning, 3))
+  mutate(procent_eftergymn = round(eftergymn /befolkning, 3)) %>% 
+  mutate(region = str_replace(region, " län", "")) 
 ```
 
 Nu har vi data som vi kan joina på vår geografiska data. Ett problem är dock att vi i data från SCB:s API inte fått med länskoder. Det löser jag genom att rensa bort strängen `" län"` med `str_replace()`. Formatetet på länsnamn är då detsamma och vi kan joina på den geografiska information och visualisera andel personer med eftergymnasial utbildning per län.
